@@ -12,7 +12,6 @@ int mu,nu,site;
 Twist_Fermion sol[DEGREE],psol[DEGREE];
 Umatrix Fmunu;
 
-//SIMON susy det term modification
 
 Udag=Adj(U);
 
@@ -40,17 +39,28 @@ act_s=act_s+0.5*C2*Tr(DmuUmu.get(x)*DmuUmu.get(x)).real();
 }
 
 
-// Konishi mass term
+// Konishi mass term - single trace operator - 'eig'  // 
+
+
 site=0;
 dum=Complex();
 while(loop_over_lattice(x,site)){
-for(mu=0;mu<NUMLINK;mu++){        // Reverted back to all NUMLINKS. Was NUMLINK -3. // 
+for(mu=0;mu<NUMLINK;mu++){        
 dummy=U.get(x,mu)*Udag.get(x,mu)-Umatrix(1);
 dum=dum+Tr(dummy*dummy);
 }}
 
 act_s=act_s+(BMASS*BMASS)*dum.real();
 
+
+// Below : Double trace mass term - "trace" // 
+
+/* site=0;
+while(loop_over_lattice(x,site)){
+for(mu=0;mu<NUMLINK;mu++){
+dum=(1.0/NCOLOR)*Tr(Udag.get(x,mu)*U.get(x,mu)).real()-1.0;
+act_s=act_s+(BMASS*BMASS)*dum*dum;
+}}  */ 
 
 
 
@@ -70,7 +80,10 @@ act_s=act_s+2.0*Tr(Fmunu*Adj(Fmunu)).real();
 
 act_s=KAPPA*act_s;
 
-// pseudofermion contribution
+
+// Now, the fermions // 
+
+// Pseudofermion contribution
 
 
 if(FERMIONS){
@@ -84,7 +97,6 @@ act_F=act_F+amp[n]*(Cjg(F)*sol[n]).real();}
 }
 
 
-//cout << "act_F is " << act_F << "\n" << flush;
 
 return(act_s+act_F);
 }

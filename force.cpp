@@ -13,7 +13,6 @@ Umatrix tmp2,ftmp;
 Complex d,dum,tmp;
 Scalar_Plaquette ZZ,WW;
 
-// gauge force - boson contribution
 
 Udag=Adj(U);
 DmuUmu=USite_Field();
@@ -23,7 +22,6 @@ f_U=Gauge_Field();
 
 Udag=Adj(U);
    
-//SIMON: susy det term modification
 
 P=Plaq(U);
 sites=0;
@@ -46,7 +44,9 @@ DmuUmu.set(x,DmuUmu.get(x)+U.get(x,mu)*Udag.get(x,mu)-
                            Udag.get(x-e_mu,mu)*U.get(x-e_mu,mu));}
 }
 
-// deriv of det term
+// Derivative of det term // 
+
+
 Scalar_Plaquette Z;
 Complex W;
 sites=0;
@@ -119,7 +119,10 @@ for(mu=0;mu<NUMLINK;mu++){
 f_U.set(x,mu,KAPPA*f_U.get(x,mu));
 }}
 
+
+
 // Konishi mass term
+// Force contribution for the single trace mass term // 
 
 sites=0;
 while(loop_over_lattice(x,sites)){
@@ -134,6 +137,26 @@ for(mu=0;mu<NUMLINK;mu++){
 f_U.set(x,mu,f_U.get(x,mu)+
 (2*KAPPA*BMASS*BMASS)*Udag.get(x,mu)*UdU.get(x,mu));
 }}
+
+
+// Below is the force term corresponding to double trace mass term // 
+
+/* sites=0;
+while(loop_over_lattice(x,sites)){
+for(mu=0;mu<NUMLINK;mu++){
+UdU.set(x,mu,U.get(x,mu)*Udag.get(x,mu)-Umatrix(1));
+}}
+
+sites=0;
+while(loop_over_lattice(x,sites)){
+for(mu=0;mu<NUMLINK;mu++){
+
+f_U.set(x,mu,f_U.get(x,mu)+
+(2*KAPPA*BMASS*BMASS/(NCOLOR*NCOLOR))*Tr(UdU.get(x,mu)).real()*
+Udag.get(x,mu));}} 
+
+*/ 
+
 
 
 sites=0;
@@ -154,14 +177,13 @@ f_U.set(x,mu,f_U.get(x,mu)-(1.0/NCOLOR)*Tr(f_U.get(x,mu))*Umatrix(1));
 }
 
 
-// add in contributions from pseudofermions
-// use partial fraction approx to inverse square root of operator
+// Add in contributions from pseudofermions
+// Use partial fraction approx to inverse square root of operator
 
 f_F=Twist_Fermion();
 
 if(FERMIONS && (fermion==1)){
 f_U=Gauge_Field();
-//cout << "fermion forces " << endl;
 
 
 f_F=-ampdeg*Cjg(F);
@@ -177,7 +199,7 @@ fermion_forces(U,utmp,stmp,ptmp);
 
 f_F=f_F-amp[n]*Cjg(sol[n]);
 
-// add in kick from fermion effective action
+// Add in kick from fermion effective action // 
 
 sites=0;
 while(loop_over_lattice(x,sites)){
