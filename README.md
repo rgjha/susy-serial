@@ -5,7 +5,7 @@ Installation of the program
 It is very easy to perform the installation and execution of SUSY\_LATTICE. 
 Below we provide the necessary steps on Unix or Linux systems.
 
-[1.] Download the code from CPC Program Library and unpack it.
+[1.] Download the code from Github and unpack it. 
 [2.] Change the directory to SUSY\_LATTICE.
 [3.] Edit utilities.h to set number of supercharges Q16, 
 and lattice lengths LX,LY,LZ and T. 
