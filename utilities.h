@@ -48,7 +48,7 @@ const int supercharges = 4;
 const unsigned int NONZEROES = (NUMGEN*NUMLINK*8);
  
 const double GAUGETOL = 0.00000000000001;
-const int DEGREE = 10;
+const int DEGREE = 10;      // Number of terms in  Remez approximation
 const double NORM = (1.0/sqrt(4.0*D));
 const double PBC = -1; // set to 1 for periodic b.c.
 const int SMALLEIG=1; 
