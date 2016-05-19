@@ -17,7 +17,7 @@ if(f_read.bad()){
 cout << "error opening config file to read\n" << flush;}
 
 f_read >> LDUM >> TDUM >> BETADUM >> DTDUM >> NCOLORDUM; 
-if ((LDUM!=LX) || (TDUM!=T)) {cout << "Wrong size lattice read in - Abort\n";}
+if ((LDUM!=LX) || (TDUM!=T)) {cout << "wrong size lattice read in - abort\n";}
 cout << "config coupling is " << BETADUM << "\n";
 cout << "time step used for input config " << DTDUM << "\n" << flush;
 cout << "number of colors " << NCOLORDUM << "\n" << flush;

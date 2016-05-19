@@ -42,7 +42,7 @@ compute_Adjoint_Links(U,V);
 MASS=0.0;
 
 build_vector(b,bn);
-build_sparse_matrix(V,U,m,col,row);
+build_sparse_matrix(V,m,col,row);
 
 
 #ifdef GPU

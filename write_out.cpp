@@ -19,27 +19,30 @@ f_write.open("config");}
 
 if(f_write.bad()){
 cout << "error opening config file\n" << flush;}
-f_write << setprecision(10) << LX << "\t" << T << "\t" << KAPPA << "\t" << DT << "\t" << NCOLOR << "\n";
+f_write << LX << "\t" << T << "\t" << KAPPA << "\t" << DT << "\t" << NCOLOR << "\n";
 
 site=0;
 while(loop_over_lattice(x,site)){
 for(mu=0;mu<NUMLINK;mu++){
-f_write << setprecision(PREC) << u.get(x,mu) << "\n";
+f_write << u.get(x,mu) << "\n";
 }}
 f_write << "\n" << flush;
+f_write.close();
+
+return;
 
 
 if(num==0){
 site=0;
 while(loop_over_lattice(x,site)){
-f_write << setprecision(PREC) << F.getS().get(x)<< "\n";  // This is for the site //  Line 1339-1349 of utilities // 
+f_write << F.getS().get(x)<< "\n";
 }
 
 
 site=0;
 while(loop_over_lattice(x,site)){
 for(mu=0;mu<NUMLINK;mu++){
-f_write <<  setprecision(PREC) << F.getL().get(x,mu) << "\n";   // This is for link fields // 
+f_write <<  F.getL().get(x,mu) << "\n";
 }
 }
 
@@ -47,7 +50,7 @@ site=0;
 while(loop_over_lattice(x,site)){
 for(mu=0;mu<NUMLINK;mu++){
 for(nu=mu+1;nu<NUMLINK;nu++){
-f_write << setprecision(PREC) << F.getC().get(x,mu,nu) << "\n";   // This is for the plaquette or contour C // 
+f_write << F.getC().get(x,mu,nu) << "\n";
 }
 }
 }

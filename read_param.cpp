@@ -32,27 +32,23 @@ ifstream f_in("parameters");
 if(!f_in.good()){
 	cout << "\ncan't open file parameters to read data!\n";
 	exit(1);}
-f_in>>SWEEPS>>THERM>>GAP>>LAMBDA>>G>>BMASS>>C2>>DT>>READIN >>SWEEPNO>>BETA ;
+f_in>>SWEEPS>>THERM>>GAP>>BETA>>G>>BMASS>>C1>>C2>>DT>>READIN >>SWEEPNO ;
 
 // assume spatial size very large for this scaling
-//BETA=1.0;
+LAMBDA=1.0;
 
 
 if(D==4){
 KAPPA=(NCOLOR*0.5)/LAMBDA;
 
-if((LX==1)&&(LY==1)&&(LZ!=1)&&(T!=1)){
-KAPPA = KAPPA*(T*T)/(BETA*BETA);}
-
-// Added by Raghav // 
-/*if((LX==1)&&(LY==1)&&(LZ==1)&&(T!=1)){
+if((LX==1)&&(LY==1)&&(LZ==1)&&(T!=1)){
 KAPPA=KAPPA*(T*T*T)/(BETA*BETA*BETA);}
 
 if((LX==1)&&(LY==1)&&(LZ!=1)&&(T!=1)){
 KAPPA=KAPPA*(T*T)/(BETA*BETA);}
 
 if((LX==1)&&(LY!=1)&&(LZ!=1)&&(T!=1)){
-KAPPA=KAPPA*T/BETA;}*/
+KAPPA=KAPPA*T/BETA;}
 
 }
 
@@ -64,7 +60,7 @@ KAPPA=KAPPA*T/BETA;}
 
 }
 
-
+BMASS/=T;
 
 TRAJECTORY_LENGTH=(int)(0.5/DT);
 
@@ -83,16 +79,16 @@ if(D==4){
 cout << "Spatial extent " << LX << "\t" << LY << "\t" << LZ << "\n";}
 
 cout << "Dimensionless t'Hooft coupling " << LAMBDA << "\n";
+cout << "Lattice Coupling " << KAPPA << "\n";
+cout << "Boson Mass " << BMASS << "\n";
+cout << "C1 coeff " << C1 << "\n";
 cout << "C2 coeff " << C2 << "\n";
 cout << "Coupling to det " << G << "\n";
-cout << "Konishi mass " << BMASS << "\n";
 cout << "Thermalization sweeps " << THERM << "\n";
 cout << "Number of sweeps " << SWEEPS << "\n";
 cout << "Gap between measurements " << GAP << "\n";
 cout << "Time step in leapfrog eqs " << DT << "\n";
 cout << "Trajectory length " << TRAJECTORY_LENGTH << "\n";
-cout << "Inverse temperature (BETA)" << BETA << "\n"; 
-cout << "Kappa (dimensionless lattice governing constant) " << KAPPA << "\n"; 
 cout << "Minimax approx degree " << DEGREE << "\n";
 cout << "Reading initial config: (1 for yes, 0 for no) " << READIN << "\n";
 //cout << "Old sweep number: " << OLDSWEEPNO << "\n";
@@ -100,7 +96,6 @@ cout << "Reading initial config: (1 for yes, 0 for no) " << READIN << "\n";
 if (PBC==1.0) {cout << "periodic temporal bc for fermions" << "\n";}
 else{cout << "antiperiodic temporal bc for fermions" << "\n";}
 
-//G=G/sqrt(KAPPA);
 
 srand(random_seed());
 //srand(0);

@@ -7,20 +7,15 @@ using namespace std;
 
 #include <math.h>
 #include <stdlib.h>
-#include <iomanip>
-
-#define PREC 10
-#define GO 1
 
 #define FMASS 0.0
 
 const int FERMIONS = 1;
-const int T = 8;
-const int NCOLOR = 3;
-const int NUMGEN = (NCOLOR*NCOLOR);
-//const int NUMGEN = (NCOLOR*NCOLOR)-1;  // Forcing SU(N) theory
+const int T = 2;
+const int NCOLOR = 2;
+const int NUMGEN = (NCOLOR*NCOLOR-1);
 
-#define GPU
+//#define GPU
 #define Q16 
 
 // Q=16 parameters
@@ -29,9 +24,9 @@ const int D = 4;
 const int NUMLINK = 5;
 const int LX = 1;
 const int LY = 1;
-const int LZ = 32;
+const int LZ = 8;
 const int SITES = (LX*LY*LZ*T);
-const unsigned int LEN = (16*NUMGEN*SITES);       // This is the size of fermion matrix // 
+const unsigned int LEN = (16*NUMGEN*SITES);
 const int supercharges =16;
 #else
 // Q=4 parameters
@@ -46,13 +41,13 @@ const int supercharges = 4;
 #endif
 
 //const int NONZEROES = LEN/SITES/2;
-const unsigned int NONZEROES = (NUMGEN*NUMLINK*8);
+const unsigned int NONZEROES = (NUMGEN*NUMLINK*2);
  
 const double GAUGETOL = 0.00000000000001;
-const int DEGREE = 10;      // Number of terms in  Remez approximation
+const int DEGREE = 10;
 const double NORM = (1.0/sqrt(4.0*D));
-const double PBC = -1; // Set to 1 for periodic b.c.
-const int SMALLEIG=1;  // Set to 1 for constructing polar projected 'U'
+const double PBC = -1; // set to 1 for periodic b.c.
+const int SMALLEIG=1; 
 
 
 
@@ -65,8 +60,8 @@ const double INT_LAMBDA_MID = 0.614;
 
 
 extern double ampdeg,amp[DEGREE],shift[DEGREE];
-extern int num_in_row[LEN],SIMULATING,SWEEPNO,TOTALNONZEROES;
-extern double KAPPA,DT,ALPHA,G,BMASS,C2,MASS;
+extern int num_in_row[LEN],SIMULATING,SWEEPNO;
+extern double KAPPA,DT,ALPHA,G,BMASS,C1,C2,MASS;
 extern int SWEEPS,GAP,THERM,READIN,SEED, TRAJECTORY_LENGTH,OLDSWEEPNO;
 extern double SMALLCUT, LARGECUT;
 extern double TIME;
@@ -192,23 +187,6 @@ Complex operator *(const Afield &, const Afield &);
 Afield Cjg(const Afield &u);
 Afield gaussA(void);
 
-class Scalar_Plaquette{
-private:
-	Complex data[SITES][NUMLINK][NUMLINK];
-public:
-	Scalar_Plaquette(void);
-   	Complex get(const Lattice_Vector &, const int, const int) const;
-	void set(const Lattice_Vector &, const int, const int, const Complex &);
-	};
-
-
-Scalar_Plaquette operator +(const Scalar_Plaquette &, const Scalar_Plaquette &);
-Scalar_Plaquette operator -(const Scalar_Plaquette &, const Scalar_Plaquette &);
-Scalar_Plaquette operator *(const double, const Scalar_Plaquette &);
-//Scalar_Plaquette operator *(const Complex &, const Scalar_Plaquette &);
-Scalar_Plaquette mydiff(const Scalar_Plaquette &, const Scalar_Plaquette &);
-Scalar_Plaquette mydiff2(const Scalar_Plaquette &, const Scalar_Plaquette &);
-
 class USite_Field{
 private:
 	Umatrix points[SITES];
@@ -247,7 +225,6 @@ UPlaq_Field operator -(const UPlaq_Field &, const UPlaq_Field &);
 UPlaq_Field operator *(const double, const UPlaq_Field &);
 UPlaq_Field operator *(const Complex &, const UPlaq_Field &);
 Umatrix operator *(const UPlaq_Field &, const UPlaq_Field &);
-UPlaq_Field Plaq(const Gauge_Field &);
 
 class Site_Field{
 private:
@@ -371,9 +348,8 @@ Twist_Fermion operator *(const double, const Twist_Fermion &);
 Twist_Fermion operator *(const Complex &, const Twist_Fermion &);
 Complex operator *(const Twist_Fermion &, const Twist_Fermion &);
 
-Twist_Fermion Fermion_op(const Adjoint_Links &, const Gauge_Field &,const Twist_Fermion &);
-Twist_Fermion Adj_Fermion_op(const Adjoint_Links &, const Gauge_Field &,
-const Twist_Fermion &);
+Twist_Fermion Fermion_op(const Adjoint_Links &U, const Twist_Fermion &);
+Twist_Fermion Adj_Fermion_op(const Adjoint_Links &U, const Twist_Fermion &);
 UPlaq_Field Field_Strength(const Gauge_Field &U);
 UPlaq_Field Bianchi(const Gauge_Field &U);
 

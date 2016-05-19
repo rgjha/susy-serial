@@ -44,7 +44,7 @@ prod=prod*Adj(U.get(y,nu));
 y=y-e_nu;
 }
 
-wilson[R][M]=wilson[R][M]+(1.0/NCOLOR)*Tr(prod).norm();
+wilson[R][M]=wilson[R][M]+(1.0/NCOLOR)*Tr(prod).real();
 }
 }
 
