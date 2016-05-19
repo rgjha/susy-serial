@@ -4,7 +4,11 @@ void lat_unpack(const int n, Lattice_Vector &x);
 int pack(const int flavor,const int type, const Lattice_Vector &x, const int color);
 void unpack(const int i, int &flavor,int &type, Lattice_Vector &x, int &color);
 
+<<<<<<< HEAD
+void build_sparse_matrix(const Adjoint_Links &V, Complex m[LEN], int col[LEN], int row[]);
+=======
 void build_sparse_matrix(const Adjoint_Links &V, const Gauge_Field &U, Complex m[LEN], int col[LEN], int row[]);
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 #ifdef FULLMATRIX
 void full_fermion_op(const Gauge_Field &U,Complex M[LEN][LEN]);
 Complex Pfaffian(Complex M[LEN][LEN]);

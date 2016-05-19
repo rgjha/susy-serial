@@ -4,7 +4,11 @@ void measure(const Gauge_Field &U, const Twist_Fermion &F,int &num){
 
 	static int first_time=1;
 	static ofstream f_data,f_av,f_scalars;
+<<<<<<< HEAD
+	static ofstream f_line,f_line2,f_kon1,f_kon2;
+=======
 	static ofstream f_line,f_kon1,f_kon2, f_line_z;
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
         static ofstream f_loop,f_loop2,f_det;
         double act_s,act_F,mass,t1,t2;
 	double eigenvals[SITES][NUMLINK][NCOLOR];
@@ -31,6 +35,15 @@ Complex M[LEN][LEN];
         if(f_scalars.bad()){
         cout << "failed to open scalars file\n" << flush;}
 
+<<<<<<< HEAD
+	f_line.open("lines_s",ios::app);
+	if(f_line.bad()){
+	cerr << "failed to open lines_s file" << "\n";exit(1);}
+   
+        f_line2.open("lines_t",ios::app);
+        if(f_line2.bad()){
+        cerr << "failed to open lines_t file" << endl;}
+=======
 	f_line.open("lines",ios::app);
 	if(f_line.bad()){
 	cerr << "failed to open lines_t file" << "\n";exit(1);}
@@ -39,6 +52,7 @@ Complex M[LEN][LEN];
 	f_line_z.open("lines_z",ios::app);
         if(f_line_z.bad()){
             cerr << "failed to open lines_z file" << "\n";exit(1);}
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
         f_loop.open("loops",ios::app);
         if(f_loop.bad()){
@@ -51,20 +65,33 @@ Complex M[LEN][LEN];
         f_det.open("det",ios::app);
         if(f_det.bad()){cerr << "failed to open det file" << "\n";exit(1);}
         
+<<<<<<< HEAD
+        f_kon1.open("clines_s",ios::app);
+        if(f_kon1.bad()){cerr << "failed to open kon1 file" << "\n";exit(1);}
+        
+        f_kon2.open("clines_t",ios::app);
+=======
 
         f_kon1.open("kon1",ios::app);
         if(f_kon1.bad()){cerr << "failed to open kon1 file" << "\n";exit(1);}
 
         
         f_kon2.open("kon2",ios::app);
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
         if(f_kon2.bad()){cerr << "failed to open kon2 file" << "\n";exit(1);}
 
 	first_time=0;
 	}
 
+<<<<<<< HEAD
+//        block_lattice(U,U2);
+        
+        unit(U,U2);
+=======
         //block_lattice(U,U2);
         
         unit(U,U2);     // Polar-decomposition employed for holographic tests // 
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
         //divdet(U,U3);
         //divdet(U2,U4);
 	  
@@ -74,17 +101,30 @@ Complex M[LEN][LEN];
 	cout << "Bianchi is " << Tr(B*Adj(B)).real() << flush << "\n";
 	}
 	
+<<<<<<< HEAD
+	f_line  << line(U,2) << "\n" << flush;
+        f_line2 << line(U,D-1) << endl;
+        f_kon1 << line(U2,2) << endl;
+        f_kon2 << line(U2,D-1) << endl;
+  
+=======
 	f_line  << line(U2,D-1) << "\n" << flush;      // Polyakov line along time // 
 	f_line_z  << line(U2,D-2) << "\n" << flush;    // Polyakov line along z direction // 
     
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 //corrlines(U);
 //correlators(U);
 //bilinear(U,F);
 		 
         loop(U,wilson);  
         loop(U2,wilson2);
+<<<<<<< HEAD
+//	f_kon1 << konishi(U) << endl;
+ //       f_kon2 << konishi(U2)/16.0 << endl;
+=======
 	f_kon1 << konishi(U) << endl;
         f_kon2 << konishi(U2)/16.0<< endl;
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
         for(r=1;r<=(LX/2);r++){
         for(m=1;m<=(T/2);m++){
@@ -105,7 +145,11 @@ for(r=1;r<=(LX/2);r++){
 #ifdef FULLMATRIX
         if((num%(GAP)==0)&&(FERMIONS==1)){
 	full_fermion_op(U,M);
+<<<<<<< HEAD
+        //eigenvalues(M);
+=======
        // eigenvalues(M);
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 	(void)Pfaffian(M);
 }
 #endif

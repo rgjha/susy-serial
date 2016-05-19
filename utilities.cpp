@@ -162,7 +162,11 @@ Umatrix operator *(const Umatrix &o1, const Umatrix &o2){
 
         sum+=i;
         counter++;
+<<<<<<< HEAD
+        if(counter==100000){
+=======
         if(counter==1000){
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
         cout << "mean no. of terms in exp() " 
         << (double)sum/counter << "\n" << flush;
         counter=0;sum=0;}
@@ -422,6 +426,8 @@ site++;
 return(!test);
 }
 
+<<<<<<< HEAD
+=======
 //THIS CHUNK ADDED - RGJ //
 
 //ENDS
@@ -541,6 +547,7 @@ Z.get(x-e_b,a,b)*(Complex(1.0,0.0)+W.get(x-e_b,a,b)));
 return(dum);
 }
 
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
 
 Gauge_Field::Gauge_Field(void){
@@ -560,7 +567,11 @@ return;
 if(hot==0){
 for(int i=0;i<SITES;i++){
 for(int j=0;j<NUMLINK;j++){
+<<<<<<< HEAD
+link[i][j]=exp(0.01*gaussU());}
+=======
 link[i][j]=Umatrix(1)+0.05*gaussU();}
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 }
 return;
 }
@@ -765,7 +776,10 @@ square[i][nu][mu]=-1.0*square[i][mu][nu];
 }
 }
 }
+<<<<<<< HEAD
+=======
 
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 return;
 }
 cout << "error in link constructor\n" << "\n" << flush;
@@ -832,6 +846,8 @@ dum.set(x,j,k,s1.get(x,j,k)-s2.get(x,j,k));
 return(dum);
 }
 
+<<<<<<< HEAD
+=======
 UPlaq_Field Plaq(const Gauge_Field &U){
 Lattice_Vector x,e_mu,e_nu;
 int site=0,mu,nu;
@@ -848,6 +864,7 @@ P.set(x,nu,mu,Adj(P.get(x,mu,nu)));
 }}}
 return(P);
 }
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
 UPlaq_Field operator *(const double o, const UPlaq_Field &s){
 int sites=0;
@@ -1790,6 +1807,21 @@ return(dum);
 }
 
 
+<<<<<<< HEAD
+Twist_Fermion betaterm(const Adjoint_Links &V, const Twist_Fermion &F){
+int a,b,sites,mu;
+Lattice_Vector x;
+Twist_Fermion dum=Twist_Fermion();
+Site_Field s=Site_Field();
+Link_Field l=Link_Field();
+Complex tmp;
+Afield tmp2;
+
+// only relevant if U(N)
+
+if(NUMGEN==(NCOLOR*NCOLOR-1)){return(dum);}
+//SIMON: beta term modification
+=======
 Twist_Fermion betaterm(const Gauge_Field &U, const Twist_Fermion &F){
 int a,b,sites,mu,nu;
 Lattice_Vector x,e_mu,e_nu;
@@ -1801,11 +1833,28 @@ Afield tmp2;
 UPlaq_Field P;
 
 P=Plaq(U);
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
 sites=0;
 while(loop_over_lattice(x,sites)){
 tmp2=Afield();
 
+<<<<<<< HEAD
+for(mu=0;mu<NUMLINK;mu++){
+
+for(a=0;a<NUMGEN-1;a++){
+tmp=Complex();
+for(b=0;b<NUMGEN;b++){
+tmp=tmp+
+conjug(V.get(x,mu).get(a,b))*F.getL().get(x,mu).get(b);}
+
+tmp2.set(a,tmp);}
+
+s.set(x,C1*0.5*tmp2);}
+
+dum.setS(s);
+}
+=======
 for(a=NUMGEN-1;a<NUMGEN;a++){
 tmp=Complex();
 
@@ -1829,10 +1878,24 @@ s.set(x,tmp2);
 
 dum.setS(s);
 
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
 sites=0;
 while(loop_over_lattice(x,sites)){
 for(mu=0;mu<NUMLINK;mu++){
+<<<<<<< HEAD
+
+tmp2=Afield();
+for(b=0;b<NUMGEN;b++){
+tmp=Complex();
+for(a=0;a<NUMGEN-1;a++){
+tmp=tmp+
+conjug(V.get(x,mu).get(a,b))*F.getS().get(x).get(a);}
+tmp2.set(b,tmp);
+}
+
+l.set(x,mu,-0.5*C1*tmp2);
+=======
 tmp2=Afield();
 
 for(b=0;b<NUMGEN;b++){
@@ -1851,6 +1914,7 @@ tmp2.set(b,tmp);
 }
 
 l.set(x,mu,tmp2);
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 }
 }
 
@@ -1861,8 +1925,12 @@ return(dum);
 }
 
 
+<<<<<<< HEAD
+Twist_Fermion Fermion_op(const Adjoint_Links &V, const Twist_Fermion &F){
+=======
 Twist_Fermion Fermion_op(const Adjoint_Links &V, const Gauge_Field &U,
 const Twist_Fermion &F){
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 Twist_Fermion F2=Twist_Fermion(),F3;
 
 F2.setC(Dplus(V,F.getL()));
@@ -1870,7 +1938,11 @@ F2.setL(Dminus(V,F.getC()));
 F2.setL(F2.getL()+0.5*Dbplus(V,F.getS()));
 F2.setS(0.5*Dbminus(V,F.getL()));
 
+<<<<<<< HEAD
+F3=betaterm(V,F);
+=======
 F3=betaterm(U,F);
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 F2.setS(F2.getS()+F3.getS());
 F2.setL(F2.getL()+F3.getL());
 
@@ -1883,8 +1955,12 @@ return(F2);
 
 }
 
+<<<<<<< HEAD
+Twist_Fermion Adj_Fermion_op(const Adjoint_Links &V, const Twist_Fermion &F){
+=======
 Twist_Fermion Adj_Fermion_op(const Adjoint_Links &V, const Gauge_Field &U,
 const Twist_Fermion &F){
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 Twist_Fermion F2=Twist_Fermion(),F3,F4;
 
 F3=Cjg(F);
@@ -1894,7 +1970,11 @@ F2.setL(Dminus(V,F3.getC()));
 F2.setL(F2.getL()+0.5*Dbplus(V,F3.getS()));
 F2.setS(0.5*Dbminus(V,F3.getL()));
 
+<<<<<<< HEAD
+F4=betaterm(V,F3);
+=======
 F4=betaterm(U,F3);
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 F2.setS(F2.getS()+F4.getS());
 F2.setL(F2.getL()+F4.getL());
 

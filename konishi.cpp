@@ -1,6 +1,17 @@
 #include "konishi.h"
 
 double konishi(const Gauge_Field &U){
+<<<<<<< HEAD
+int sites,a;
+Lattice_Vector x;
+double dum,K;
+Gauge_Field B;
+static int count=0;
+
+if(count==0){cout << "bare lattice" << endl;}
+if(count==1){cout << "block lattice" << endl;}
+sites=0;
+=======
 int sites,a,b,mu,nu;
 double dum,K,KK[4][4],KK2[4][4];
 Gauge_Field B;
@@ -55,18 +66,27 @@ P[4][4]=1/sqrt(5.0);
 if(count==0){cout << "bare lattice" << endl;}
 if(count==1){cout << "block lattice" << endl;}
 /*sites=0;
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 dum=0.0;
 while(loop_over_lattice(x,sites)){
 for(a=0;a<NUMLINK;a++){
 dum=dum+Tr(U.get(x,a)*Adj(U.get(x,a))).real();}
 }
+<<<<<<< HEAD
+dum/=(SITES*NUMLINK*NCOLOR);
+=======
 dum/=(SITES*NUMLINK*NCOLOR);*/
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
 
 sites=0;
 while(loop_over_lattice(x,sites)){
 for(a=0;a<NUMLINK;a++){
+<<<<<<< HEAD
+B.set(x,a,(U.get(x,a)*Adj(U.get(x,a)))-dum*Umatrix(1));
+=======
 B.set(x,a,U.get(x,a)*Adj(U.get(x,a))-Umatrix(1));
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 }}
 
 
@@ -74,6 +94,10 @@ sites=0;
 K=0.0;
 while(loop_over_lattice(x,sites)){
 for(a=0;a<NUMLINK;a++){
+<<<<<<< HEAD
+K+=Tr(B.get(x,a)*B.get(x,a)).real();
+}
+=======
 for(b=0;b<NUMLINK;b++){
 K+=Tr(B.get(x,a)*B.get(x,b)).real();
 }}
@@ -125,6 +149,7 @@ if(count==1){
 for(mu=0;mu<4;mu++){
 for(nu=0;nu<4;nu++){
 f_k2 << KK2[mu][nu]/(16*SITES) << endl;}}
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 }
 
 count++;

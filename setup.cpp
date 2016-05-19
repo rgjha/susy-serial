@@ -3,7 +3,11 @@
 void setup(void){
 int i,j,k;
 
+<<<<<<< HEAD
+// note: Tr(TaTb)=-delta_ab
+=======
 // Note: Tr(TaTb)=-delta_ab
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
 cout << "Computing generators for SU(N)\n" << flush;
 if(NUMGEN>1){(void)my_gen();}
@@ -17,8 +21,12 @@ Lambda[NUMGEN-1].set(i,i,(1.0/sqrt(NCOLOR))*Complex(0.0,1.0));
 }
 }
 
+<<<<<<< HEAD
+// test orthogonality
+=======
 // Test orthogonality
 
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 Complex trace,trace2;
 for(i=0;i<NUMGEN;i++){
 for(j=0;j<NUMGEN;j++){
@@ -34,6 +42,16 @@ flush;}
 epsilon();
 
 
+<<<<<<< HEAD
+/*SMALLCUT=1.0e-7;
+LARGECUT=1000.0;
+double ERR=1.0e-5;
+cout << "min and max eigenvalue are " << SMALLCUT << "\t" << LARGECUT << "\n";
+cout << "relative error is " << ERR << " in (15,15) approx\n";
+
+
+// 0.0000001-->1000 1e-5 error
+=======
 
 
 /* SMALLCUT=1.0e-7;
@@ -42,6 +60,7 @@ LARGECUT=1000.0;
 15-pole rational approximation with spectral range [1e-7, 1000]
 double ERR=1.0e-5;
 
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
 ampdeg = 9.9997112279957390e-02;
 amp[0] = 3.6832229992796258e-07; shift[0] = 3.7549480881878877e-09;
@@ -59,6 +78,11 @@ amp[11] = 1.0526731536884490e+00; shift[11] = 3.5350396633271388e+00;
 amp[12] = 4.1584233028628317e+00; shift[12] = 2.1815101171813343e+01;
 amp[13] = 1.7800823020581991e+01; shift[13] = 1.4102992696626504e+02;
 amp[14] = 1.2795681699057995e+02; shift[14] = 1.2544425313051306e+03;
+<<<<<<< HEAD
+*/
+
+// 10 term approx:
+=======
 
 
 */
@@ -69,6 +93,7 @@ amp[14] = 1.2795681699057995e+02; shift[14] = 1.2544425313051306e+03;
 // 10-pole rational approximation with spectral range [1e-4, 1000]
 
 
+>>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 SMALLCUT=1.0e-4;
 LARGECUT=1000.0;
 double ERR=4.0e-5;
