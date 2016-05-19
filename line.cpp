@@ -9,12 +9,8 @@ int site,t,M;
 Complex poly=Complex();
 
 
-<<<<<<< HEAD
 if(mu==0) M=LX;
 if(mu==2) M=LZ;
-=======
-if(mu==(D-2)) M=LZ;       // 0 is for x, 1 for y, 2 for z, 3 for T // 
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 if(mu==(D-1)) M=T;
 
 site=0;

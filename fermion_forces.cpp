@@ -5,11 +5,6 @@ const Twist_Fermion &s, const Twist_Fermion &p){
 Lattice_Vector x,e_mu,e_nu,e_a,e_b,e_c;
 int sites,mu,nu,a,b,c,d,e,l,m;
 Umatrix tmp;
-<<<<<<< HEAD
-=======
-Complex tmp2,tt,tmp3;
-UPlaq_Field P;
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 Gauge_Field Udag;
 
 Udag=Adj(U);
@@ -36,15 +31,9 @@ for(a=0;a<NUMGEN;a++){
 for(b=0;b<NUMGEN;b++){
 tmp=tmp-
 conjug(p.getC().get(x,mu,nu).get(a))*s.getL().get(x+e_mu,nu).get(b)*BC(x,e_mu)*
-<<<<<<< HEAD
 U.get(x,mu)*Lambda[b]*Lambda[a]+
 conjug(p.getC().get(x-e_nu,mu,nu).get(a))*s.getL().get(x-e_nu,nu).get(b)*
 U.get(x,mu)*Lambda[a]*Lambda[b];
-=======
-Lambda[b]*Lambda[a]+
-conjug(p.getC().get(x-e_nu,mu,nu).get(a))*s.getL().get(x-e_nu,nu).get(b)*
-Lambda[a]*Lambda[b];
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 }}}
 
 f_U.set(x,mu,f_U.get(x,mu)+1.0*tmp);
@@ -69,15 +58,9 @@ for(a=0;a<NUMGEN;a++){
 for(b=0;b<NUMGEN;b++){
 tmp=tmp-
 conjug(p.getL().get(x-e_nu,nu).get(a))*s.getC().get(x-e_nu,mu,nu).get(b)*
-<<<<<<< HEAD
 U.get(x,mu)*Lambda[b]*Lambda[a]+
 conjug(p.getL().get(x+e_mu,nu).get(a))*BC(x,e_mu)*s.getC().get(x,mu,nu).get(b)*
 U.get(x,mu)*Lambda[a]*Lambda[b];
-=======
-Lambda[b]*Lambda[a]+
-conjug(p.getL().get(x+e_mu,nu).get(a))*BC(x,e_mu)*s.getC().get(x,mu,nu).get(b)*
-Lambda[a]*Lambda[b];
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 }}
 }
 
@@ -101,15 +84,9 @@ for(a=0;a<NUMGEN;a++){
 for(b=0;b<NUMGEN;b++){
 tmp=tmp-
 conjug(p.getS().get(x).get(a))*s.getL().get(x,mu).get(b)*
-<<<<<<< HEAD
 Lambda[a]*Lambda[b]*Udag.get(x,mu)+
 conjug(p.getS().get(x+e_mu).get(a))*BC(x,e_mu)*s.getL().get(x,mu).get(b)*
 Lambda[b]*Lambda[a]*Udag.get(x,mu);
-=======
-Lambda[a]*Lambda[b]+
-conjug(p.getS().get(x+e_mu).get(a))*BC(x,e_mu)*s.getL().get(x,mu).get(b)*
-Lambda[b]*Lambda[a];
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 }}
 
 
@@ -129,15 +106,9 @@ for(a=0;a<NUMGEN;a++){
 for(b=0;b<NUMGEN;b++){
 tmp=tmp-
 conjug(p.getL().get(x,mu).get(a))*s.getS().get(x+e_mu).get(b)*BC(x,e_mu)*
-<<<<<<< HEAD
 Lambda[a]*Lambda[b]*Udag.get(x,mu)+
 conjug(p.getL().get(x,mu).get(a))*s.getS().get(x).get(b)*
 Lambda[b]*Lambda[a]*Udag.get(x,mu);
-=======
-Lambda[a]*Lambda[b]+
-conjug(p.getL().get(x,mu).get(a))*s.getS().get(x).get(b)*
-Lambda[b]*Lambda[a];
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 }}
 
 
@@ -176,11 +147,7 @@ conjug(p.getC().get(x+e_a+e_b+e_c,d,e).get(l))*s.getC().get(x+e_c,a,b).get(m)*
 BC(x,e_a,e_b,e_c)*BC(x,e_c)*Lambda[l]*Lambda[m]-
 conjug(p.getC().get(x+e_c,d,e).get(l))*s.getC().get(x-e_a-e_b,a,b).get(m)*
 BC(x,-e_a,-e_b)*BC(x,e_c)*Lambda[m]*Lambda[l])*
-<<<<<<< HEAD
 perm[d][e][c][a][b]*Udag.get(x,c);
-=======
-perm[d][e][c][a][b];
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 }}}}
 }}
 
@@ -216,11 +183,7 @@ conjug(p.getC().get(x-e_a-e_b,a,b).get(l))*s.getC().get(x+e_c,d,e).get(m)*
 BC(x,-e_a,-e_b)*BC(x,e_c)*Lambda[l]*Lambda[m]-
 conjug(p.getC().get(x+e_c,a,b).get(l))*s.getC().get(x+e_a+e_b+e_c,d,e).get(m)*
 BC(x,e_a,e_b,e_c)*BC(x,e_c)*Lambda[m]*Lambda[l])*
-<<<<<<< HEAD
 perm[a][b][c][d][e]*Udag.get(x,c);
-=======
-perm[a][b][c][d][e];
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 }}}}
 }}
 
@@ -231,36 +194,13 @@ f_U.set(x,c,f_U.get(x,c)-0.5*Adj(tmp));
 
 }
 
-<<<<<<< HEAD
 // SIMON: beta term modification
 
 if(NUMGEN==(NCOLOR*NCOLOR)){
-=======
-// SIMON: susy det term modification
-
-
-if(GO){
-
-P=Plaq(U);
-Scalar_Plaquette W,Z,F,Y;
-Scalar_Plaquette G1[NUMGEN];
 
 sites=0;
 while(loop_over_lattice(x,sites)){
 for(mu=0;mu<NUMLINK;mu++){
-for(nu=0;nu<NUMLINK;nu++){
-if(mu==nu) continue;
-tmp2=det(P.get(x,mu,nu))-Complex(1.0,0.0);
-W.set(x,mu,nu,tmp2);
-Z.set(x,mu,nu,(Complex(1.0,0.0)+tmp2));
-}}}
-// first part of fermion force
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
-
-sites=0;
-while(loop_over_lattice(x,sites)){
-for(mu=0;mu<NUMLINK;mu++){
-<<<<<<< HEAD
 
 tmp=Umatrix();
 for(a=0;a<NUMGEN-1;a++){
@@ -272,47 +212,10 @@ Lambda[a]*Lambda[b];
 f_U.set(x,mu,f_U.get(x,mu)+0.5*C1*Adj(tmp));
 }}
 
-=======
-for(nu=0;nu<NUMLINK;nu++){
-if(mu==nu) continue;
-e_nu=Lattice_Vector(nu);
-
-for(b=0;b<NUMGEN;b++){
-tmp2=conjug(p.getS().get(x).get(NUMGEN-1))*s.getL().get(x,mu).get(b)*
-Z.get(x,mu,nu)+
-conjug(p.getS().get(x-e_nu).get(NUMGEN-1))*s.getL().get(x,mu).get(b)*
-Z.get(x-e_nu,nu,mu)*BC(x,-e_nu)-
-conjug(p.getL().get(x,mu).get(b))*s.getS().get(x).get(NUMGEN-1)*
-Z.get(x,mu,nu)-
-conjug(p.getL().get(x,mu).get(b))*s.getS().get(x-e_nu).get(NUMGEN-1)*
-Z.get(x-e_nu,nu,mu)*BC(x,-e_nu);
-
-G1[b].set(x,mu,nu,G*0.5*Complex(0.0,1.0)*sqrt((double)NCOLOR)*tmp2);
-}
-}}}
 
 sites=0;
 while(loop_over_lattice(x,sites)){
 for(mu=0;mu<NUMLINK;mu++){
-tmp=Umatrix();
-
-for(b=0;b<NUMGEN;b++){
-for(nu=0;nu<NUMLINK;nu++){
-if(mu==nu) continue;
-tmp=tmp-G1[b].get(x,mu,nu)*inverse(U.get(x,mu))*Lambda[b]*inverse(U.get(x,mu));
-}}
-
-
-f_U.set(x,mu,f_U.get(x,mu)-tmp);
-}}
-
-// second part
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
-
-sites=0;
-while(loop_over_lattice(x,sites)){
-for(mu=0;mu<NUMLINK;mu++){
-<<<<<<< HEAD
 
 tmp=Umatrix();
 for(a=0;a<NUMGEN-1;a++){
@@ -323,50 +226,6 @@ Lambda[a]*Lambda[b];
 
 f_U.set(x,mu,f_U.get(x,mu)-0.5*C1*Adj(tmp));
 }}
-=======
-e_mu=Lattice_Vector(mu);
-
-for(nu=0;nu<NUMLINK;nu++){
-if(mu==nu) continue;
-tmp2=Complex();
-
-for(b=0;b<NUMGEN;b++){
-tmp2=tmp2+
-conjug(p.getS().get(x).get(NUMGEN-1))*Tr(inverse(U.get(x,mu))*
-Lambda[b])*s.getL().get(x,mu).get(b)+
-conjug(p.getS().get(x).get(NUMGEN-1))*Tr(inverse(U.get(x+e_mu,nu))*
-Lambda[b])*s.getL().get(x+e_mu,nu).get(b)*BC(x,e_mu)-
-conjug(p.getL().get(x,mu).get(b))*Tr(inverse(U.get(x,mu))*
-Lambda[b])*s.getS().get(x).get(NUMGEN-1)-
-conjug(p.getL().get(x+e_mu,nu).get(b))*Tr(inverse(U.get(x+e_mu,nu))*
-Lambda[b])*s.getS().get(x).get(NUMGEN-1)*BC(x,e_mu);
-}
-
-F.set(x,mu,nu,0.5*G*Complex(0.0,1.0)*sqrt((double)NCOLOR)*tmp2);
-
-}}}
-
-
-Z=mydiff(F,W);
-Y=mydiff2(F,W);
-
-sites=0;
-while(loop_over_lattice(x,sites)){
-for(mu=0;mu<NUMLINK;mu++){
-
-tmp2=Complex();
-tmp3=Complex();
-for(nu=0;nu<NUMLINK;nu++){
-if(mu==nu) continue;
-tmp2=tmp2+Z.get(x,mu,nu);
-tmp3=tmp3+Y.get(x,mu,nu);}
-
-f_U.set(x,mu,f_U.get(x,mu)-tmp2*inverse(U.get(x,mu)));
-f_U.set(x,mu,f_U.get(x,mu)-Adj(tmp3*inverse(Udag.get(x,mu))));
-}}
-
-
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 }
 
 // SU(N) case

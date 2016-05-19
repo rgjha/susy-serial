@@ -162,11 +162,7 @@ Umatrix operator *(const Umatrix &o1, const Umatrix &o2){
 
         sum+=i;
         counter++;
-<<<<<<< HEAD
         if(counter==100000){
-=======
-        if(counter==1000){
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
         cout << "mean no. of terms in exp() " 
         << (double)sum/counter << "\n" << flush;
         counter=0;sum=0;}
@@ -426,128 +422,6 @@ site++;
 return(!test);
 }
 
-<<<<<<< HEAD
-=======
-//THIS CHUNK ADDED - RGJ //
-
-//ENDS
-
-Scalar_Plaquette::Scalar_Plaquette(void){
-for(int i=0;i<SITES;i++){
-for(int a=0;a<NUMLINK;a++){
-for(int b=0;b<NUMLINK;b++){
-data[i][a][b]=Complex();
-}}}
-return;
-}
-
-Complex Scalar_Plaquette::get(const Lattice_Vector &x, const int a, const int b) const{
-int site=0;
-for(int i=0;i<D;i++){
-site+=x.get(i)*Lattice_Map[i];
-}
-return(data[site][a][b]);
-}
-
-void Scalar_Plaquette::set(const Lattice_Vector &x, const int a, const int b, const Complex &c){
-int site=0;
-for(int i=0;i<D;i++){
-site+=x.get(i)*Lattice_Map[i];}
-data[site][a][b]=c;
-return;
-}
-
-
-Scalar_Plaquette operator +(const Scalar_Plaquette &s1, const Scalar_Plaquette &s2){
-int sites=0;
-Lattice_Vector x;
-Scalar_Plaquette dum=Scalar_Plaquette();
-
-while(loop_over_lattice(x,sites)){
-for(int a=0;a<NUMLINK;a++){
-for(int b=0;b<NUMLINK;b++){
-dum.set(x,a,b,s1.get(x,a,b)+s2.get(x,a,b));
-}}}
-
-return(dum);
-}
-
-Scalar_Plaquette operator -(const Scalar_Plaquette &s1, const Scalar_Plaquette &s2){
-int sites=0;
-Lattice_Vector x;
-Scalar_Plaquette dum=Scalar_Plaquette();
-
-while(loop_over_lattice(x,sites)){
-for(int a=0;a<NUMLINK;a++){
-for(int b=0;b<NUMLINK;b++){
-dum.set(x,a,b,s1.get(x,a,b)-s2.get(x,a,b));
-}}}
-
-return(dum);
-}
-
-Scalar_Plaquette operator *(const double s1, const Scalar_Plaquette &s2){
-int sites=0;
-Lattice_Vector x;
-Scalar_Plaquette dum=Scalar_Plaquette();
-
-while(loop_over_lattice(x,sites)){
-for(int a=0;a<NUMLINK;a++){
-for(int b=0;b<NUMLINK;b++){
-dum.set(x,a,b,s1*s2.get(x,a,b));
-}}}
-
-return(dum);
-}
-
-Scalar_Plaquette operator *(const Complex &s1, const Scalar_Plaquette &s2){
-int sites=0;
-Lattice_Vector x;
-Scalar_Plaquette dum=Scalar_Plaquette();
-
-while(loop_over_lattice(x,sites)){
-for(int a=0;a<NUMLINK;a++){
-for(int b=0;b<NUMLINK;b++){
-dum.set(x,a,b,s1*s2.get(x,a,b));
-}}}
-
-return(dum);
-}
-
-Scalar_Plaquette mydiff(const Scalar_Plaquette &Z, const Scalar_Plaquette &W){
-Scalar_Plaquette dum=Scalar_Plaquette();
-Lattice_Vector x, e_b;
-int sites,a,b;
-
-sites=0;
-while(loop_over_lattice(x,sites)){
-for(a=0;a<NUMLINK;a++){
-for(b=0;b<NUMLINK;b++){
-e_b=Lattice_Vector(b);
-dum.set(x,a,b,Z.get(x,a,b)*(Complex(1.0,0.0)+W.get(x,a,b))+
-Z.get(x-e_b,b,a)*(Complex(1.0,0.0)+W.get(x-e_b,b,a)));
-}}}
-return(dum);
-}
-
-
-Scalar_Plaquette mydiff2(const Scalar_Plaquette &Z, const Scalar_Plaquette &W){
-Scalar_Plaquette dum=Scalar_Plaquette();
-Lattice_Vector x, e_b;
-int sites,a,b;
-
-sites=0;
-while(loop_over_lattice(x,sites)){
-for(a=0;a<NUMLINK;a++){
-for(b=0;b<NUMLINK;b++){
-e_b=Lattice_Vector(b);
-dum.set(x,a,b,Z.get(x,b,a)*(Complex(1.0,0.0)+W.get(x,b,a))+
-Z.get(x-e_b,a,b)*(Complex(1.0,0.0)+W.get(x-e_b,a,b)));
-}}}
-return(dum);
-}
-
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
 
 Gauge_Field::Gauge_Field(void){
@@ -567,11 +441,7 @@ return;
 if(hot==0){
 for(int i=0;i<SITES;i++){
 for(int j=0;j<NUMLINK;j++){
-<<<<<<< HEAD
 link[i][j]=exp(0.01*gaussU());}
-=======
-link[i][j]=Umatrix(1)+0.05*gaussU();}
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 }
 return;
 }
@@ -776,10 +646,6 @@ square[i][nu][mu]=-1.0*square[i][mu][nu];
 }
 }
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 return;
 }
 cout << "error in link constructor\n" << "\n" << flush;
@@ -846,25 +712,6 @@ dum.set(x,j,k,s1.get(x,j,k)-s2.get(x,j,k));
 return(dum);
 }
 
-<<<<<<< HEAD
-=======
-UPlaq_Field Plaq(const Gauge_Field &U){
-Lattice_Vector x,e_mu,e_nu;
-int site=0,mu,nu;
-UPlaq_Field P;
-
-while(loop_over_lattice(x,site)){
-for(mu=0;mu<NUMLINK;mu++){
-for(nu=mu+1;nu<NUMLINK;nu++){
-e_mu=Lattice_Vector(mu);
-e_nu=Lattice_Vector(nu);
-P.set(x,mu,nu,
-U.get(x,mu)*U.get(x+e_mu,nu)*Adj(U.get(x+e_nu,mu))*Adj(U.get(x,nu)));
-P.set(x,nu,mu,Adj(P.get(x,mu,nu)));
-}}}
-return(P);
-}
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
 UPlaq_Field operator *(const double o, const UPlaq_Field &s){
 int sites=0;
@@ -1807,7 +1654,6 @@ return(dum);
 }
 
 
-<<<<<<< HEAD
 Twist_Fermion betaterm(const Adjoint_Links &V, const Twist_Fermion &F){
 int a,b,sites,mu;
 Lattice_Vector x;
@@ -1821,25 +1667,11 @@ Afield tmp2;
 
 if(NUMGEN==(NCOLOR*NCOLOR-1)){return(dum);}
 //SIMON: beta term modification
-=======
-Twist_Fermion betaterm(const Gauge_Field &U, const Twist_Fermion &F){
-int a,b,sites,mu,nu;
-Lattice_Vector x,e_mu,e_nu;
-Twist_Fermion dum=Twist_Fermion();
-Site_Field s=Site_Field();
-Link_Field l=Link_Field();
-Complex tmp,W,Z;
-Afield tmp2;
-UPlaq_Field P;
-
-P=Plaq(U);
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
 sites=0;
 while(loop_over_lattice(x,sites)){
 tmp2=Afield();
 
-<<<<<<< HEAD
 for(mu=0;mu<NUMLINK;mu++){
 
 for(a=0;a<NUMGEN-1;a++){
@@ -1854,36 +1686,10 @@ s.set(x,C1*0.5*tmp2);}
 
 dum.setS(s);
 }
-=======
-for(a=NUMGEN-1;a<NUMGEN;a++){
-tmp=Complex();
-
-for(mu=0;mu<NUMLINK;mu++){
-for(nu=0;nu<NUMLINK;nu++){
-if(mu==nu) continue;
-e_mu=Lattice_Vector(mu);
-W=det(P.get(x,mu,nu))-Complex(1.0,0.0);
-Z=(W+Complex(1.0,0.0))*sqrt(1.0*NCOLOR)*Complex(0.0,1.0);
-
-for(b=0;b<NUMGEN;b++){
-tmp=tmp+Z*0.5*G*(Tr(inverse(U.get(x,mu)*Lambda[b]))*F.getL().get(x,mu).get(b)+
-                 Tr(inverse(U.get(x+e_mu,nu)*Lambda[b]))*F.getL().get(x+e_mu,nu).get(b));
-}
-}
-}
-
-tmp2.set(a,tmp);}
-s.set(x,tmp2);
-}
-
-dum.setS(s);
-
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
 sites=0;
 while(loop_over_lattice(x,sites)){
 for(mu=0;mu<NUMLINK;mu++){
-<<<<<<< HEAD
 
 tmp2=Afield();
 for(b=0;b<NUMGEN;b++){
@@ -1895,26 +1701,6 @@ tmp2.set(b,tmp);
 }
 
 l.set(x,mu,-0.5*C1*tmp2);
-=======
-tmp2=Afield();
-
-for(b=0;b<NUMGEN;b++){
-tmp=Complex();
-
-for(a=NUMGEN-1;a<NUMGEN;a++){
-for(nu=0;nu<NUMLINK;nu++){
-e_nu=Lattice_Vector(nu);
-W=det(P.get(x,nu,mu))-Complex(1.0,0.0);
-Z=(W+Complex(1.0,0.0))*sqrt(1.0*NCOLOR)*Complex(0.0,1.0);
-
-tmp=tmp-G*Z*0.5*(Tr(inverse(U.get(x,mu)*Lambda[b]))*F.getS().get(x).get(a)+
-                 Tr(inverse(U.get(x,mu)*Lambda[b]))*F.getS().get(x-e_nu).get(a));
-}}
-tmp2.set(b,tmp);
-}
-
-l.set(x,mu,tmp2);
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 }
 }
 
@@ -1925,12 +1711,7 @@ return(dum);
 }
 
 
-<<<<<<< HEAD
 Twist_Fermion Fermion_op(const Adjoint_Links &V, const Twist_Fermion &F){
-=======
-Twist_Fermion Fermion_op(const Adjoint_Links &V, const Gauge_Field &U,
-const Twist_Fermion &F){
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 Twist_Fermion F2=Twist_Fermion(),F3;
 
 F2.setC(Dplus(V,F.getL()));
@@ -1938,11 +1719,7 @@ F2.setL(Dminus(V,F.getC()));
 F2.setL(F2.getL()+0.5*Dbplus(V,F.getS()));
 F2.setS(0.5*Dbminus(V,F.getL()));
 
-<<<<<<< HEAD
 F3=betaterm(V,F);
-=======
-F3=betaterm(U,F);
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 F2.setS(F2.getS()+F3.getS());
 F2.setL(F2.getL()+F3.getL());
 
@@ -1955,12 +1732,7 @@ return(F2);
 
 }
 
-<<<<<<< HEAD
 Twist_Fermion Adj_Fermion_op(const Adjoint_Links &V, const Twist_Fermion &F){
-=======
-Twist_Fermion Adj_Fermion_op(const Adjoint_Links &V, const Gauge_Field &U,
-const Twist_Fermion &F){
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 Twist_Fermion F2=Twist_Fermion(),F3,F4;
 
 F3=Cjg(F);
@@ -1970,11 +1742,7 @@ F2.setL(Dminus(V,F3.getC()));
 F2.setL(F2.getL()+0.5*Dbplus(V,F3.getS()));
 F2.setS(0.5*Dbminus(V,F3.getL()));
 
-<<<<<<< HEAD
 F4=betaterm(V,F3);
-=======
-F4=betaterm(U,F3);
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 F2.setS(F2.getS()+F4.getS());
 F2.setL(F2.getL()+F4.getL());
 

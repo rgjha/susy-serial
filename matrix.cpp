@@ -156,23 +156,12 @@ return(t);
 
 
 
-<<<<<<< HEAD
 void build_sparse_matrix(const Adjoint_Links &V, 
 Complex m[],int col[],int row[]){
 int sites,mu,a,b,c,nu,ix,i,j1,j2,d,e,l,k;
 Lattice_Vector x,e_mu,e_nu,e_a,e_b,e_c;
 static int first_time=1;
 static ofstream f_op;
-=======
-void build_sparse_matrix(const Adjoint_Links &V, const Gauge_Field &U, 
-Complex m[],int col[],int row[]){
-int sites,mu,nu,a,b,c,ix,i,j1,j2,d,e,l,k;
-Lattice_Vector x,e_mu,e_nu,e_a,e_b,e_c;
-static int first_time=1;
-static ofstream f_op;
-Complex W,Z;
-UPlaq_Field P;
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
 //if(first_time){
 //	f_op.open("sparse_fermion_op");
@@ -220,7 +209,6 @@ col[ix]=j2;
 }
 
 
-<<<<<<< HEAD
 // SIMON: beta term modification
 
 if(NUMGEN==(NCOLOR*NCOLOR)){
@@ -258,53 +246,6 @@ col[ix]=j1;
 }
 
 }
-=======
-// SIMON: susy det term modification
-
-if(GO){
-
-P=Plaq(U);
-sites=0;
-while(loop_over_lattice(x,sites)){
-for(mu=0;mu<NUMLINK;mu++){
-for(nu=0;nu<NUMLINK;nu++){
-if(mu==nu) continue;
-e_mu=Lattice_Vector(mu);
-
-W=det(P.get(x,mu,nu))-Complex(1.0,0.0);
-
-Z=sqrt(1.0*NCOLOR)*Complex(0.0,1.0)*(Complex(1.0,0.0)+W);
-
-i=pack(0,x,NUMGEN-1);
-
-for(b=0;b<NUMGEN;b++){
-j1=pack(num_chis+1+mu,x,b);
-ix=find_index(i,j1,col,row);
-m[ix]=m[ix]+G*0.5*Z*Tr(inverse(U.get(x,mu))*Lambda[b]);
-col[ix]=j1;
-
-j1=pack(num_chis+1+nu,x+e_mu,b);
-ix=find_index(i,j1,col,row);
-m[ix]=m[ix]+G*0.5*Z*Tr(inverse(U.get(x+e_mu,nu))*Lambda[b])*BC(x,e_mu);
-col[ix]=j1;
-}
-
-j1=pack(0,x,NUMGEN-1);
-
-for(b=0;b<NUMGEN;b++){
-i=pack(num_chis+1+mu,x,b);
-ix=find_index(i,j1,col,row);
-m[ix]=m[ix]-G*0.5*Z*Tr(inverse(U.get(x,mu))*Lambda[b]);
-col[ix]=j1;
-
-i=pack(num_chis+1+nu,x+e_mu,b);
-ix=find_index(i,j1,col,row);
-m[ix]=m[ix]-G*0.5*Z*Tr(inverse(U.get(x+e_mu,nu))*Lambda[b])*BC(x,e_mu);
-col[ix]=j1;
-}
-
-}}}}
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
 // psi_mu Dplus eta
 
@@ -505,49 +446,11 @@ col[ix]=j2;
 }}}}}
 }
 
-<<<<<<< HEAD
 // test 
 //for(i=0;i<LEN;i++){
 //for(int j=row[i];j<row[i+1];j++){
 //if(col[j]==(-1)){cout << "non-zero row pad at row " << i << endl;}
 //}}
-=======
-// remove blanks ...
-int n2[LEN],c2[LEN*NONZEROES];
-Complex m2[LEN*NONZEROES];
-
-k=0; 
-l=0;
-for(i=0;i<LEN;i++){
-l+=num_in_row[i];
-n2[i]=0;
-for(int j=row[i];j<row[i+1];j++){
-if(col[j]!=(-1)){
-m2[k]=m[j];
-c2[k]=col[j];
-k++;
-n2[i]++;}
-}
-}
-
-//cout << "Total number of nonzeroes " << k << "\t" << l << endl;
-TOTALNONZEROES=k;
-row[0]=0;
-for(i=0;i<LEN;i++){
-if(n2[i]!=num_in_row[i]){cout << "uh oh ..." << endl;}
-row[i+1]=row[i]+n2[i];
-}
-
-for(i=0;i<LEN;i++){
-for(int j=row[i];j<row[i+1];j++){
-if(c2[j]==(-1)){cout << "oops i= " << i << "\t" << "j is " << j << endl;
-cout << "row[i] is " << row[i] << "\t" << "row[i+1] is" << row[i+1] << endl;}
-col[j]=c2[j];
-m[j]=m2[j];
-}}
-
-
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
 // order by columns within a row block
 col_order(m,col,row);
@@ -564,12 +467,7 @@ col_order(m,col,row);
 //f_op.close();
 
 if(first_time){
-<<<<<<< HEAD
 cout << "Maximum number nonzeroes: " << num_in_row[0] << "\n" << flush;
-=======
-cout << "Maximum number nonzeroes in row " << num_in_row[3] << "\n" << flush;
-cout << "Total number of nonzeroes " << TOTALNONZEROES << endl;
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 first_time=0;}
 
 return;
@@ -665,12 +563,7 @@ void full_fermion_op(const Gauge_Field &U, Complex M[LEN][LEN]){
 int sites,a,b,j1,j2,i,mu,nu,l,m,d,e,c,index,num_chis;
 Lattice_Vector x,e_mu,e_nu,e_a,e_b,e_c;
 Gauge_Field Udag,Udtr;
-<<<<<<< HEAD
 
-=======
-UPlaq_Field P;
-Complex W,Z;
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 
 Udag=Adj(U);
 
@@ -863,7 +756,6 @@ Tr(Lambda[l]*Udag.get(x-e_c,c)*Lambda[m])*BC(x,e_a,e_b);
 }}}}}
 }
 
-<<<<<<< HEAD
 // U(1) mass
 
 if(NUMGEN==(NCOLOR*NCOLOR)){
@@ -892,48 +784,6 @@ M[i][j1]=M[i][j1]-1.0*FMASS*Tr(Lambda[a]*Udag.get(x,mu)*Lambda[NUMGEN-1]);
 }}}
 }
 
-=======
-
-// SIMON: susy det term modification
-
-if(NUMGEN==(NCOLOR*NCOLOR)){
-
-P=Plaq(U);
-sites=0;
-while(loop_over_lattice(x,sites)){
-for(mu=0;mu<NUMLINK;mu++){
-for(nu=0;nu<NUMLINK;nu++){
-if(mu==nu) continue;
-e_mu=Lattice_Vector(mu);
-
-W=det(P.get(x,mu,nu))-Complex(1.0,0.0);
-
-Z=sqrt(1.0*NCOLOR)*Complex(0.0,1.0)*(Complex(1.0,0.0)+W);
-i=pack(0,x,NUMGEN-1);
-
-for(b=0;b<NUMGEN;b++){
-j1=pack(num_chis+1+mu,x,b);
-M[i][j1]=M[i][j1]+G*0.5*Z*Tr(inverse(U.get(x,mu))*Lambda[b]);
-
-j1=pack(num_chis+1+nu,x+e_mu,b);
-M[i][j1]=M[i][j1]+G*0.5*Z*Tr(inverse(U.get(x+e_mu,nu))*Lambda[b])*BC(x,e_mu);
-}
-
-j1=pack(0,x,NUMGEN-1);
-
-for(b=0;b<NUMGEN;b++){
-i=pack(num_chis+1+mu,x,b);
-M[i][j1]=M[i][j1]-G*0.5*Z*Tr(inverse(U.get(x,mu))*Lambda[b]);
-
-i=pack(num_chis+1+nu,x+e_mu,b);
-M[i][j1]=M[i][j1]-G*0.5*Z*Tr(inverse(U.get(x+e_mu,nu))*Lambda[b])*BC(x,e_mu);
-}
-
-}}}
-}
-
-
->>>>>>> f33135b5861f274b44c622ee0ce6ebc81e898eb0
 //test antisymmetric nature
 for(j1=0;j1<LEN;j1++){
 for(j2=j1+1;j2<LEN;j2++){
