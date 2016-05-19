@@ -1,12 +1,15 @@
 #include "sym.h"
 
+
+// This calls : update_o.cpp, measure.cpp, write_out.cpp //  
+
 int SWEEPS,GAP,THERM,SEED,READIN,OLDSWEEPNO;
 double KAPPA,DT,TIME,G;
 
 double amp[DEGREE],shift[DEGREE],ampdeg;
 Umatrix Lambda[NUMGEN];
-double LARGECUT,SMALLCUT,BMASS,C1,C2,MASS;
-int TRAJECTORY_LENGTH;
+double LARGECUT,SMALLCUT,BMASS,C2,MASS;
+int TRAJECTORY_LENGTH,TOTALNONZEROES;
 double perm[NUMLINK][NUMLINK][NUMLINK][NUMLINK][NUMLINK];
 int side[D],SIMULATING,SWEEPNO;
 int Lattice_Map[D];
@@ -23,18 +26,18 @@ cudaSetDevice(gpuid);
 cout << "using GPU " << gpuid << endl;
 #endif
 
-read_param();
+read_param();            // READ PARAMETERS // 
 
-if(READIN){
+if(READIN){              
 read_in(U,F);
 }
 else{
-U=Gauge_Field(0);
+U=Gauge_Field(0);        // IF READIN = 0  i.e not reading configs // 
 F=Twist_Fermion(1);
 }
 
 cout << "Warming up" << "\n" << flush;
-DT=DT/2;
+DT=DT/10;
 cout << "DT is " << DT << "\n" << flush;
 for(sweep=1;sweep<=THERM/4;sweep++){
 clock_t time= clock();
@@ -42,7 +45,7 @@ update(U,F);
 cout << "sweep time is " << float(clock()-time)/CLOCKS_PER_SEC << endl;
 write_out(U,F,0);
 }
-DT=DT*2;
+DT=DT*10;
 cout << "DT is " << DT << "\n" << flush;
 for(sweep=1;sweep<=(3*THERM)/4;sweep++){
 clock_t time=clock();

@@ -10,8 +10,8 @@ void gpusolver2(Complex *m, int *col, int *row,
 {
 
   // Declare cusp containers on host
-  cusp::csr_matrix<int,cusp::complex<double>,cusp::host_memory> A_h(LEN,LEN,LEN*NONZEROES);
-  cusp::csr_matrix<int,cusp::complex<double>,cusp::host_memory> A_h_Prime(LEN,LEN,LEN*NONZEROES);
+  cusp::csr_matrix<int,cusp::complex<double>,cusp::host_memory> A_h(LEN,LEN,TOTALNONZEROES);
+  cusp::csr_matrix<int,cusp::complex<double>,cusp::host_memory> A_h_Prime(LEN,LEN,TOTALNONZEROES);
   cusp::array1d<cusp::complex<double>, cusp::host_memory> b_h(LEN,0.0);
   cusp::array1d<double, cusp::host_memory> sigma_h(DEGREE);
 
@@ -22,7 +22,7 @@ void gpusolver2(Complex *m, int *col, int *row,
     A_h_Prime.row_offsets[i] = row[i];
     if(row[i] == -1){cout << "-1 detected, exiting in row" << endl; exit(1);}
   }
-  for (int i=0; i<LEN*NONZEROES; i++)
+  for (int i=0; i<TOTALNONZEROES; i++)
   {
     A_h.column_indices[i] = col[i];
     A_h_Prime.column_indices[i] = col[i];
@@ -32,8 +32,8 @@ void gpusolver2(Complex *m, int *col, int *row,
   }
 
 
-  A_h.row_offsets[LEN] = LEN*NONZEROES;
-  A_h_Prime.row_offsets[LEN] = LEN*NONZEROES;
+  A_h.row_offsets[LEN] = TOTALNONZEROES;
+  A_h_Prime.row_offsets[LEN] = TOTALNONZEROES;
   
   // Copy information to device
   cusp::csr_matrix<int,cusp::complex<double>,cusp::device_memory> A_d = A_h;

@@ -1,5 +1,4 @@
-
- #include "CG_solver.h"
+#include "CG_solver.h"
 #include "gpusolver2.h"
 
 
@@ -14,8 +13,8 @@ double alpha1,alpha2,beta0,beta1,rrtmp,rrtmp2,resid,psdot;
 Adjoint_Links V;
 Complex rn[LEN],bn[LEN],pn[LEN];
 Complex tn[LEN],sn[LEN],soln[LEN], solnGPU[LEN];
-Complex m[LEN*NONZEROES];
-int col[LEN*NONZEROES],row[LEN+1];
+Complex m[TOTALNONZEROES];
+int col[TOTALNONZEROES],row[LEN+1];
 
 no_calls++;
 compute_Adjoint_Links(U,V);
@@ -26,7 +25,7 @@ count2=0;
 
 
 build_vector(rhs,bn);
-build_sparse_matrix(V,m,col,row);
+build_sparse_matrix(V,U,m,col,row);
 
 sparse_mult(m,col,row,-1,bn,sn);
 for(i=0;i<LEN;i++){
