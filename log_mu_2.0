@@ -1,0 +1,270 @@
+16 supercharge theory 
+Number of colors 2
+Temporal extent 4
+Spatial extent 1	1	16
+Dimensionless t'Hooft coupling 1
+Lattice Coupling 64
+Boson Mass 0.5
+C1 coeff 0
+C2 coeff 1
+Coupling to det 0
+Thermalization sweeps 4
+Number of sweeps 50
+Gap between measurements 2
+Time step in leapfrog eqs 0.1
+Trajectory length 5
+Minimax approx degree 10
+Reading initial config: (1 for yes, 0 for no) 0
+antiperiodic temporal bc for fermions
+Got seed 4259746379 from /dev/random
+Computing generators for SU(N)
+TrT_0T_0= -1	0
+TrT_1T_1= -1	0
+TrT_2T_2= -1	0
+min and max eigenvalue are 0.0001	1000
+relative error is 4e-05 in (10,10) approx
+Warming up
+DT is 0.05
+  BOSON_MOM 997.858
+  FERMIONS_MOM 3009.62
+  GAUGE  66.1263
+  BMASS  3.11367
+  DET  0
+  FERMIONS (EXCEPT MOM) 2121.21
+####################################
+  BOSON_MOM 468.71
+  FERMIONS_MOM 2975.85
+  GAUGE  569.908
+  BMASS  31.2125
+  DET  0
+  FERMIONS (EXCEPT MOM) 2152.11
+####################################
+  ACTION BEGIN TRAJ6197.07
+  ACTION END TRAJ 6197.09
+ACCEPT  6197.07	6197.09	-0.0170323
+++++++++++++++++++++++++++++++++++++
+sweep time is 10.1662
+DT is 0.1
+  BOSON_MOM 915.762
+  FERMIONS_MOM 3064.8
+  BOSON_MOM 794.363
+  FERMIONS_MOM 2943.62
+  GAUGE  672.787
+  BMASS  43.0681
+  DET  0
+  FERMIONS (EXCEPT MOM) 2279.53
+####################################
+  ACTION BEGIN TRAJ6733.03
+  ACTION END TRAJ 6733
+ACCEPT  6733.03	6733	0.0268462
+++++++++++++++++++++++++++++++++++++
+sweep time is 9.70099
+  BOSON_MOM 955.263
+  FERMIONS_MOM 3021.43
+  BOSON_MOM 905.465
+  FERMIONS_MOM 2921.78
+  GAUGE  700.139
+  BMASS  52.6064
+  DET  0
+  FERMIONS (EXCEPT MOM) 2392.17
+####################################
+  ACTION BEGIN TRAJ6971.81
+  ACTION END TRAJ 6971.7
+ACCEPT  6971.81	6971.7	0.116449
+++++++++++++++++++++++++++++++++++++
+sweep time is 10.0023
+  BOSON_MOM 975.879
+  FERMIONS_MOM 3028.48
+mean no. of terms in exp() 6.44271
+  BOSON_MOM 939.665
+  FERMIONS_MOM 2905.32
+  GAUGE  736.514
+  BMASS  52.3884
+  DET  0
+  FERMIONS (EXCEPT MOM) 2515
+####################################
+  ACTION BEGIN TRAJ7148.39
+  ACTION END TRAJ 7148.22
+ACCEPT  7148.39	7148.22	0.17079
+++++++++++++++++++++++++++++++++++++
+sweep time is 9.49303
+Commencing measurement sweeps
+  BOSON_MOM 983.967
+  FERMIONS_MOM 3059.03
+  BOSON_MOM 929.958
+  FERMIONS_MOM 2947.62
+  GAUGE  776.965
+  BMASS  54.635
+  DET  0
+  FERMIONS (EXCEPT MOM) 2638.04
+####################################
+  ACTION BEGIN TRAJ7345.93
+  ACTION END TRAJ 7346.26
+hmc_test 0.716497 failed
+REJECT  7345.93	7346.26	-0.333381
+++++++++++++++++++++++++++++++++++++
+sweep time is 9.46738
+sweep no. 1
+  BOSON_MOM 938.867
+  FERMIONS_MOM 3019.6
+  BOSON_MOM 916.355
+  FERMIONS_MOM 2905.13
+  GAUGE  756.099
+  BMASS  49.8057
+  DET  0
+  FERMIONS (EXCEPT MOM) 2634.56
+####################################
+  ACTION BEGIN TRAJ7261.5
+  ACTION END TRAJ 7261.59
+ACCEPT  7261.5	7261.59	-0.0885603
+++++++++++++++++++++++++++++++++++++
+sweep time is 9.59838
+sweep no. 2
+ in measure 
+Bianchi is 4.43671e-29
+  BOSON_MOM 959.229
+  FERMIONS_MOM 3159.32
+mean no. of terms in exp() 6.6975
+  BOSON_MOM 937.314
+  FERMIONS_MOM 3101.77
+  GAUGE  757.389
+  BMASS  57.5481
+  DET  0
+  FERMIONS (EXCEPT MOM) 2705.32
+####################################
+  ACTION BEGIN TRAJ7558.78
+  ACTION END TRAJ 7559.02
+ACCEPT  7558.78	7559.02	-0.236595
+++++++++++++++++++++++++++++++++++++
+sweep time is 9.71083
+sweep no. 3
+  BOSON_MOM 950.638
+  FERMIONS_MOM 2961.78
+  BOSON_MOM 964.465
+  FERMIONS_MOM 2929.04
+  GAUGE  742.228
+  BMASS  52.1812
+  DET  0
+  FERMIONS (EXCEPT MOM) 2744.64
+####################################
+  ACTION BEGIN TRAJ7432.03
+  ACTION END TRAJ 7432.08
+ACCEPT  7432.03	7432.08	-0.0530823
+++++++++++++++++++++++++++++++++++++
+sweep time is 9.71546
+sweep no. 4
+ in measure 
+Bianchi is 4.73807e-29
+  BOSON_MOM 968.957
+  FERMIONS_MOM 3051.77
+  BOSON_MOM 937.71
+  FERMIONS_MOM 2940.86
+  GAUGE  770.764
+  BMASS  53.4625
+  DET  0
+  FERMIONS (EXCEPT MOM) 2856.9
+####################################
+  ACTION BEGIN TRAJ7558.82
+  ACTION END TRAJ 7558.99
+ACCEPT  7558.82	7558.99	-0.168053
+++++++++++++++++++++++++++++++++++++
+sweep time is 9.62459
+sweep no. 5
+  BOSON_MOM 964.042
+  FERMIONS_MOM 3197.97
+mean no. of terms in exp() 6.70158
+  BOSON_MOM 938.225
+  FERMIONS_MOM 3160.25
+  GAUGE  785.956
+  BMASS  57.8305
+  DET  0
+  FERMIONS (EXCEPT MOM) 2901.22
+####################################
+  ACTION BEGIN TRAJ7843.09
+  ACTION END TRAJ 7843.25
+ACCEPT  7843.09	7843.25	-0.154666
+++++++++++++++++++++++++++++++++++++
+sweep time is 9.49347
+sweep no. 6
+ in measure 
+Bianchi is 4.34894e-29
+  BOSON_MOM 980.461
+  FERMIONS_MOM 3071.85
+  BOSON_MOM 996.909
+  FERMIONS_MOM 3044.44
+  GAUGE  767.054
+  BMASS  59.1739
+  DET  0
+  FERMIONS (EXCEPT MOM) 2930.22
+####################################
+  ACTION BEGIN TRAJ7796.85
+  ACTION END TRAJ 7796.89
+ACCEPT  7796.85	7796.89	-0.0393086
+++++++++++++++++++++++++++++++++++++
+sweep time is 9.62923
+sweep no. 7
+  BOSON_MOM 950.252
+  FERMIONS_MOM 3079.67
+  BOSON_MOM 927.154
+  FERMIONS_MOM 3090.4
+  GAUGE  777.14
+  BMASS  57.7668
+  DET  0
+  FERMIONS (EXCEPT MOM) 2933.59
+####################################
+  ACTION BEGIN TRAJ7786.12
+  ACTION END TRAJ 7785.9
+ACCEPT  7786.12	7785.9	0.222636
+++++++++++++++++++++++++++++++++++++
+sweep time is 9.91887
+sweep no. 8
+ in measure 
+Bianchi is 4.80491e-29
+  BOSON_MOM 957.34
+  FERMIONS_MOM 3067.79
+mean no. of terms in exp() 6.70922
+  BOSON_MOM 951.724
+  FERMIONS_MOM 3038.37
+  GAUGE  783.176
+  BMASS  54.738
+  DET  0
+  FERMIONS (EXCEPT MOM) 2965.89
+####################################
+  ACTION BEGIN TRAJ7793.28
+  ACTION END TRAJ 7793.18
+ACCEPT  7793.28	7793.18	0.105846
+++++++++++++++++++++++++++++++++++++
+sweep time is 9.77332
+sweep no. 9
+  BOSON_MOM 909.654
+  FERMIONS_MOM 3047.61
+  BOSON_MOM 917.453
+  FERMIONS_MOM 3006.91
+  GAUGE  768.666
+  BMASS  54.2671
+  DET  0
+  FERMIONS (EXCEPT MOM) 3013.61
+####################################
+  ACTION BEGIN TRAJ7760.41
+  ACTION END TRAJ 7760.45
+ACCEPT  7760.41	7760.45	-0.0387211
+++++++++++++++++++++++++++++++++++++
+sweep time is 10.3121
+sweep no. 10
+ in measure 
+Bianchi is 4.57471e-29
+  BOSON_MOM 974.936
+  FERMIONS_MOM 3078.58
+  BOSON_MOM 924.523
+  FERMIONS_MOM 3118.17
+  GAUGE  808.499
+  BMASS  57.2543
+  DET  0
+  FERMIONS (EXCEPT MOM) 2980.94
+####################################
+  ACTION BEGIN TRAJ7889.12
+  ACTION END TRAJ 7888.86
+ACCEPT  7889.12	7888.86	0.258956
+++++++++++++++++++++++++++++++++++++
+sweep time is 10.3413
+sweep no. 11

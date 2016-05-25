@@ -1,0 +1,44 @@
+#include "evolve_fields.h"
+
+void evolve_fields(Gauge_Field &U, Gauge_Field &p_U, Gauge_Field &f_U, 
+		 Twist_Fermion &F, Twist_Fermion &p_F, Twist_Fermion &f_F){
+
+Lattice_Vector x,y;
+Gauge_Field nf_U;
+Twist_Fermion nf_F;
+int mu,i,site;
+int STEPS=10;
+
+// multi timestep leapfrog update
+
+update_gauge_momenta(p_U,f_U,0.5*DT);
+p_F=p_F+0.5*DT*f_F;
+
+// pure S_B contribution to force
+force(U,f_U,F,f_F,0);
+
+// inner S_B force update 
+for(int j=0;j<STEPS;j++){
+//cout << "boson step " << endl;
+
+update_gauge_momenta(p_U,f_U,0.5*DT/STEPS);
+
+update_gauge_field(U,p_U,DT/STEPS);
+F=F+DT/STEPS*p_F;
+
+force(U,f_U,F,f_F,0);
+
+update_gauge_momenta(p_U,f_U,0.5*DT/STEPS);
+}
+
+// pure S_F contribution to force
+force(U,f_U,F,f_F,1);
+
+// 2nd half step for momenta
+update_gauge_momenta(p_U,f_U,0.5*DT);
+p_F=p_F+0.5*DT*f_F;
+
+
+
+return;
+}
