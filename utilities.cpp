@@ -1682,7 +1682,11 @@ conjug(V.get(x,mu).get(a,b))*F.getL().get(x,mu).get(b);}
 
 tmp2.set(a,tmp);}
 
+<<<<<<< HEAD
 s.set(x,0);}
+=======
+s.set(x,C1*0.5*tmp2);}
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 
 dum.setS(s);
 }
@@ -1700,7 +1704,11 @@ conjug(V.get(x,mu).get(a,b))*F.getS().get(x).get(a);}
 tmp2.set(b,tmp);
 }
 
+<<<<<<< HEAD
 l.set(x,mu,0);
+=======
+l.set(x,mu,-0.5*C1*tmp2);
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 }
 }
 

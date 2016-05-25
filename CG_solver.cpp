@@ -37,7 +37,11 @@ clock_t begin_time = clock();
 gpusolver2(m,col,row,bn,solnGPU);
 for(i=0;i<LEN;i++){
 soln[i]=solnGPU[i];}
+<<<<<<< HEAD
 //cout << "GPU_TIME_CG: " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << endl;
+=======
+cout << "GPU_TIME_CG: " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << endl;
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 #endif
 
 #ifndef GPU
@@ -94,7 +98,11 @@ count2++;
 //cout << "residual is " << resid << "\n" << flush;
 }
 while((resid>CG_RESIDUAL)&&(count2<(2*LEN)));
+<<<<<<< HEAD
 //cout << "CPU_TIME_CG " <<  double(clock()-begin_time)/CLOCKS_PER_SEC << endl; 
+=======
+cout << "CPU_TIME_CG " <<  double(clock()-begin_time)/CLOCKS_PER_SEC << endl; 
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 
 #endif
     
@@ -109,8 +117,13 @@ flush;}
 
 if(no_calls%10==0){
 #ifndef GPU
+<<<<<<< HEAD
 //cout << "average number of CG iterations " <<
 //(double)av_count2/(no_calls) << "\n" << flush;
+=======
+cout << "average number of CG iterations " <<
+(double)av_count2/(no_calls) << "\n" << flush;
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 
 no_calls=0;
 

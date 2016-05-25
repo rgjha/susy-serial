@@ -11,7 +11,11 @@ using namespace std;
 #define FMASS 0.0
 
 const int FERMIONS = 1;
+<<<<<<< HEAD
 const int T = 4;
+=======
+const int T = 2;
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 const int NCOLOR = 2;
 const int NUMGEN = (NCOLOR*NCOLOR-1);
 
@@ -24,7 +28,11 @@ const int D = 4;
 const int NUMLINK = 5;
 const int LX = 1;
 const int LY = 1;
+<<<<<<< HEAD
 const int LZ = 16;
+=======
+const int LZ = 8;
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 const int SITES = (LX*LY*LZ*T);
 const unsigned int LEN = (16*NUMGEN*SITES);
 const int supercharges =16;
@@ -61,7 +69,11 @@ const double INT_LAMBDA_MID = 0.614;
 
 extern double ampdeg,amp[DEGREE],shift[DEGREE];
 extern int num_in_row[LEN],SIMULATING,SWEEPNO;
+<<<<<<< HEAD
 extern double KAPPA,DT,ALPHA,G,BMASS,MASS;
+=======
+extern double KAPPA,DT,ALPHA,G,BMASS,C1,C2,MASS;
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 extern int SWEEPS,GAP,THERM,READIN,SEED, TRAJECTORY_LENGTH,OLDSWEEPNO;
 extern double SMALLCUT, LARGECUT;
 extern double TIME;

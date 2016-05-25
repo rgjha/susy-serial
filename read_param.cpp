@@ -24,12 +24,20 @@ unsigned int random_seed()
 
 }
 
+<<<<<<< HEAD
 void read_param(void){
 double LAMBDA,BETA,GAMMA;
+=======
+
+
+void read_param(void){
+double LAMBDA,BETA;
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 ifstream f_in("parameters");
 if(!f_in.good()){
 	cout << "\ncan't open file parameters to read data!\n";
 	exit(1);}
+<<<<<<< HEAD
 f_in>>SWEEPS>>THERM>>GAP>>BETA>>GAMMA>>DT>>READIN >>SWEEPNO ;
 
 // BETA is Rt (BETA in units of root lambda)
@@ -37,6 +45,13 @@ f_in>>SWEEPS>>THERM>>GAP>>BETA>>GAMMA>>DT>>READIN >>SWEEPNO ;
 // assume spatial size very large for this scaling
 LAMBDA=1.0;
 G=0.0;
+=======
+f_in>>SWEEPS>>THERM>>GAP>>BETA>>G>>BMASS>>C1>>C2>>DT>>READIN >>SWEEPNO ;
+
+// assume spatial size very large for this scaling
+LAMBDA=1.0;
+
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 
 if(D==4){
 KAPPA=(NCOLOR*0.5)/LAMBDA;
@@ -60,7 +75,11 @@ KAPPA=KAPPA*T/BETA;}
 
 }
 
+<<<<<<< HEAD
 BMASS=GAMMA*BETA/T;    // Added : May 24 by Simon // 
+=======
+BMASS/=T;
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 
 TRAJECTORY_LENGTH=(int)(0.5/DT);
 
@@ -78,10 +97,18 @@ cout << "Spatial extent " << LX << "\n";}
 if(D==4){
 cout << "Spatial extent " << LX << "\t" << LY << "\t" << LZ << "\n";}
 
+<<<<<<< HEAD
 cout << "Inverse temperature in units of root lambda " << BETA << "\n";
 cout << "Lattice Coupling " << KAPPA << "\n";
 cout << "Mass in units of root lambda " << GAMMA << "\n";
 cout << "Lattice scalar mass squared " << KAPPA*BMASS*BMASS << "\n";
+=======
+cout << "Dimensionless t'Hooft coupling " << LAMBDA << "\n";
+cout << "Lattice Coupling " << KAPPA << "\n";
+cout << "Boson Mass " << BMASS << "\n";
+cout << "C1 coeff " << C1 << "\n";
+cout << "C2 coeff " << C2 << "\n";
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 cout << "Coupling to det " << G << "\n";
 cout << "Thermalization sweeps " << THERM << "\n";
 cout << "Number of sweeps " << SWEEPS << "\n";

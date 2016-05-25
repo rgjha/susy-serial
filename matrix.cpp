@@ -223,7 +223,11 @@ for(b=0;b<NUMGEN;b++){
 
 j1=pack(num_chis+1+mu,x,b);
 ix=find_index(i,j1,col,row);
+<<<<<<< HEAD
 m[ix]=m[ix];
+=======
+m[ix]=m[ix]+0.5*C1*conjug(V.get(x,mu).get(a,b));
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 col[ix]=j1;
 }}
 
@@ -240,7 +244,11 @@ for(a=0;a<NUMGEN-1;a++){
 
 j1=pack(0,x,a);
 ix=find_index(i,j1,col,row);
+<<<<<<< HEAD
 m[ix]=m[ix];
+=======
+m[ix]=m[ix]-0.5*C1*conjug(V.get(x,mu).get(a,b));
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 col[ix]=j1;
 }}}
 }
@@ -467,7 +475,11 @@ col_order(m,col,row);
 //f_op.close();
 
 if(first_time){
+<<<<<<< HEAD
 //cout << "Maximum number nonzeroes: " << num_in_row[0] << "\n" << flush;
+=======
+cout << "Maximum number nonzeroes: " << num_in_row[0] << "\n" << flush;
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 first_time=0;}
 
 return;

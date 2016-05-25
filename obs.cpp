@@ -27,6 +27,7 @@ while(loop_over_lattice(x,site)){
 DmuUmu=Umatrix();
 for(mu=0;mu<NUMLINK;mu++){
 e_mu=Lattice_Vector(mu);
+<<<<<<< HEAD
 DmuUmu=DmuUmu+U.get(x,mu)*Udag.get(x,mu)-Udag.get(x-e_mu,mu)*U.get(x-e_mu,mu);
 trace=Tr(U.get(x,mu)*Udag.get(x,mu));
 DmuUmu=DmuUmu;
@@ -34,6 +35,15 @@ DmuUmu=DmuUmu;
 
 
 act_s=act_s+0.5*Tr(DmuUmu*DmuUmu).real();
+=======
+DmuUmu=DmuUmu+(1.0+C1)*U.get(x,mu)*Udag.get(x,mu)-Udag.get(x-e_mu,mu)*U.get(x-e_mu,mu);
+trace=Tr(U.get(x,mu)*Udag.get(x,mu));
+DmuUmu=DmuUmu-(C1/NCOLOR)*trace*Umatrix(1);
+}
+
+
+act_s=act_s+0.5*C2*Tr(DmuUmu*DmuUmu).real();
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 
 }
 

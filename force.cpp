@@ -26,7 +26,12 @@ while(loop_over_lattice(x,sites)){
 for(mu=0;mu<NUMLINK;mu++){
 e_mu=Lattice_Vector(mu);
 trace=Tr(U.get(x,mu)*Udag.get(x,mu));
+<<<<<<< HEAD
 DmuUmu.set(x,DmuUmu.get(x)+U.get(x,mu)*Udag.get(x,mu)-Udag.get(x-e_mu,mu)*U.get(x-e_mu,mu));}
+=======
+DmuUmu.set(x,DmuUmu.get(x)+(1.0+C1)*U.get(x,mu)*Udag.get(x,mu)-
+Udag.get(x-e_mu,mu)*U.get(x-e_mu,mu)-(C1/NCOLOR)*trace*Umatrix(1));}
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 }
 
 sites=0;
@@ -34,9 +39,15 @@ while(loop_over_lattice(x,sites)){
 for(mu=0;mu<NUMLINK;mu++){
 e_mu=Lattice_Vector(mu);
 
+<<<<<<< HEAD
 f_U.set(x,mu,f_U.get(x,mu)+U.get(x,mu)*Udag.get(x,mu)*DmuUmu.get(x));
 f_U.set(x,mu,f_U.get(x,mu)-U.get(x,mu)*DmuUmu.get(x+e_mu)*Udag.get(x,mu));
 f_U.set(x,mu,f_U.get(x,mu));
+=======
+f_U.set(x,mu,f_U.get(x,mu)+(1.0+C1)*U.get(x,mu)*Udag.get(x,mu)*DmuUmu.get(x));
+f_U.set(x,mu,f_U.get(x,mu)-U.get(x,mu)*DmuUmu.get(x+e_mu)*Udag.get(x,mu));
+f_U.set(x,mu,f_U.get(x,mu)-(C1/NCOLOR)*Tr(DmuUmu.get(x))*Udag.get(x,mu));
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 f_U.set(x,mu,C2*f_U.get(x,mu));
 }
 

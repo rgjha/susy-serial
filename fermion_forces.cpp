@@ -209,7 +209,11 @@ tmp=tmp-conjug(p.getS().get(x).get(a))*s.getL().get(x,mu).get(b)*
 Lambda[a]*Lambda[b];
 }}
 
+<<<<<<< HEAD
 f_U.set(x,mu,f_U.get(x,mu));
+=======
+f_U.set(x,mu,f_U.get(x,mu)+0.5*C1*Adj(tmp));
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 }}
 
 
@@ -224,7 +228,11 @@ tmp=tmp-conjug(p.getL().get(x,mu).get(b))*s.getS().get(x).get(a)*
 Lambda[a]*Lambda[b];
 }}
 
+<<<<<<< HEAD
 f_U.set(x,mu,f_U.get(x,mu));
+=======
+f_U.set(x,mu,f_U.get(x,mu)-0.5*C1*Adj(tmp));
+>>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 }}
 }
 
