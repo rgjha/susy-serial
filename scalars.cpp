@@ -8,16 +8,13 @@ sites=0;
 	t1=0.0;t2=0.0;
 	while(loop_over_lattice(x,sites)){
     
-	for(int mu=2;mu<(D-1);mu++){
+	for(int mu=0;mu<NUMLINK;mu++){
 	t1+=Tr(U.get(x,mu)*Adj(U.get(x,mu))).real();
 	}
     
-        t2+=Tr(U.get(x,D-1)*Adj(U.get(x,D-1))).real();
-    
 	}
 
-       t1=t1/(SITES*NCOLOR);
-       t2=t2/(SITES*NCOLOR);
+       t1=t1/(SITES*NCOLOR*NUMLINK);
 
 return;
 }

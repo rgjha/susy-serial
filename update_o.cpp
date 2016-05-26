@@ -26,11 +26,8 @@ void update(Gauge_Field &U, Twist_Fermion &F){
   
   K_old=kinetic_energy(p_U,p_F);
   
-<<<<<<< HEAD
-=======
   //cout << "kold  is " << K_old << "\n";
   
->>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
   
   if(first_time){
     f_hmc.open("hmc_test");
@@ -42,11 +39,8 @@ void update(Gauge_Field &U, Twist_Fermion &F){
     first_time=0;
   }	
   
-<<<<<<< HEAD
-=======
   //cout << "sold is " << S_old << "\n";
   
->>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
   if((no_calls%100==0)&&(!first_time)){
     cout << "acceptance rate " << (double)accept/(double)no_calls << "\n" <<
       flush;
@@ -66,13 +60,7 @@ void update(Gauge_Field &U, Twist_Fermion &F){
   old_f_U=f_U;
   old_f_F=f_F;
   
-<<<<<<< HEAD
-  
-
-  
-=======
   cout << "H at beginning traj " << H_old << "\n" << flush;
->>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
   
   /* 
    classical evolution: this is different from evolve_field in that the loop is in
@@ -81,24 +69,11 @@ void update(Gauge_Field &U, Twist_Fermion &F){
   
     evolve_fields(U,p_U,f_U,F,p_F,f_F);
     
-<<<<<<< HEAD
-  
-  K_new=kinetic_energy(p_U,p_F);
-
-  //cout << "  MOM " << mid1 << "\n";
-  S_new=action(U,F);
-  
-  
-  H_new=S_new+K_new;
-  cout << "  ACTION BEGIN TRAJ " << H_old << "\n" << flush;
-  cout << "  ACTION END TRAJ " << H_new << "\n" << flush;
-=======
   S_new=action(U,F);
   K_new=kinetic_energy(p_U,p_F);
   
   H_new=S_new+K_new;
   cout << "H at end of traj " << H_new << "\n" << flush;
->>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
   
   hmc_test=exp(-H_new+H_old);
   f_hmc << hmc_test << "\n" << flush;
@@ -106,10 +81,6 @@ void update(Gauge_Field &U, Twist_Fermion &F){
   //metropolis test
   if((rand()/(double)RAND_MAX)<exp(H_old-H_new)){
     cout << "ACCEPT  " << H_old << "\t" << H_new <<"\t" << H_old-H_new << "\n" << flush;
-<<<<<<< HEAD
-    cout << "++++++++++++++++++++++++++++++++++++" << endl ; 
-=======
->>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
     S_old=S_new;
     accept++;
     return;
@@ -117,10 +88,6 @@ void update(Gauge_Field &U, Twist_Fermion &F){
   else{
     cout << "hmc_test " << hmc_test << " failed\n" << flush;
     cout << "REJECT  " << H_old << "\t" << H_new <<"\t" << H_old-H_new << "\n" << flush;
-<<<<<<< HEAD
-    cout << "++++++++++++++++++++++++++++++++++++" << endl ; 
-=======
->>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 	// if fails copy back fields
     U=old_U;
     F=old_F;

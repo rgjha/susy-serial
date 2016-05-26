@@ -42,7 +42,7 @@ compute_Adjoint_Links(U,V);
 MASS=0.0;
 
 build_vector(b,bn);
-build_sparse_matrix(V,m,col,row);
+build_sparse_matrix(V,U,m,col,row);
 
 
 #ifdef GPU
@@ -51,11 +51,7 @@ gpusolver(m,col,row,bn,shift,solnGPU);
     for(n=0;n<DEGREE;n++){
         for(i=0;i<LEN;i++){
             soln[n][i]=solnGPU[n][i];}}
-<<<<<<< HEAD
-//cout << "GPU_TIME_MCG: " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << endl;
-=======
 cout << "GPU_TIME_MCG: " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << endl;
->>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 #endif
 
 #ifndef GPU
@@ -149,11 +145,7 @@ count2++;
 //cout << "residual is " << resid << "\n" << flush;
 }
 while((resid>CG_RESIDUAL)&&(count2<(2*LEN)));
-<<<<<<< HEAD
-//cout << "CPU_TIME_MCG " <<  double(clock()-begin_time)/CLOCKS_PER_SEC << endl; 
-=======
 cout << "CPU_TIME_MCG " <<  double(clock()-begin_time)/CLOCKS_PER_SEC << endl; 
->>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 
 #endif
     
@@ -168,13 +160,8 @@ flush;}
 
 if(no_calls%10==0){
 #ifndef GPU
-<<<<<<< HEAD
-//cout << "average number of CG iterations " <<
-//(double)av_count2/(no_calls) << "\n" << flush;
-=======
 cout << "average number of CG iterations " <<
 (double)av_count2/(no_calls) << "\n" << flush;
->>>>>>> 233423c79c47c3999f05183e0ce9d46165517c88
 
 f_cgs  << (double)av_count2/(no_calls) << "\n" << flush;
 

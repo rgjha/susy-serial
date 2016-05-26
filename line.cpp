@@ -1,6 +1,7 @@
 #include "line.h"
 
-// computes Polyakov line
+// Computes Polyakov line
+
 Complex line(const Gauge_Field  &U, const int mu){
 
 Lattice_Vector x,y,e_mu;
@@ -9,8 +10,7 @@ int site,t,M;
 Complex poly=Complex();
 
 
-if(mu==0) M=LX;
-if(mu==2) M=LZ;
+if(mu==(D-2)) M=LZ;       // 0 is for x, 1 for y, 2 for z, 3 for T // 
 if(mu==(D-1)) M=T;
 
 site=0;
