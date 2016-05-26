@@ -21,7 +21,7 @@ const int NUMGEN = (NCOLOR*NCOLOR);
 //const int NUMGEN = (NCOLOR*NCOLOR)-1;  // Forcing SU(N) theory
 
 #define GPU
-#define Q16 
+#define Q16
 
 // Q=16 parameters
 #ifdef Q16
