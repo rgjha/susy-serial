@@ -3,6 +3,7 @@
 ## Installation of the program
 
 It is very easy to perform the installation and execution of `SUSY_LATTICE`.  Below we provide the necessary steps on \*nix systems.
+
 1. Download and unpack the code.
 2. Change the directory to `SUSY_LATTICE`.
 3. Edit utilities.h to set the number of supercharges by (un)defining Q16, and lattice lengths LX, LY, LZ and T.  Note: setting e.g. LX=1 allows study of corresponding dimensionally reduced model.  Number of colors is given by NCOLOR.  The compilation parameter FULLMATRIX allows one to compute the Pfaffian and fermion eigenvalues using full matrix code (for small lattices).
@@ -15,6 +16,7 @@ Setting the parameter SCALAREIG=0 in utiliities.h allows compilation without the
 6. Type `./SUSY_LATTICE &> log &` to run the code.
 
 The output of the code is written to the following files in the working directory:
+
 1. `cgs`: Average number of conjugate gradient (CG) iterations (see `MCG_solver.cpp`).
 2. `config`: File to read in containing the site, link and plaquette field configurations from a previous run (see `read_in.cpp`).
 3. `corrlines`: Correlation function between Polyakov loops as function of spatial separation (see `corrlines.cpp`).
@@ -33,6 +35,7 @@ The output of the code is written to the following files in the working director
 ## The list of files in `SUSY_LATTICE` library
 
 This is the list of files included in `SUSY_LATTICE` with a brief description of their purpose.
+
 1. `action.cpp`: Compute the total action, fermionic and bosonic.
 2. `corrlines.cpp`: Finds the traced product of the link matrices at various lattice sites.
 3. `evolve_fields.cpp`: Leapfrog evolution algorithm. Also stores the fermion and boson forces for the next iteration. Ratio of fermion to boson time steps controlled by parameter `STEPS`.
@@ -59,9 +62,8 @@ This is the list of files included in `SUSY_LATTICE` with a brief description of
 
 ## A sample input parameter file for `SUSY_LATTICE`
 
-There is a sample input parameter file called `parameters` located in the `SUSY_LATTICE` folder.
+There is a sample input parameter file called `parameters` located in the `SUSY_LATTICE` folder.  These are the definitions of the parameters:
 
-These are the definitions of the parameters:
 1. `SWEEPS`: Total number of Monte Carlo time steps intended for taking measurement steps.
 2. `THERM`: Total number of Monte Carlo time steps intended for thermalizing the field configurations.
 3. `GAP`: The gap between measurement steps.
