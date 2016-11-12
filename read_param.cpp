@@ -93,7 +93,6 @@ cout << "Trajectory length " << TRAJECTORY_LENGTH << "\n";
 cout << "Minimax approx degree " << DEGREE << "\n";
 cout << "Reading initial config: (1 for yes, 0 for no) " << READIN << "\n";
 
-
 if (PBC==1.0) {cout << "periodic temporal bc for fermions" << "\n";}
 else{cout << "antiperiodic temporal bc for fermions" << "\n";}
 
