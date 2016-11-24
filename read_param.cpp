@@ -34,7 +34,7 @@ f_in>>SWEEPS>>THERM>>GAP>>BETA>>GAMMA>>C1>>C2>>DT>>READIN >>SWEEPNO ;
 
 // BETA is Rt (BETA in units of root lambda)
 // GAMMA  is MASS in units of root lambda
-// assume spatial size very large for this scaling
+
 LAMBDA=1.0;
 G=0.0;
 
