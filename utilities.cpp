@@ -62,6 +62,17 @@ void Umatrix::print(void){
 		for(int j=0;j<NCOLOR;j++){mat[i][j].print();cout << "\t";}
 		cout << "\n";}
 		}
+
+Umatrix::Umatrix(double d)
+{
+  for (int i=0;i<NCOLOR;i++)
+  for (int j=0;j<NCOLOR;j++) {
+    if (i == j) mat[i][j]=Complex(d,0.0);
+    else mat[i][j]=Complex(0.0,0.0);
+  }
+}
+
+
 Umatrix Adj(const Umatrix &u){
         Umatrix res;
         for(int i=0;i<NCOLOR;i++)
@@ -162,7 +173,7 @@ Umatrix operator *(const Umatrix &o1, const Umatrix &o2){
 
         sum+=i;
         counter++;
-        if(counter==100000){
+        if(counter==10000){
         cout << "mean no. of terms in exp() " 
         << (double)sum/counter << "\n" << flush;
         counter=0;sum=0;}
@@ -185,113 +196,12 @@ Umatrix gaussU(void){
 	return(tmp);
 	}
 
-
-// adjoint field matrix type Afield
-Afield::Afield(void){
-	for(int i=0;i<NUMGEN;i++)
-		{afield[i]=Complex();}
-	}
-	
-Afield::Afield(int c){
-if(c==1){
-for(int i=0;i<NUMGEN;i++){
-afield[i]=Complex(1.0/sqrt(2.0)*gasdev(),1.0/sqrt(2.0)*gasdev());}
-}
-else{cout << "error initializing afield\n"; exit(1);}
-return;
-}
-
-Afield::Afield(Complex m[NUMGEN]){
-	for(int i=0;i<NUMGEN;i++)
-		afield[i]=m[i];}
-				
-Afield gaussA(void){
-Afield dum=Afield();
-
-for(int i=0;i<NUMGEN;i++){
-dum.set(i,Complex(1.0/sqrt(2.0)*gasdev(),1.0/sqrt(2.0)*gasdev()));
-}
-
-return(dum);
-}
-
-Complex Afield::get(int i) const {return(afield[i]);}
-void Afield::set(int i, const Complex o){afield[i]=o;}
-void Afield::print(void){
-	for(int i=0;i<NUMGEN;i++){
-		afield[i].print();cout << "\t";}
-		cout << "\n";
-		}
-
-// nb using antihermitian basis for Lambdas		
-Afield Cjg(const Afield &u){
-        Afield res;
-        for(int i=0;i<NUMGEN;i++){
-	res.set(i,conjug(u.get(i)));}
-	return(res);}		
-		
-ostream& operator<<(ostream& out,Afield s){
-for(int i=0;i<NUMGEN;i++)
-{
-	out<<s.get(i)<<'\t';}
-	return out;}
-			
-istream& operator>>(istream& in, Afield & s){
-	Complex v[NUMGEN];
-	for(int j=0;j<NUMGEN;j++){
-	in>>v[j];}
-	s=Afield(v);
-	return in;
-	}		
-	 
-	 
-        Afield operator *(const Afield &o1, const Complex &o2){
-        Afield dum;
-	for(int i=0;i<NUMGEN;i++)
-	{
-	dum.set(i,o1.get(i)*o2);}
-	return(dum);}
-        Afield operator *(const Complex &o2, const Afield &o1){
-	Afield dum;
-	for(int i=0;i<NUMGEN;i++)
-	{
-	dum.set(i,o1.get(i)*o2);}
-	return(dum);}
-	Afield operator *(const Afield &o1, const double o2){
-        Afield dum;
-	for(int i=0;i<NUMGEN;i++)
-	{
-	dum.set(i,o1.get(i)*o2);}
-	return(dum);}
-	Afield operator *(const double o2, const Afield &o1){
-        Afield dum;
-	for(int i=0;i<NUMGEN;i++)
-	{
-	dum.set(i,o1.get(i)*o2);}
-	return(dum);}
-	Afield operator +(const Afield &x, const Afield &y){
-	Afield dum;
-	for(int i=0;i<NUMGEN;i++){
-	dum.set(i,x.get(i)+y.get(i));}
-	return(dum);
-	}
-        Afield operator -(const Afield &x, const Afield &y){
-	Afield dum;
-	for(int i=0;i<NUMGEN;i++){
-	dum.set(i,x.get(i)-y.get(i));}
-	return(dum);
-	}
-	
- 
-
- Complex operator *(const Afield &A, const Afield &B){
- Complex dum=Complex();
- for(int i=0;i<NUMGEN;i++){
- dum=dum+A.get(i)*B.get(i);}
+ Umatrix traceless(const Umatrix &U){
+ Umatrix dum;
+ dum=U-(1.0/NCOLOR)*Tr(U)*Umatrix(1);
  return(dum);
  }
- 
- 				
+
 Lattice_Vector::Lattice_Vector(void){for(int i=0;i<D;i++)coords[i]=0;}
 Lattice_Vector::Lattice_Vector(int mu){
 if(mu<D){
@@ -348,19 +258,6 @@ dum.set(i,-1*x.get(i));
 return(dum);
 }
 
-int length(const Lattice_Vector &x){
-int dum=0,tmp;
-for(int i=0;i<(D-1);i++){
-tmp=x.get(i);
-if(tmp>(LX/2)){tmp=tmp-LX/2;}
-dum+=tmp*tmp;}
-
-tmp=x.get(D-1);
-if(tmp>(T/2)){tmp=tmp-T/2;}
-dum+=tmp*tmp;
-
-return(dum);
-}
 
 double BC(const Lattice_Vector &x, const Lattice_Vector &y){
 
@@ -388,17 +285,46 @@ if(x.get(D-1)+y.get(D-1)+z.get(D-1)+w.get(D-1)>(T-1))return(PBC);
 return(1.0);
 }
 
-int blocklatsite(Lattice_Vector &x ){
-int i,c;
-
-c=0;
-for(i=0;i<D;i++){
-if(x.get(i)%2==0){c++;}
+Umatrix twist(const Lattice_Vector &x, const Lattice_Vector &v){
+    int coord,i;
+    Umatrix dum=Umatrix(1);
+    if(!TWIST) return dum;
+ 
+    for(i=0;i<(D-1);i++){
+    coord=x.get(i)+v.get(i);
+    if ((coord >= side[i]) || (coord <0)) {
+    dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+}
+    }
+    return(dum);
 }
 
-if(c!=4) {return(0);}
-else
-{return(1);}
+Umatrix twist(const Lattice_Vector &x, const Lattice_Vector &v1 ,const Lattice_Vector &v2){
+    int coord,i;
+    Umatrix dum=Umatrix(1);
+    if(!TWIST) return dum;
+
+    for(i=0;i<(D-1);i++){
+    coord=x.get(i)+v1.get(i)+v2.get(i);
+    if ((coord >= side[i]) || (coord <0)) {
+    dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+}
+    }
+    return(dum);
+}
+
+Umatrix twist(const Lattice_Vector &x, const Lattice_Vector &v1 ,const Lattice_Vector &v2, const Lattice_Vector &v3){
+    int coord,i;
+    Umatrix dum=Umatrix(1);
+    if(!TWIST) return dum;
+
+    for(i=0;i<(D-1);i++){
+    coord=x.get(i)+v1.get(i)+v2.get(i)+v3.get(i);
+    if ((coord >= side[i]) || (coord <0)) {
+    dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+}
+    }
+    return(dum);
 }
 
 int loop_over_lattice(Lattice_Vector &x, int &site){
@@ -423,7 +349,6 @@ return(!test);
 }
 
 
-
 Gauge_Field::Gauge_Field(void){
 for(int i=0;i<SITES;i++)
 for(int j=0;j<NUMLINK;j++){
@@ -441,7 +366,7 @@ return;
 if(hot==0){
 for(int i=0;i<SITES;i++){
 for(int j=0;j<NUMLINK;j++){
-link[i][j]=exp(0.01*gaussU());}
+link[i][j]=exp(0.1*gaussU());}
 }
 return;
 }
@@ -454,14 +379,95 @@ return;
 
 
 Umatrix Gauge_Field::get(const Lattice_Vector &x, const int mu) const{
-int site=0,i;
+  int site=0,i;
 
+  for(i=0;i<D;i++)
+    site=site+x.get(i)*Lattice_Map[i];
 
-for(i=0;i<D;i++)
-site=site+x.get(i)*Lattice_Map[i];
-
-return(link[site][mu]);
+  return(link[site][mu]);
 }
+
+
+
+//J  Return U_\mu(x+v), including the effect of twisted BCs.
+Umatrix Gauge_Field::get(const Lattice_Vector &x, const Lattice_Vector &v, const int mu) const{
+  Lattice_Vector xp;
+  int coord,sum;
+  Umatrix dum;
+  xp=x+v;
+  int site=0,i;
+  for(i=0;i<D;i++){
+  site=site+xp.get(i)*Lattice_Map[i];}
+  
+  Umatrix Uloc=link[site][mu];
+    if(!TWIST) return (Uloc);
+    
+  //J  Not twisted in the temporal direction.
+    dum=Umatrix(1);
+    sum=0;
+    for(i=0;i<(D-1);i++){
+    coord=x.get(i)+v.get(i);
+    if ((coord >= side[i]) || (coord <0)) {
+    dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+    sum+=coord;}
+    }
+    if(sum<0) return (dum*Uloc*Adj(dum));
+    if(sum>0) return (Adj(dum)*Uloc*dum); 
+    return(Uloc);
+}
+
+Umatrix Gauge_Field::get(const Lattice_Vector &x, const Lattice_Vector &v1, const Lattice_Vector &v2, const int mu) const{
+  Lattice_Vector xp;
+  int coord,sum;
+  Umatrix dum;
+  xp=x+v1+v2;
+  int site=0,i;
+  for(i=0;i<D;i++){
+  site=site+xp.get(i)*Lattice_Map[i];}
+  
+  Umatrix Uloc=link[site][mu];
+    if(!TWIST) return (Uloc);
+  
+    dum=Umatrix(1);
+    sum=0;
+    for(i=0;i<(D-1);i++){
+    coord=x.get(i)+v1.get(i)+v2.get(i);
+    if ((coord >= side[i]) || (coord <0)) {
+    dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+    sum+=coord;}
+    }
+    if(sum<0) return (dum*Uloc*Adj(dum));
+    if(sum>0) return (Adj(dum)*Uloc*dum);  
+  return(Uloc);
+}
+
+
+Umatrix Gauge_Field::get(const Lattice_Vector &x, const Lattice_Vector &v1, const Lattice_Vector &v2, const Lattice_Vector &v3, const int mu) const{
+  Lattice_Vector xp;
+  int coord,sum;
+  Umatrix dum;
+
+  xp=x+v1+v2+v3;
+  int site=0,i;
+  for(i=0;i<D;i++){
+  site=site+xp.get(i)*Lattice_Map[i];}
+  
+  Umatrix Uloc=link[site][mu];
+    if(!TWIST) return (Uloc);
+
+    dum=Umatrix(1);
+    sum=0;
+    for(i=0;i<(D-1);i++){
+    coord=x.get(i)+v1.get(i)+v2.get(i)+v3.get(i);
+    if ((coord >= side[i]) || (coord <0)) {
+    dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+    sum+=coord;}
+    }
+    if(sum<0) return (dum*Uloc*Adj(dum));
+    if(sum>0) return (Adj(dum)*Uloc*dum);  
+  return(Uloc);
+}
+
 
 void Gauge_Field::set(const Lattice_Vector &x, const int mu, const Umatrix &u){
 int site=0,i;
@@ -500,6 +506,7 @@ return W;
 }
 
 
+
 USite_Field::USite_Field(void){
 for(int i=0;i<SITES;i++){
 points[i]=Umatrix();}
@@ -530,6 +537,32 @@ for(i=0;i<D;i++)
 site=site+x.get(i)*Lattice_Map[i];
 
 return(points[site]);
+}
+
+Umatrix USite_Field::get(const Lattice_Vector &x, const Lattice_Vector &v) const{
+  Lattice_Vector xp;
+  int coord,sum;
+  Umatrix dum;
+  xp=x+v;
+  int site=0,i;
+  for(i=0;i<D;i++){
+  site=site+xp.get(i)*Lattice_Map[i];}
+
+  Umatrix Uloc=points[site];
+    if(!TWIST) return (Uloc);
+
+  //J  Not twisted in the temporal direction.
+    dum=Umatrix(1);
+    sum=0;
+    for(i=0;i<(D-1);i++){
+    coord=x.get(i)+v.get(i);
+    if ((coord >= side[i]) || (coord <0)) {
+    dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+    sum+=coord;}
+    }
+    if(sum<0) return (dum*Uloc*Adj(dum));
+    if(sum>0) return (Adj(dum)*Uloc*dum);
+    return(Uloc);
 }
 
 void USite_Field::set(const Lattice_Vector &x, const Umatrix &u){
@@ -662,6 +695,32 @@ site=site+x.get(i)*Lattice_Map[i];
 return(square[site][mu][nu]);
 }
 
+Umatrix UPlaq_Field::get(const Lattice_Vector &x, 
+const Lattice_Vector &v, const int mu, const int nu) const{
+  Lattice_Vector xp;
+  int coord,sum;
+  Umatrix dum;
+  xp=x+v;
+  int site=0,i;
+  for(i=0;i<D;i++){
+  site=site+xp.get(i)*Lattice_Map[i];}
+
+  Umatrix Uloc=square[site][mu][nu];
+  if(!TWIST) return (Uloc);
+
+    dum=Umatrix(1);
+    sum=0;
+    for(i=0;i<(D-1);i++){
+    coord=x.get(i)+v.get(i);
+    if ((coord >= side[i]) || (coord <0)) {
+    dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+    sum+=coord;}
+    }
+    if(sum<0) return (dum*Uloc*Adj(dum));
+    if(sum>0) return (Adj(dum)*Uloc*dum);
+    return(Uloc);
+}
+
 void UPlaq_Field::set(const Lattice_Vector &x, const int mu, const int nu, const Umatrix &u){
 int site=0,i;
 
@@ -770,26 +829,34 @@ return(dum);
 }
 
 
+
 Site_Field::Site_Field(void){
 for(int i=0;i<SITES;i++){
-points[i]=Afield();}
+points[i]=Umatrix();}
 return;
 }
 
 Site_Field::Site_Field(int c){
 if(c==1){
 for(int i=0;i<SITES;i++){
-points[i]=gaussA();
+points[i]=gaussU();
 }
+return;}
+
+if(c==0){
+for(int i=0;i<SITES;i++){
+points[i]=Umatrix(1);}
+
 return;}
 
 cout << "error in site constructor\n" << flush;
 
 }
 
-Afield Site_Field::get(const Lattice_Vector &x) const{
-int site=0,i;
 
+
+Umatrix Site_Field::get(const Lattice_Vector &x) const{
+int site=0,i;
 
 for(i=0;i<D;i++)
 site=site+x.get(i)*Lattice_Map[i];
@@ -797,9 +864,96 @@ site=site+x.get(i)*Lattice_Map[i];
 return(points[site]);
 }
 
-void Site_Field::set(const Lattice_Vector &x, const Afield &u){
-int site=0,i;
+Umatrix Site_Field::get(const Lattice_Vector &x, const Lattice_Vector &v) const{
+    Lattice_Vector xp;
+    int coord,sum;
+    Umatrix dum;
+    xp=x+v;
+    int site=0,i;
+    for(i=0;i<D;i++){
+        site=site+xp.get(i)*Lattice_Map[i];}
+    
+    Umatrix Uloc=points[site];
+    coord=x.get(D-1)+v.get(D-1);
+    if((coord >= side[D-1]) || (coord <0)){ Uloc=PBC*Uloc; }
+    
+    if(!TWIST) return (Uloc);
+    
+    dum=Umatrix(1);
+    sum=0;
+    for(i=0;i<(D-1);i++){
+        coord=x.get(i)+v.get(i);
+        if ((coord >= side[i]) || (coord <0)) {
+            dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+            sum+=coord;}
+    }
+    if(sum<0) return (dum*Uloc*Adj(dum));
+    if(sum>0) return (Adj(dum)*Uloc*dum);
+    return(Uloc);
+    }
 
+
+Umatrix Site_Field::get(const Lattice_Vector &x, const Lattice_Vector &v1, const Lattice_Vector &v2) const{
+    Lattice_Vector xp;
+    int coord,sum;
+    Umatrix dum;
+    xp=x+v1+v2;
+    int site=0,i;
+    for(i=0;i<D;i++){
+        site=site+xp.get(i)*Lattice_Map[i];}
+    
+    Umatrix Uloc=points[site];
+    coord=x.get(D-1)+v1.get(D-1)+v2.get(D-1);
+    if((coord >= side[D-1]) || (coord <0)){ Uloc=PBC*Uloc; }
+    
+    if(!TWIST) return (Uloc);
+    
+    dum=Umatrix(1);
+    sum=0;
+    for(i=0;i<(D-1);i++){
+        coord=x.get(i)+v1.get(i)+v2.get(i);
+        if ((coord >= side[i]) || (coord <0)) {
+            dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+            sum+=coord;}
+    }
+    if(sum<0) return (dum*Uloc*Adj(dum));
+    if(sum>0) return (Adj(dum)*Uloc*dum);
+    return(Uloc);
+
+    }
+
+
+Umatrix Site_Field::get(const Lattice_Vector &x, const Lattice_Vector &v1, const Lattice_Vector &v2, const Lattice_Vector &v3) const{
+    Lattice_Vector xp;
+    int coord,sum;
+    Umatrix dum;
+    xp=x+v1+v2+v3;
+    int site=0,i;
+    for(i=0;i<D;i++){
+        site=site+xp.get(i)*Lattice_Map[i];}
+    
+    Umatrix Uloc=points[site];
+    coord=x.get(D-1)+v1.get(D-1)+v2.get(D-1)+v3.get(D-1);
+    if((coord >= side[D-1]) || (coord <0)){ Uloc=PBC*Uloc; }
+    
+    if(!TWIST) return (Uloc);
+    dum=Umatrix(1);
+    sum=0;
+    for(i=0;i<(D-1);i++){
+        coord=x.get(i)+v1.get(i)+v2.get(i)+v3.get(i);
+        if ((coord >= side[i]) || (coord <0)) {
+            dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+            sum+=coord;
+        }
+    }
+    if(sum<0) return (dum*Uloc*Adj(dum));
+    if(sum>0) return (Adj(dum)*Uloc*dum);
+    return(Uloc);
+    
+}
+
+void Site_Field::set(const Lattice_Vector &x, const Umatrix &u){
+int site=0,i;
 
 for(i=0;i<D;i++)
 site=site+x.get(i)*Lattice_Map[i];
@@ -867,109 +1021,177 @@ dum.set(x,o*s.get(x));
 return(dum);
 }
 
-Complex operator *(const Site_Field &s1, const Site_Field &s2){
+Umatrix operator *(const Site_Field &s1, const Site_Field &s2){
 int sites=0;
 Lattice_Vector x;
-Complex dum;
+Umatrix dum;
 
-dum=Complex();
+dum=Umatrix();
 while(loop_over_lattice(x,sites)){
 dum=dum+s1.get(x)*s2.get(x);
 }
 return(dum);
 }
 
-Site_Field Cjg(const Site_Field &l){
+Site_Field Adj(const Site_Field &l){
 int sites;
 Lattice_Vector x;
 Site_Field dum;
 
 sites=0;
 while(loop_over_lattice(x,sites)){
-dum.set(x,Cjg(l.get(x)));}
+dum.set(x,Adj(l.get(x)));}
 
 return(dum);
 }
 
-
 Link_Field::Link_Field(void){
-for(int i=0;i<SITES;i++){
-for(int mu=0;mu<NUMLINK;mu++){
-links[i][mu]=Afield();}}
-return;
+for(int i=0;i<SITES;i++)
+for(int j=0;j<NUMLINK;j++){
+flink[i][j]=Umatrix();}
 }
 
 Link_Field::Link_Field(int c){
 if(c==1){
 for(int i=0;i<SITES;i++){
-for(int mu=0;mu<NUMLINK;mu++){
-links[i][mu]=gaussA();
+for(int j=0;j<NUMLINK;j++){
+flink[i][j]=gaussU();}}
+return;
+}
+if(c==0){
+for(int i=0;i<SITES;i++){
+for(int j=0;j<NUMLINK;j++){
+flink[i][j]=Umatrix(1);
 }
 }
 return;
 }
-cout << "error in link constructor\n" << "\n" << flush;
-
+    
+cout << "error in Link field constructor " << "\n" << flush;
+    
 return;
 }
 
-Afield Link_Field::get(const Lattice_Vector &x, const int mu) const{
-int site=0,i;
 
-
-for(i=0;i<D;i++)
-site=site+x.get(i)*Lattice_Map[i];
-
-return(links[site][mu]);
+Umatrix Link_Field::get(const Lattice_Vector &x, const int mu) const{
+    int site=0,i;
+    
+    for(i=0;i<D;i++)
+    site=site+x.get(i)*Lattice_Map[i];
+    
+    return(flink[site][mu]);
 }
 
-void Link_Field::set(const Lattice_Vector &x, const int mu, const Afield &u){
-int site=0,i;
 
 
-for(i=0;i<D;i++)
-site=site+x.get(i)*Lattice_Map[i];
+Umatrix Link_Field::get(const Lattice_Vector &x, const Lattice_Vector &v, const int mu) const{
+    Lattice_Vector xp;
+    int coord,sum;
+    Umatrix dum;
+    xp=x+v;
+    int site=0,i;
+    for(i=0;i<D;i++){
+    site=site+xp.get(i)*Lattice_Map[i];}
+    
+    Umatrix Uloc=flink[site][mu];
+    coord=x.get(D-1)+v.get(D-1);
+    if((coord >= side[D-1]) || (coord <0)){ Uloc=PBC*Uloc;}
+    
+    if(!TWIST) return (Uloc);
+    
+    dum=Umatrix(1);
+    sum=0;
+    for(i=0;i<(D-1);i++){
+        coord=x.get(i)+v.get(i);
+        if ((coord >= side[i]) || (coord <0)) {
+            dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+            sum+=coord;}
+    }
+    if(sum<0) return (dum*Uloc*Adj(dum));
+    if(sum>0) return (Adj(dum)*Uloc*dum);
+    return(Uloc);
 
-links[site][mu]=u;
-return;
+}
+
+Umatrix Link_Field::get(const Lattice_Vector &x, const Lattice_Vector &v1, const Lattice_Vector &v2, const int mu) const{
+    Lattice_Vector xp;
+    int coord,sum;
+    Umatrix dum;
+    xp=x+v1+v2;
+    int site=0,i;
+    for(i=0;i<D;i++){
+    site=site+xp.get(i)*Lattice_Map[i];}
+    
+    Umatrix Uloc=flink[site][mu];
+    coord=x.get(D-1)+v1.get(D-1)+v2.get(D-1);
+    if((coord >= side[D-1]) || (coord <0)){ Uloc=PBC*Uloc;}
+    
+    if(!TWIST) return (Uloc);
+    
+    
+    dum=Umatrix(1);
+    sum=0;
+    for(i=0;i<(D-1);i++){
+        coord=x.get(i)+v1.get(i)+v2.get(i);
+        if ((coord >= side[i]) || (coord <0)) {
+            dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+            sum+=coord;}
+    }
+    if(sum<0) return (dum*Uloc*Adj(dum));
+    if(sum>0) return (Adj(dum)*Uloc*dum);
+    return(Uloc);
+
+    }
+
+
+Umatrix Link_Field::get(const Lattice_Vector &x, const Lattice_Vector &v1, const Lattice_Vector &v2, const Lattice_Vector &v3, const int mu) const{
+    Lattice_Vector xp;
+    int coord,sum;
+    Umatrix dum;
+    xp=x+v1+v2+v3;
+    int site=0,i;
+    for(i=0;i<D;i++){
+    site=site+xp.get(i)*Lattice_Map[i];}
+    
+    Umatrix Uloc=flink[site][mu];
+    coord=x.get(D-1)+v1.get(D-1)+v2.get(D-1)+v3.get(D-1);
+    if((coord >= side[D-1]) || (coord <0)){ Uloc=PBC*Uloc;}
+    
+    if(!TWIST) return (Uloc);
+    
+    dum=Umatrix(1);
+    sum=0;
+    for(i=0;i<(D-1);i++){
+        coord=x.get(i)+v1.get(i)+v2.get(i)+v3.get(i);
+        if ((coord >= side[i]) || (coord <0)) {
+            dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+            sum+=coord;}
+    }
+    if(sum<0) return (dum*Uloc*Adj(dum));
+    if(sum>0) return (Adj(dum)*Uloc*dum);
+    return(Uloc);
+
+}
+
+
+void Link_Field::set(const Lattice_Vector &x, const int mu, const Umatrix &u){
+    int site=0,i;
+    
+    for(i=0;i<D;i++)
+    site=site+x.get(i)*Lattice_Map[i];
+    
+    flink[site][mu]=u;
+    return;
 }
 
 void Link_Field::print(void){
 cout << "link field values\n" << flush;
 for(int i=0;i<SITES;i++){
-cout << "site= " << i << "\n" << flush;
 for(int j=0;j<NUMLINK;j++){
-cout << "j= " << j << ":" << links[i][j] << "\n" << flush;}
-cout << "\n" << flush;}
+cout << "site= " << i << "\n" << flush;
+cout << flink[i][j] << "\n" << flush;}}
 return;
 }
-
-Link_Field operator +(const Link_Field &s1, const Link_Field &s2){
-int sites=0;
-Lattice_Vector x;
-Link_Field dum=Link_Field();
-
-while(loop_over_lattice(x,sites)){
-for(int j=0;j<NUMLINK;j++){
-dum.set(x,j,s1.get(x,j)+s2.get(x,j));
-}}
-
-return(dum);
-}
-
-Link_Field operator -(const Link_Field &s1, const Link_Field &s2){
-int sites=0;
-Lattice_Vector x;
-Link_Field dum=Link_Field();
-
-while(loop_over_lattice(x,sites)){
-for(int j=0;j<NUMLINK;j++){
-dum.set(x,j,s1.get(x,j)-s2.get(x,j));
-}}
-
-return(dum);
-}
-
 
 Link_Field operator *(const double o, const Link_Field &s){
 int sites=0;
@@ -977,12 +1199,13 @@ Lattice_Vector x;
 Link_Field dum=Link_Field();
 
 while(loop_over_lattice(x,sites)){
-for(int j=0;j<NUMLINK;j++){
-dum.set(x,j,o*s.get(x,j));
+for(int mu=0;mu<NUMLINK;mu++){
+dum.set(x,mu,o*s.get(x,mu));
 }}
 
 return(dum);
 }
+
 
 Link_Field operator *(const Complex &o, const Link_Field &s){
 int sites=0;
@@ -990,19 +1213,19 @@ Lattice_Vector x;
 Link_Field dum=Link_Field();
 
 while(loop_over_lattice(x,sites)){
-for(int j=0;j<NUMLINK;j++){
-dum.set(x,j,o*s.get(x,j));
+for(int mu=0;mu<NUMLINK;mu++){
+dum.set(x,mu,o*s.get(x,mu));
 }}
 
 return(dum);
 }
 
-Complex operator *(const Link_Field &s1, const Link_Field &s2){
+Umatrix operator *(const Link_Field &s1, const Link_Field &s2){
 int sites=0;
 Lattice_Vector x;
-Complex dum;
+Umatrix dum;
 
-dum=Complex();
+dum=Umatrix();
 while(loop_over_lattice(x,sites)){
 for(int j=0;j<NUMLINK;j++){
 dum=dum+s1.get(x,j)*s2.get(x,j);
@@ -1010,18 +1233,39 @@ dum=dum+s1.get(x,j)*s2.get(x,j);
 return(dum);
 }
 
-Link_Field Cjg(const Link_Field &l){
-int sites,mu;
+Link_Field operator +(const Link_Field &s1, const Link_Field &s2){
+int sites=0;
 Lattice_Vector x;
 Link_Field dum;
-
-sites=0;
 while(loop_over_lattice(x,sites)){
-for(mu=0;mu<NUMLINK;mu++){
-dum.set(x,mu,Cjg(l.get(x,mu)));}
+for(int j=0;j<NUMLINK;j++){
+dum.set(x,j,s1.get(x,j)+s2.get(x,j));
+}}
+return(dum);
 }
 
+
+Link_Field operator -(const Link_Field &s1, const Link_Field &s2){
+int sites=0;
+Lattice_Vector x;
+Link_Field dum;
+while(loop_over_lattice(x,sites)){
+for(int j=0;j<NUMLINK;j++){
+dum.set(x,j,s1.get(x,j)-s2.get(x,j));
+}}
 return(dum);
+}
+
+Link_Field Adj(const Link_Field & U){
+int site;
+Link_Field W;
+Lattice_Vector x;
+site=0;
+while(loop_over_lattice(x,site)){
+for(int mu=0;mu<NUMLINK;mu++){
+W.set(x,mu,Adj(U.get(x,mu)));
+}}
+return W;
 }
 
 
@@ -1030,7 +1274,7 @@ Plaq_Field::Plaq_Field(void){
 for(int i=0;i<SITES;i++){
 for(int mu=0;mu<NUMLINK;mu++){
 for(int nu=0;nu<NUMLINK;nu++){
-square[i][mu][nu]=Afield();}}}
+square[i][mu][nu]=Umatrix();}}}
 return;
 }
 
@@ -1038,23 +1282,36 @@ Plaq_Field::Plaq_Field(int c){
 if(c==1){
 for(int i=0;i<SITES;i++){
 for(int mu=0;mu<NUMLINK;mu++){
-square[i][mu][mu]=Afield();
+square[i][mu][mu]=Umatrix();
 for(int nu=mu+1;nu<NUMLINK;nu++){
-square[i][mu][nu]=gaussA();
+square[i][mu][nu]=gaussU();
 square[i][nu][mu]=-1.0*square[i][mu][nu];
 }
 }
 }
 return;
 }
-cout << "error in link constructor\n" << "\n" << flush;
+    
+if(c==0){
+for(int i=0;i<SITES;i++){
+for(int mu=0;mu<NUMLINK;mu++){
+square[i][mu][mu]=Umatrix();
+for(int nu=mu+1;nu<NUMLINK;nu++){
+square[i][mu][nu]=Umatrix(1);
+square[i][nu][mu]=-1.*Umatrix(1);
+}
+}
+}
+
+return;
+}
+cout << "error in plaq constructor\n" << "\n" << flush;
 
 return;
 }
 
-Afield Plaq_Field::get(const Lattice_Vector &x, const int mu, const int nu) const{
+Umatrix Plaq_Field::get(const Lattice_Vector &x, const int mu, const int nu) const{
 int site=0,i;
-
 
 for(i=0;i<D;i++)
 site=site+x.get(i)*Lattice_Map[i];
@@ -1062,8 +1319,102 @@ site=site+x.get(i)*Lattice_Map[i];
 return(square[site][mu][nu]);
 }
 
-void Plaq_Field::set(const Lattice_Vector &x, const int mu, const int nu, 
-const Afield &u){
+Umatrix Plaq_Field::get(const Lattice_Vector &x, const Lattice_Vector &v, const int mu, const int nu) const{
+    Lattice_Vector xp;
+    int coord,sum;
+    Umatrix dum;
+    xp=x+v;
+    int site=0,i;
+    for(i=0;i<D;i++){
+    site=site+xp.get(i)*Lattice_Map[i];}
+    
+    Umatrix Uloc=square[site][mu][nu];
+    coord=x.get(D-1)+v.get(D-1);
+    if((coord >= side[D-1]) || (coord <0)){ Uloc=PBC*Uloc;}
+    
+    if(!TWIST) return (Uloc);
+    
+    dum=Umatrix(1);
+    sum=0;
+    for(i=0;i<(D-1);i++){
+        coord=x.get(i)+v.get(i);
+        if ((coord >= side[i]) || (coord <0)) {
+            dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+            sum+=coord;}
+    }
+    //dum=Adj(dum);
+    if(sum<0) return (dum*Uloc*Adj(dum));
+    if(sum>0) return (Adj(dum)*Uloc*dum);
+    return(Uloc);
+
+    }
+
+
+Umatrix Plaq_Field::get(const Lattice_Vector &x, const Lattice_Vector &v1,
+const Lattice_Vector &v2, const int mu, const int nu) const{
+    Lattice_Vector xp;
+    int coord,sum;
+    Umatrix dum;
+    xp=x+v1+v2;
+    int site=0,i;
+    for(i=0;i<D;i++){
+    site=site+xp.get(i)*Lattice_Map[i];}
+    
+    Umatrix Uloc=square[site][mu][nu];
+    coord=x.get(D-1)+v1.get(D-1)+v2.get(D-1);
+    if((coord >= side[D-1]) || (coord <0)){ Uloc=PBC*Uloc;}
+    
+    if(!TWIST) return (Uloc);
+    
+    dum=Umatrix(1);
+    sum=0;
+    for(i=0;i<(D-1);i++){
+        coord=x.get(i)+v1.get(i)+v2.get(i);
+        if ((coord >= side[i]) || (coord <0)) {
+            dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+            sum+=coord;}
+    }
+    //dum=Adj(dum);
+    if(sum<0) return (dum*Uloc*Adj(dum));
+    if(sum>0) return (Adj(dum)*Uloc*dum);
+    return(Uloc);
+    
+}
+
+
+
+Umatrix Plaq_Field::get(const Lattice_Vector &x, const Lattice_Vector &v1,
+const Lattice_Vector &v2, const Lattice_Vector &v3, const int mu, const int nu) const{
+    Lattice_Vector xp;
+    int coord,sum;
+    Umatrix dum;
+    xp=x+v1+v2+v3;
+    int site=0,i;
+    for(i=0;i<D;i++){
+    site=site+xp.get(i)*Lattice_Map[i];}
+    
+    Umatrix Uloc=square[site][mu][nu];
+    coord=x.get(D-1)+v1.get(D-1)+v2.get(D-1)+v3.get(D-1);
+    if((coord >= side[D-1]) || (coord <0)){ Uloc=PBC*Uloc;}
+    
+    if(!TWIST) return (Uloc);
+    
+    dum=Umatrix(1);
+    sum=0;
+    for(i=0;i<(D-1);i++){
+        coord=x.get(i)+v1.get(i)+v2.get(i)+v3.get(i);
+        if ((coord >= side[i]) || (coord <0)) {
+            dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+            sum+=coord;}
+    }
+    //dum=Adj(dum);
+    if(sum<0) return (dum*Uloc*Adj(dum));
+    if(sum>0) return (Adj(dum)*Uloc*dum);
+    return(Uloc);
+
+    }
+
+void Plaq_Field::set(const Lattice_Vector &x, const int mu, const int nu, const Umatrix &u){
 int site=0,i;
 
 
@@ -1075,7 +1426,7 @@ return;
 }
 
 void Plaq_Field::print(void){
-cout << "plaq field values\n" << flush;
+cout << "link field values\n" << flush;
 for(int i=0;i<SITES;i++){
 cout << "site= " << i << "\n" << flush;
 for(int j=0;j<NUMLINK;j++){
@@ -1142,12 +1493,12 @@ dum.set(x,j,k,o*s.get(x,j,k));
 return(dum);
 }
 
-Complex operator *(const Plaq_Field &s1, const Plaq_Field &s2){
+Umatrix operator *(const Plaq_Field &s1, const Plaq_Field &s2){
 int sites=0;
 Lattice_Vector x;
-Complex dum;
+Umatrix dum;
 
-dum=Complex();
+dum=Umatrix();
 while(loop_over_lattice(x,sites)){
 for(int j=0;j<NUMLINK;j++){
 for(int k=j+1;k<NUMLINK;k++){
@@ -1156,7 +1507,7 @@ dum=dum+s1.get(x,j,k)*s2.get(x,j,k);
 return(dum);
 }
 
-Plaq_Field Cjg(const Plaq_Field &l){
+Plaq_Field Adj(const Plaq_Field &l){
 int sites=0;
 Lattice_Vector x;
 Plaq_Field dum;
@@ -1164,12 +1515,11 @@ Plaq_Field dum;
 while(loop_over_lattice(x,sites)){
 for(int j=0;j<NUMLINK;j++){
 for(int k=0;k<NUMLINK;k++){
-dum.set(x,j,k,Cjg(l.get(x,j,k)));}
+dum.set(x,j,k,Adj(l.get(x,j,k)));}
 }}
 
 return(dum);
 }
-
 
 
 Twist_Fermion::Twist_Fermion(void){
@@ -1189,12 +1539,12 @@ cout << "error in Twist_Fermion constructor\n" << flush;
 
 }
 
-Twist_Fermion Cjg(const Twist_Fermion &K){
+Twist_Fermion Adj(const Twist_Fermion &K){
 Twist_Fermion dum;
 
-dum.setS(Cjg(K.getS()));
-dum.setL(Cjg(K.getL()));
-dum.setC(Cjg(K.getC()));
+dum.setS(Adj(K.getS()));
+dum.setL(Adj(K.getL()));
+dum.setC(Adj(K.getC()));
 
 return(dum);
 }
@@ -1242,6 +1592,39 @@ dum.setC(k1.getC()+k2.getC());
 return(dum);
 }
 
+void check_trace(Twist_Fermion &sol){
+Site_Field s;
+Link_Field l;
+Plaq_Field p;
+Umatrix dum;
+Lattice_Vector x;
+int sites;
+
+s=sol.getS();
+l=sol.getL();
+p=sol.getC();
+
+sites=0;
+while(loop_over_lattice(x,sites)){
+dum=s.get(x);
+if(Tr(dum).norm()>0.00001){cout << "site field not tracelss" << endl;}
+
+for(int j=0;j<NUMLINK;j++){
+dum=l.get(x,j);
+if(Tr(dum).norm()>0.00001){cout << "link field not tracelss" << endl;}
+}
+
+for(int j=0;j<NUMLINK;j++){
+for(int k=0;k<NUMLINK;k++){
+dum=p.get(x,j,k);
+if(Tr(dum).norm()>0.00001){cout << "plaquette field not tracelss" << endl;}
+}}
+}
+
+
+return;
+}
+
 Twist_Fermion operator -(const Twist_Fermion &k1, const Twist_Fermion &k2){
 Twist_Fermion dum=Twist_Fermion();
 
@@ -1263,122 +1646,19 @@ dum.setC(o*k.getC());
 return(dum);
 }
 
-Complex operator *(const Twist_Fermion &k1, const Twist_Fermion &k2){
-Complex tmp;
+Umatrix operator *(const Twist_Fermion &k1, const Twist_Fermion &k2){
+Umatrix tmp;
 
 tmp=k1.getS()*k2.getS()+k1.getL()*k2.getL()+k1.getC()*k2.getC();
 return(tmp);
 }
 
-Adjoint_Matrix::Adjoint_Matrix(void){
-for(int i=0;i<NUMGEN;i++)
-for(int j=0;j<NUMGEN;j++){
-amat[i][j]=Complex();}
-return;
-}
-
-Complex Adjoint_Matrix::get(const int i, const int j) const{
-return(amat[i][j]);}
-
-void Adjoint_Matrix::set(const int i, const int j, const Complex &c){
-amat[i][j]=c;
-return;
-}
-
-Adjoint_Matrix::Adjoint_Matrix(Complex m[NUMGEN][NUMGEN]){
-for(int i=0;i<NUMGEN;i++){
-for(int j=0;j<NUMGEN;j++){
-amat[i][j]= m[i][j];
-}}
-return;
-}
-
-ostream& operator<<(ostream& out, Adjoint_Matrix s){
-for(int i=0;i<NUMGEN;i++){
-for(int j=0;j<NUMGEN;j++){
-	out<<s.get(i,j)<<'\t';}}
-	return out;}
-			
-istream& operator>>(istream& in, Adjoint_Matrix & s){
-	Complex v[NUMGEN][NUMGEN];
-	for(int j=0;j<NUMGEN;j++){
-	for(int i=0;i<NUMGEN;i++){
-	in>>v[j][i];}}
-	s=Adjoint_Matrix(v);
-	return in;
-	}	
-
-	
-Adjoint_Links::Adjoint_Links(void){
-for(int i=0;i<SITES;i++)
-for(int j=0;j<NUMLINK;j++){
-alinks[i][j]=Adjoint_Matrix();
-}
-return;
-} 
-
-Adjoint_Matrix Adjoint_Links::get(const Lattice_Vector &x, const int mu) const{
-int site=0,i;
 
 
-for(i=0;i<D;i++)
-site=site+x.get(i)*Lattice_Map[i];
-
-return(alinks[site][mu]);
-}
-
-
-void Adjoint_Links::set(const Lattice_Vector &x, const int mu,
-const Adjoint_Matrix &u){
-int site=0,i;
-
-for(i=0;i<D;i++)
-site=site+x.get(i)*Lattice_Map[i];
-
-alinks[site][mu]=u;
-return;
-}
-
-void Adjoint_Links::print(void){
-cout << "adjoint links values\n" << flush;
-for(int i=0;i<SITES;i++){
-cout << "site= " << i << "\n" << flush;
-for(int j=0;j<D;j++){
-cout << "j= " << j << ":" << alinks[i][j]<< "\n" << flush;}}
-return;
-}
-
-void compute_Adjoint_Links(const Gauge_Field &U, Adjoint_Links &V){
-int mu,a,b,sites;
-Lattice_Vector x;
-Adjoint_Matrix tmp;
-
-//cout << "in compute_Adjoint_Links\n" << flush;
-
-sites=0;
-while(loop_over_lattice(x,sites)){
-for(mu=0;mu<NUMLINK;mu++){
-
-for(a=0;a<NUMGEN;a++){
-for(b=0;b<NUMGEN;b++){
-tmp.set(a,b,Tr(Lambda[a]*U.get(x,mu)*Lambda[b]));
-}
-}
-V.set(x,mu,tmp);
-
-}
-}
-
-return;
-}
-
-
-
-Plaq_Field Dplus(const Adjoint_Links &V, const Link_Field &L){
+Plaq_Field Dplus(const Gauge_Field &U, const Link_Field &L){
 Lattice_Vector x,e_mu,e_nu;
-int mu,nu,sites,a,b;
-Complex tmp;
-Afield atmp=Afield();
+int mu,nu,sites;
+Umatrix tmp;
 Plaq_Field dum=Plaq_Field();
 
 
@@ -1387,67 +1667,173 @@ while(loop_over_lattice(x,sites)){
 for(mu=0;mu<NUMLINK;mu++){
 for(nu=mu+1;nu<NUMLINK;nu++){
 
+
 e_mu=Lattice_Vector(mu);
 e_nu=Lattice_Vector(nu);
 
-for(a=0;a<NUMGEN;a++){
-tmp=Complex();
-for(b=0;b<NUMGEN;b++){
+tmp=Umatrix();
 tmp=tmp+
-    V.get(x,mu).get(a,b)*L.get(x+e_mu,nu).get(b)*BC(x,e_mu)-
-    V.get(x+e_nu,mu).get(b,a)*L.get(x,nu).get(b);
+    U.get(x,mu)*L.get(x,e_mu,nu)-
+    L.get(x,nu)*U.get(x,e_nu,mu);
 tmp=tmp-
-    V.get(x,nu).get(a,b)*L.get(x+e_nu,mu).get(b)*BC(x,e_nu)+
-    V.get(x+e_mu,nu).get(b,a)*L.get(x,mu).get(b);
-    }
-atmp.set(a,tmp);
-}
+    U.get(x,nu)*L.get(x,e_nu,mu)+
+    L.get(x,mu)*U.get(x,e_mu,nu);
 
-dum.set(x,mu,nu,atmp);
-dum.set(x,nu,mu,-1.0*atmp);
-
-}
-}
+dum.set(x,mu,nu, traceless(tmp));
+dum.set(x,nu,mu,-1.0*traceless(tmp));
+}}
 }
 
 return(dum);
 }
 
-Link_Field Dminus(const Adjoint_Links &V, const Plaq_Field &P){
+Link_Field Dminus(const Gauge_Field &U, const Plaq_Field &P){
 Lattice_Vector x,e_mu,e_nu;
-int sites,mu,nu,a,b;
-Complex tmp;
-Afield atmp;
+int sites,mu,nu;
+Umatrix tmp;
 Link_Field dum=Link_Field();
 
 sites=0;
 while(loop_over_lattice(x,sites)){
 for(nu=0;nu<NUMLINK;nu++){
 e_nu=Lattice_Vector(nu);
-atmp=Afield();
+tmp=Umatrix();
 
 for(mu=0;mu<NUMLINK;mu++){
 if(mu==nu) continue;
-
 e_mu=Lattice_Vector(mu);
 
-for(a=0;a<NUMGEN;a++){
-tmp=Complex();
-for(b=0;b<NUMGEN;b++){
 tmp=tmp+
-V.get(x+e_nu,mu).get(a,b)*P.get(x,mu,nu).get(b)-
-V.get(x-e_mu,mu).get(b,a)*P.get(x-e_mu,mu,nu).get(b)*BC(x,-e_mu);
-}
-atmp.set(a,atmp.get(a)+tmp);
+U.get(x,e_nu,mu)*P.get(x,mu,nu)-
+P.get(x,-e_mu,mu,nu)*U.get(x,-e_mu,mu);
 }
 
-}
-dum.set(x,nu,atmp);
-
-}
-}
+dum.set(x,nu,traceless(tmp));
+}}
 return(dum);
 }
+
+
+Link_Field Dbplus(const Gauge_Field &U, const Site_Field &S){
+    Lattice_Vector x,e_mu;
+    int mu,sites;
+    Umatrix tmp;
+    Link_Field dum=Link_Field();
+    Gauge_Field Udag;
+    
+    Udag=Adj(U);
+    
+    sites=0;
+    while(loop_over_lattice(x,sites)){
+    for(mu=0;mu<NUMLINK;mu++){
+    e_mu=Lattice_Vector(mu);
+    tmp=S.get(x,e_mu)*Udag.get(x,mu)-
+        Udag.get(x,mu)*S.get(x);
+            
+        dum.set(x,mu,traceless(tmp));
+        }
+    }
+    return(dum);
+}
+
+Site_Field Dbminus(const Gauge_Field &U, const Link_Field &L){
+    Lattice_Vector x,e_mu;
+    int mu,sites;
+    Umatrix tmp;
+    Site_Field dum=Site_Field();
+    Gauge_Field Udag;
+    
+    Udag=Adj(U);
+    sites=0;
+    while(loop_over_lattice(x,sites)){
+        
+        tmp=Umatrix();
+        for(mu=0;mu<NUMLINK;mu++){
+        e_mu=Lattice_Vector(mu);
+        tmp=tmp+
+        L.get(x,mu)*Udag.get(x,mu)-
+        Udag.get(x,-e_mu,mu)*L.get(x,-e_mu,mu);
+        }
+        dum.set(x,traceless(tmp));
+    }
+    return(dum);
+}
+
+Plaq_Field Dbminus(const Gauge_Field &U, const Plaq_Field &p){
+    Lattice_Vector x,e_a,e_b,e_c;
+    int a,b,c,d,e,sites;
+    Plaq_Field dum=Plaq_Field();
+    Umatrix tmp;
+    Gauge_Field Udag;
+    Udag=Adj(U);
+
+    sites=0;
+    while(loop_over_lattice(x,sites)){
+    for(d=0;d<NUMLINK;d++){
+    for(e=d+1;e<NUMLINK;e++){
+    tmp=Umatrix();
+                    
+    for(c=0;c<NUMLINK;c++){
+    if((c==d)||(c==e)) continue;
+    e_c=Lattice_Vector(c);
+                        
+    for(a=0;a<NUMLINK;a++){
+    if((a==c)||(a==d)||(a==e)) continue;
+    e_a=Lattice_Vector(a);
+    for(b=a+1;b<NUMLINK;b++){
+    if((b==c)||(b==d)||(b==e)) continue;
+    e_b=Lattice_Vector(b);
+    tmp=tmp+perm[d][e][c][a][b]*(
+    p.get(x,-e_a,-e_b,a,b)*Udag.get(x,-e_a,-e_b,-e_c,c)-
+    Udag.get(x,-e_c,c)*p.get(x,-e_a,-e_b,-e_c,a,b)
+    );
+    }}}
+        dum.set(x,d,e,traceless(tmp));
+        dum.set(x,e,d,-1.0*traceless(tmp));
+    }}}
+    
+    return(dum);
+}
+
+
+
+Plaq_Field Dbplus(const Gauge_Field &U, const Plaq_Field &p){
+    Lattice_Vector x,e_a,e_b,e_c;
+    int a,b,c,d,e,sites;
+    Plaq_Field dum=Plaq_Field();
+    Umatrix tmp;
+    Gauge_Field Udag;
+    Udag=Adj(U);
+    
+    sites=0;
+    while(loop_over_lattice(x,sites)){
+    for(a=0;a<NUMLINK;a++){
+    e_a=Lattice_Vector(a);
+    for(b=a+1;b<NUMLINK;b++){
+    e_b=Lattice_Vector(b);
+    tmp=Umatrix();
+        
+    for(c=0;c<NUMLINK;c++){
+    if((c==a)||(c==b)) continue;
+    e_c=Lattice_Vector(c);
+                        
+    for(d=0;d<NUMLINK;d++){
+    if((d==c)||(d==a)||(d==b)) continue;
+    for(e=d+1;e<NUMLINK;e++){
+    if((e==c)||(e==a)||(e==b)) continue;
+                                    
+    tmp=tmp+perm[a][b][c][d][e]*(
+    p.get(x,e_a,e_b,e_c,d,e)*Udag.get(x,e_a,e_b,c)-
+    Udag.get(x,-e_c,c)*p.get(x,e_a,e_b,d,e));
+                                
+    }}}
+        dum.set(x,a,b,traceless(tmp));
+        dum.set(x,b,a,-1.0*traceless(tmp));
+    }}}
+    
+    return(dum);
+}
+
 
 
 double order(const int i, const int j, const int k, const int l, const int m){
@@ -1492,265 +1878,39 @@ perm[i][j][k][l][m]=order(i,j,k,l,m);
 return;
 }
 
-Plaq_Field Dbminus(const Adjoint_Links &V, const Plaq_Field &p){
-Lattice_Vector x,e_a,e_b,e_c;
-int a,b,c,d,e,l,m,sites;
-Plaq_Field dum=Plaq_Field();
-Complex tmp;
-Afield atmp;
 
+Twist_Fermion Fermion_op(const Gauge_Field &U,
+const Twist_Fermion &F){
+Twist_Fermion F2=Twist_Fermion();
 
-sites=0;
-while(loop_over_lattice(x,sites)){
-for(d=0;d<NUMLINK;d++){
-for(e=d+1;e<NUMLINK;e++){
-
-for(l=0;l<NUMGEN;l++){
-tmp=Complex();
-
-for(c=0;c<NUMLINK;c++){
-if((c==d)||(c==e)) continue;
-
-e_c=Lattice_Vector(c);
-
-for(a=0;a<NUMLINK;a++){
-e_a=Lattice_Vector(a);
-if((a==c)||(a==d)||(a==e)) continue;
-for(b=a+1;b<NUMLINK;b++){
-e_b=Lattice_Vector(b);
-if((b==c)||(b==d)||(b==e)) continue;
-
-for(m=0;m<NUMGEN;m++){
-tmp=tmp+perm[d][e][c][a][b]*(
-conjug(V.get(x-e_a-e_b-e_c,c).get(l,m))*BC(x,-e_a,-e_b)*
-p.get(x-e_a-e_b,a,b).get(m)-
-conjug(V.get(x-e_c,c).get(m,l))*BC(x,-e_a,-e_b,-e_c)*
-p.get(x-e_a-e_b-e_c,a,b).get(m));}
-
-}}
-}
-
-atmp.set(l,tmp);
-}
-
-dum.set(x,d,e,atmp);
-dum.set(x,e,d,-1.0*atmp);
-}}}
-
-return(dum);
-}
-
-
-
-Plaq_Field Dbplus(const Adjoint_Links &V, const Plaq_Field &p){
-Lattice_Vector x,e_a,e_b,e_c;
-int a,b,c,d,e,l,m,sites;
-Plaq_Field dum=Plaq_Field();
-Complex tmp;
-Afield atmp;
-
-sites=0;
-while(loop_over_lattice(x,sites)){
-for(a=0;a<NUMLINK;a++){
-e_a=Lattice_Vector(a);
-for(b=a+1;b<NUMLINK;b++){
-e_b=Lattice_Vector(b);
-
-for(l=0;l<NUMGEN;l++){
-tmp=Complex();
-
-for(c=0;c<NUMLINK;c++){
-if((c==a)||(c==b)) continue;
-
-e_c=Lattice_Vector(c);
-
-for(d=0;d<NUMLINK;d++){
-if((d==c)||(d==a)||(d==b)) continue;
-for(e=d+1;e<NUMLINK;e++){
-if((e==c)||(e==a)||(e==b)) continue;
-
-for(m=0;m<NUMGEN;m++){
-
-tmp=tmp+perm[a][b][c][d][e]*(
-conjug(V.get(x+e_a+e_b,c).get(l,m))*BC(x,e_a,e_b,e_c)*
-p.get(x+e_a+e_b+e_c,d,e).get(m)-
-conjug(V.get(x-e_c,c).get(m,l))*BC(x,e_a,e_b)*
-p.get(x+e_a+e_b,d,e).get(m));}
-
-}}
-}
-atmp.set(l,tmp);
-}
-
-dum.set(x,a,b,atmp);
-dum.set(x,b,a,-1.0*atmp);
-}}}
-
-return(dum);
-}
-
-
-Link_Field Dbplus(const Adjoint_Links &V, const Site_Field &S){
-Lattice_Vector x,e_mu;
-int mu,sites,a,b;
-Complex tmp;
-Afield atmp;
-Link_Field dum=Link_Field();
-
-
-sites=0;
-while(loop_over_lattice(x,sites)){
-for(mu=0;mu<NUMLINK;mu++){
-
-e_mu=Lattice_Vector(mu);
-
-for(a=0;a<NUMGEN;a++){
-tmp=Complex();
-for(b=0;b<NUMGEN;b++){
-tmp=tmp+
-    conjug(V.get(x,mu).get(a,b))*S.get(x+e_mu).get(b)*BC(x,e_mu)-
-    conjug(V.get(x,mu).get(b,a))*S.get(x).get(b);
-    }
-atmp.set(a,tmp);
-}
-
-dum.set(x,mu,atmp);
-
-}
-}
-
-return(dum);
-}
-
-Site_Field Dbminus(const Adjoint_Links &V, const Link_Field &L){
-Lattice_Vector x,e_mu;
-int mu,sites,a,b;
-Complex tmp;
-Afield atmp;
-Site_Field dum=Site_Field();
-
-sites=0;
-while(loop_over_lattice(x,sites)){
-
-atmp=Afield();
-for(mu=0;mu<NUMLINK;mu++){
-e_mu=Lattice_Vector(mu);
-
-for(a=0;a<NUMGEN;a++){
-tmp=Complex();
-for(b=0;b<NUMGEN;b++){
-tmp=tmp+
-conjug(V.get(x,mu).get(a,b))*L.get(x,mu).get(b)-
-conjug(V.get(x-e_mu,mu).get(b,a))*L.get(x-e_mu,mu).get(b)*BC(x,-e_mu);
-}
-atmp.set(a,atmp.get(a)+tmp);
-}
-
-}
-
-dum.set(x,atmp);
-}
-return(dum);
-}
-
-
-Twist_Fermion betaterm(const Adjoint_Links &V, const Twist_Fermion &F){
-int a,b,sites,mu;
-Lattice_Vector x;
-Twist_Fermion dum=Twist_Fermion();
-Site_Field s=Site_Field();
-Link_Field l=Link_Field();
-Complex tmp;
-Afield tmp2;
-
-// only relevant if U(N)
-
-if(NUMGEN==(NCOLOR*NCOLOR-1)){return(dum);}
-//SIMON: beta term modification
-
-sites=0;
-while(loop_over_lattice(x,sites)){
-tmp2=Afield();
-
-for(mu=0;mu<NUMLINK;mu++){
-
-for(a=0;a<NUMGEN-1;a++){
-tmp=Complex();
-for(b=0;b<NUMGEN;b++){
-tmp=tmp+
-conjug(V.get(x,mu).get(a,b))*F.getL().get(x,mu).get(b);}
-
-tmp2.set(a,tmp);}
-
-s.set(x,C1*0.5*tmp2);}
-
-dum.setS(s);
-}
-
-sites=0;
-while(loop_over_lattice(x,sites)){
-for(mu=0;mu<NUMLINK;mu++){
-
-tmp2=Afield();
-for(b=0;b<NUMGEN;b++){
-tmp=Complex();
-for(a=0;a<NUMGEN-1;a++){
-tmp=tmp+
-conjug(V.get(x,mu).get(a,b))*F.getS().get(x).get(a);}
-tmp2.set(b,tmp);
-}
-
-l.set(x,mu,-0.5*C1*tmp2);
-}
-}
-
-dum.setL(l);
-
-return(dum);
-
-}
-
-
-Twist_Fermion Fermion_op(const Adjoint_Links &V, const Twist_Fermion &F){
-Twist_Fermion F2=Twist_Fermion(),F3;
-
-F2.setC(Dplus(V,F.getL()));
-F2.setL(Dminus(V,F.getC()));
-F2.setL(F2.getL()+0.5*Dbplus(V,F.getS()));
-F2.setS(0.5*Dbminus(V,F.getL()));
-
-F3=betaterm(V,F);
-F2.setS(F2.getS()+F3.getS());
-F2.setL(F2.getL()+F3.getL());
+F2.setC(Dplus(U,F.getL()));
+F2.setL(Dminus(U,F.getC()));
+F2.setL(F2.getL()+0.5*Dbplus(U,F.getS()));
+F2.setS(0.5*Dbminus(U,F.getL()));
 
 // Q-closed piece
 if(NUMLINK==5){
-F2.setC(F2.getC()+0.5*Dbminus(V,F.getC())+0.5*Dbplus(V,F.getC()));}
-
+F2.setC(F2.getC()+0.5*Dbminus(U,F.getC())+0.5*Dbplus(U,F.getC()));}
 
 return(F2);
-
 }
 
-Twist_Fermion Adj_Fermion_op(const Adjoint_Links &V, const Twist_Fermion &F){
-Twist_Fermion F2=Twist_Fermion(),F3,F4;
+Twist_Fermion Adj_Fermion_op(const Gauge_Field &U,
+const Twist_Fermion &F){
+Twist_Fermion F2=Twist_Fermion(),F3;
 
-F3=Cjg(F);
+F3=Adj(F);
 
-F2.setC(Dplus(V,F3.getL()));
-F2.setL(Dminus(V,F3.getC()));
-F2.setL(F2.getL()+0.5*Dbplus(V,F3.getS()));
-F2.setS(0.5*Dbminus(V,F3.getL()));
-
-F4=betaterm(V,F3);
-F2.setS(F2.getS()+F4.getS());
-F2.setL(F2.getL()+F4.getL());
+F2.setC(Dplus(U,F3.getL()));
+F2.setL(Dminus(U,F3.getC()));
+F2.setL(F2.getL()+0.5*Dbplus(U,F3.getS()));
+F2.setS(0.5*Dbminus(U,F3.getL()));
 
 // Q-closed piece
 if(NUMLINK==5){
-F2.setC(F2.getC()+0.5*Dbminus(V,F3.getC())+0.5*Dbplus(V,F3.getC()));}
+F2.setC(F2.getC()+0.5*Dbminus(U,F3.getC())+0.5*Dbplus(U,F3.getC()));}
 
-F2=-1.0*Cjg(F2);
+F2=-1.0*Adj(F2);
 
 return(F2);
 }
@@ -1768,7 +1928,7 @@ for(mu=0;mu<NUMLINK;mu++){
 e_mu=Lattice_Vector(mu);
 for(nu=mu+1;nu<NUMLINK;nu++){
 e_nu=Lattice_Vector(nu);
-Fmunu=U.get(x,mu)*U.get(x+e_mu,nu)-U.get(x,nu)*U.get(x+e_nu,mu);
+Fmunu=U.get(x,mu)*U.get(x,e_mu,nu)-U.get(x,nu)*U.get(x,e_nu,mu);
 F.set(x,mu,nu,Fmunu);
 F.set(x,nu,mu,-1.0*Fmunu);
 }
@@ -1809,8 +1969,8 @@ e_e=Lattice_Vector(e);
 
 tmp=tmp+perm[a][b][c][d][e]*
 (
-U.get(x,c)*F.get(x+e_c,d,e)-
-F.get(x,d,e)*U.get(x+e_d+e_e,c)
+U.get(x,c)*F.get(x,e_c,d,e)-
+F.get(x,d,e)*U.get(x,e_d,e_e,c)
 );
 
 }}
@@ -1889,31 +2049,8 @@ double gasdev(void){
 	else {
 		iset=0;
 		return(gset);}}
-        
-//hardcoded for U(2) for now
 
-Complex det(const Umatrix &u){
-        return(u.get(0,0)*u.get(1,1)-u.get(0,1)*u.get(1,0));
-}
 
-Umatrix adjugate(const Umatrix &u){
-        Umatrix dum;
-        dum.set(0,0,u.get(1,1));
-        dum.set(0,1,-1.0*u.get(0,1));
-        dum.set(1,0,-1.0*u.get(1,0));
-        dum.set(1,1,u.get(0,0));
-        return(dum);
-}
-
-Umatrix inverse(const Umatrix &u){
-Umatrix dum;
-        dum.set(0,0,u.get(1,1));
-        dum.set(0,1,-1.0*u.get(0,1));
-        dum.set(1,0,-1.0*u.get(1,0));
-        dum.set(1,1,u.get(0,0));
-        dum=(Complex(1.0,0.0)/det(u))*dum;
-        return(dum);
-}
 
 #define SWAP(a,b) tempr=(a);(a)=(b);(b)=tempr
 

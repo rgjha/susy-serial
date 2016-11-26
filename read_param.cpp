@@ -24,45 +24,29 @@ unsigned int random_seed()
 
 }
 
+
+
 void read_param(void){
-double LAMBDA,BETA,GAMMA;
+double LAMBDA,BETA;
 ifstream f_in("parameters");
 if(!f_in.good()){
 	cout << "\ncan't open file parameters to read data!\n";
 	exit(1);}
-f_in>>SWEEPS>>THERM>>GAP>>BETA>>GAMMA>>C1>>C2>>DT>>READIN >>SWEEPNO ;
+f_in>>SWEEPS>>THERM>>GAP>>LAMBDA>>BMASS>>DT>>READIN ;
 
-// BETA is Rt (BETA in units of root lambda)
-// GAMMA  is MASS in units of root lambda
-
-LAMBDA=1.0;
-G=0.0;
+// assume spatial size very large for this scaling
+BETA=1.0;
 
 if(D==4){
 KAPPA=(NCOLOR*0.5)/LAMBDA;
-
-if((LX==1)&&(LY==1)&&(LZ==1)&&(T!=1)){
-KAPPA=KAPPA*(T*T*T)/(BETA*BETA*BETA);}
-
-if((LX==1)&&(LY==1)&&(LZ!=1)&&(T!=1)){
-KAPPA=KAPPA*(T*T)/(BETA*BETA);}
-
-if((LX==1)&&(LY!=1)&&(LZ!=1)&&(T!=1)){
-KAPPA=KAPPA*T/BETA;}
-
 }
 
 if(D==2){
 KAPPA=(NCOLOR*0.5*T*T)/(LAMBDA*BETA*BETA);
-
-if((LX==1)&&(T!=1)){
-KAPPA=KAPPA*T/BETA;}
-
 }
 
-BMASS=GAMMA*BETA/T;
 
-TRAJECTORY_LENGTH=(int)(0.5/DT);
+TRAJECTORY_LENGTH=(int)(1.0/DT);
 
 
 if((FERMIONS==1)&&(NUMLINK==5)){cout << "16 supercharge theory \n";}
@@ -78,26 +62,22 @@ cout << "Spatial extent " << LX << "\n";}
 if(D==4){
 cout << "Spatial extent " << LX << "\t" << LY << "\t" << LZ << "\n";}
 
-cout << "Inverse temperature in units of root lambda " << BETA << "\n";
-cout << "Lattice Coupling " << KAPPA << "\n";
-cout << "Mass in units of root lambda " << GAMMA << "\n";
-cout << "Lattice scalar mass squared " << KAPPA*BMASS*BMASS << "\n";
-cout << "C1 coeff " << C1 << "\n";
-cout << "C2 coeff " << C2 << "\n";
-cout << "Coupling to det " << G << "\n";
+cout << "Dimensionless t'Hooft coupling " << LAMBDA << "\n";
+cout << "Konishi mass " << BMASS << "\n";
 cout << "Thermalization sweeps " << THERM << "\n";
 cout << "Number of sweeps " << SWEEPS << "\n";
 cout << "Gap between measurements " << GAP << "\n";
 cout << "Time step in leapfrog eqs " << DT << "\n";
 cout << "Trajectory length " << TRAJECTORY_LENGTH << "\n";
-cout << "Minimax approx degree " << DEGREE << "\n";
+cout << "Remez approx degree " << DEGREE << "\n";
 cout << "Reading initial config: (1 for yes, 0 for no) " << READIN << "\n";
 
 if (PBC==1.0) {cout << "periodic temporal bc for fermions" << "\n";}
 else{cout << "antiperiodic temporal bc for fermions" << "\n";}
-
+if (TWIST==1) {cout << "twisted bcs" << endl;}
 
 srand(random_seed());
+//srand(0);
 setup();
 
 return;

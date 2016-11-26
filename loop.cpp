@@ -22,9 +22,8 @@ for(nu=D-1;nu<D;nu++){
 e_mu=Lattice_Vector(mu);
 e_nu=Lattice_Vector(nu);
 
-prod=Umatrix(1);
 y=x;
-
+prod=Umatrix(1);
 for(r=1;r<=R;r++){
 prod=prod*(U.get(y,mu));
 y=y+e_mu;

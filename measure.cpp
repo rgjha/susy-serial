@@ -1,10 +1,11 @@
+#include <cstdio>
 #include "measure.h"  
 
 void measure(const Gauge_Field &U, const Twist_Fermion &F,int &num){
 
 	static int first_time=1;
 	static ofstream f_data,f_av,f_scalars;
-	static ofstream f_line,f_kon1,f_kon2, f_line_z;
+	static ofstream f_line,f_kon1,f_kon2;
         static ofstream f_loop,f_loop2,f_det;
         double act_s,act_F,mass,t1,t2;
 	double eigenvals[SITES][NUMLINK][NCOLOR];
@@ -23,9 +24,9 @@ Complex M[LEN][LEN];
 	if(f_data.bad()){ 
 	cout << "failed to open data file\n" << flush ;}
 
-        f_av.open("eigenvalues",ios::app);
-        if(f_av.bad()){
-        cout << "failed to open eigenvalues file\n" << flush;}
+//        f_av.open("eigenvalues",ios::app);
+//        if(f_av.bad()){
+//        cout << "failed to open eigenvalues file\n" << flush;}
 
         f_scalars.open("scalars",ios::app);
         if(f_scalars.bad()){
@@ -35,34 +36,27 @@ Complex M[LEN][LEN];
 	if(f_line.bad()){
 	cerr << "failed to open lines_t file" << "\n";exit(1);}
 
-
-	f_line_z.open("lines_z",ios::app);
-        if(f_line_z.bad()){
-            cerr << "failed to open lines_z file" << "\n";exit(1);}
-
         f_loop.open("loops",ios::app);
         if(f_loop.bad()){
         cerr << "failed to open loops file" << "\n";exit(1);}
        
-        f_loop2.open("loops2",ios::app);
-        if(f_loop2.bad()){
-        cerr << "failed to open loops2 file" << "\n";exit(1);} 
+ //       f_loop2.open("loops2",ios::app);
+ //       if(f_loop2.bad()){
+//        cerr << "failed to open loops2 file" << "\n";exit(1);} 
 
-        f_det.open("det",ios::app);
-        if(f_det.bad()){cerr << "failed to open det file" << "\n";exit(1);}
-        
-
-        f_kon1.open("kon1",ios::app);
-        if(f_kon1.bad()){cerr << "failed to open kon1 file" << "\n";exit(1);}
+//        f_kon1.open("kon1",ios::app);
+//        if(f_kon1.bad()){cerr << "failed to open kon1 file" << "\n";exit(1);}
 
         
-        f_kon2.open("kon2",ios::app);
-        if(f_kon2.bad()){cerr << "failed to open kon2 file" << "\n";exit(1);}
+//        f_kon2.open("kon2",ios::app);
+//        if(f_kon2.bad()){cerr << "failed to open kon2 file" << "\n";exit(1);}
 
 	first_time=0;
 	}
 
-        unit(U,U2);     // Polar-decomposition employed for holographic tests // 
+//        block_lattice(U,U2);
+        
+        //unit(U,U2);
 	  
 	// check Bianchi
 	if(NUMLINK==5){
@@ -70,14 +64,13 @@ Complex M[LEN][LEN];
 	cout << "Bianchi is " << Tr(B*Adj(B)).real() << flush << "\n";
 	}
 	
-	f_line  << line(U2,D-1) << "\n" << flush;      // Polyakov line along time // 
-	f_line_z  << line(U2,D-2) << "\n" << flush;    // Polyakov line along z direction // 
+	f_line  << line(U,D-1) << "\n" << flush;
     
-		 
-    loop(U,wilson);  
-    loop(U2,wilson2);
-	f_kon1 << konishi(U) << endl;
-    f_kon2 << konishi(U2)/16.0<< endl;
+  
+        loop(U,wilson);  
+ //       loop(U2,wilson2);
+//	f_kon1 << konishi(U) << endl;
+  //      f_kon2 << konishi(U2)/16.0<< endl;
 
         for(r=1;r<=(LX/2);r++){
         for(m=1;m<=(T/2);m++){
@@ -86,12 +79,12 @@ Complex M[LEN][LEN];
         f_loop  << "\n" << flush;
 
 
-for(r=1;r<=(LX/2);r++){
+/*for(r=1;r<=(LX/2);r++){
         for(m=1;m<=(T/2);m++){
-        f_loop2 << r << "\t" << m <<  "\t" << wilson2[r][m]/((D-1)*SITES) << "\t" << flush;}
+         f_loop2 << r << "\t" << m <<  "\t" << wilson2[r][m]/((D-1)*SITES) << "\t" << flush;}
         }
         f_loop2  << "\n" << flush; 
-
+*/
         obs(U,F,act_s,mass,d,act_F,eigenvals);
 
         
@@ -104,7 +97,7 @@ for(r=1;r<=(LX/2);r++){
 #endif
 
 	f_data << act_s << "\t" << act_F << "\n" << flush;
-        f_det << d << endl;
+ //       f_det << d << endl;
     
         scalars(U,t1,t2);
 	

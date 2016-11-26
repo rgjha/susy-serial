@@ -1,8 +1,5 @@
 #include "sym.h"
 
-
-// This calls : update_o.cpp, measure.cpp, write_out.cpp //  
-
 int SWEEPS,GAP,THERM,SEED,READIN,OLDSWEEPNO;
 double KAPPA,DT,TIME,G;
 
@@ -20,24 +17,18 @@ int sweep;
 Gauge_Field U,Up;
 Twist_Fermion F;
 
-#ifdef GPU
-int gpuid=atoi(argv[1]);
-cudaSetDevice(gpuid);
-cout << "using GPU " << gpuid << endl;
-#endif
+read_param();
 
-read_param();            // READ PARAMETERS // 
-
-if(READIN){              
+if(READIN){
 read_in(U,F);
 }
 else{
-U=Gauge_Field(0);        // IF READIN = 0  i.e not reading configs // 
+U=Gauge_Field(0);
 F=Twist_Fermion(1);
 }
 
 cout << "Warming up" << "\n" << flush;
-DT=DT/10;
+DT=DT/4;
 cout << "DT is " << DT << "\n" << flush;
 for(sweep=1;sweep<=THERM/4;sweep++){
 clock_t time= clock();
@@ -45,7 +36,7 @@ update(U,F);
 cout << "sweep time is " << float(clock()-time)/CLOCKS_PER_SEC << endl;
 write_out(U,F,0);
 }
-DT=DT*10;
+DT=DT*4;
 cout << "DT is " << DT << "\n" << flush;
 for(sweep=1;sweep<=(3*THERM)/4;sweep++){
 clock_t time=clock();

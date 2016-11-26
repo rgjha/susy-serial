@@ -7,7 +7,7 @@ Gauge_Field B;
 static int count=0,first_time=1;
 static ofstream f_k1,f_k2;
 Lattice_Vector x,y,e_mu;
-USite_Field prod;
+Site_Field prod;
 double P[NUMLINK][NUMLINK];
  
   	if(first_time==1){
@@ -54,13 +54,6 @@ P[4][4]=1/sqrt(5.0);
 
 if(count==0){cout << "bare lattice" << endl;}
 if(count==1){cout << "block lattice" << endl;}
-/*sites=0;
-dum=0.0;
-while(loop_over_lattice(x,sites)){
-for(a=0;a<NUMLINK;a++){
-dum=dum+Tr(U.get(x,a)*Adj(U.get(x,a))).real();}
-}
-dum/=(SITES*NUMLINK*NCOLOR);*/
 
 
 sites=0;

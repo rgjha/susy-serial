@@ -1,14 +1,11 @@
 #include "MCG_solver.h"
-#include "gpusolver.h"
 
 #include <ctime>
 // multimass CG solver 
 // can return solution to (M^daggerM +beta_i) x=b for all shifts beta_i
 
-Complex rn[LEN],bn[LEN],plist[DEGREE][LEN],pn[LEN];
-Complex tn[LEN],sn[LEN],soln[DEGREE][LEN], solnGPU[DEGREE][LEN];
-Complex m[LEN*NONZEROES];
-int col[LEN*NONZEROES],row[LEN+1];
+Twist_Fermion plist[DEGREE];
+Twist_Fermion r,s,t,p;
 
 void MCG_solver(const Gauge_Field &U,
 const Twist_Fermion &b, double shift[], Twist_Fermion sol[DEGREE], 
@@ -16,59 +13,31 @@ Twist_Fermion psol[DEGREE]){
 
 static ofstream f_cgs;
 
-Adjoint_Links V;
-Twist_Fermion p,t,s;
 Lattice_Vector x;
-int sites,A;
-double alpha1,alpha2,beta0,beta1,rrtmp,rrtmp2,resid,psdot;
+int n,sites,count;
+double alpha1,alpha2,beta0,beta1,rrdot,rrdot2,resid,psdot;
 
 double alphalist[DEGREE],betalist[DEGREE],xi2[DEGREE];
 double xi0[DEGREE],xi1[DEGREE];
 
-int count2;
-static int av_count2=0,no_calls=0,first_time=1;
-int i,n;
-double dummy;
+static int av_count=0,no_calls=0,first_time=1;
 
 	if(first_time){
 	f_cgs.open("cgs");
 	if(f_cgs.bad()){ 
 	cout << "failed to open cgs file\n" << flush ;}
 
-        first_time=0;}
+    first_time=0;}
 
-
-compute_Adjoint_Links(U,V);
-MASS=0.0;
-
-build_vector(b,bn);
-build_sparse_matrix(V,U,m,col,row);
-
-
-#ifdef GPU
-clock_t begin_time = clock();
-gpusolver(m,col,row,bn,shift,solnGPU);
-    for(n=0;n<DEGREE;n++){
-        for(i=0;i<LEN;i++){
-            soln[n][i]=solnGPU[n][i];}}
-cout << "GPU_TIME_MCG: " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << endl;
-#endif
-
-#ifndef GPU
+count=0;
 no_calls++;
-count2=0;
-clock_t begin_time = clock();
-
-// initialize solver
-
-beta0=1;
+    
+beta0=1.0;
 alpha1=0.0;
 
 for(n=0;n<DEGREE;n++){
-
-for(i=0;i<LEN;i++){
-soln[n][i]=Complex();
-plist[n][i]=bn[i];}
+sol[n]=Twist_Fermion();
+plist[n]=b;
 
 alphalist[n]=alpha1;
 betalist[n]=beta0;
@@ -77,135 +46,109 @@ xi1[n]=beta0;
 xi2[n]=beta0;
 }
 
-for(i=0;i<LEN;i++){
-rn[i]=bn[i];
-pn[i]=bn[i];}
+r=b;
+p=b;
+
+check_trace(p);
+
+double MASS=0.0;
 
 do{
 
-sparse_mult(m,col,row,1,pn,tn);
-sparse_mult(m,col,row,-1,tn,sn);
-for(i=0;i<LEN;i++){
-sn[i]=sn[i]+MASS*MASS*pn[i];}
+t=Fermion_op(U,p);
+s=Adj_Fermion_op(U,t);
 
-rrtmp=dot(rn,rn).real();
-psdot=dot(sn,pn).real();
+//cout << "count is " << count << endl;
+//check_trace(s);
 
-beta1=-rrtmp/psdot;
+s=s+MASS*MASS*p;
 
-for(n=0;n<DEGREE;n++){
+rrdot=Tr(Adj(r)*r).real();
+psdot=Tr(Adj(s)*p).real();
+
+beta1=-rrdot/psdot;
+
+for(int n=0;n<DEGREE;n++){
 xi2[n]=(xi1[n]*xi0[n]*beta0)/
- (
+(
 beta1*alpha1*(xi0[n]-xi1[n])+
 xi0[n]*beta0*(1-shift[n]*beta1)
- );
-if(fabs(xi2[n])<1.0e-50){xi2[n]=1.0e-50;}
+);
+if(fabs(xi2[n])<1.0e-50) {xi2[n]=1.0e-50;}
 
 betalist[n]=beta1*xi2[n]/xi1[n];
 }
 
-
-for(i=0;i<LEN;i++){
-rn[i]=rn[i]+beta1*sn[i];}
+r=r+beta1*s;
 
 for(n=0;n<DEGREE;n++){
-
-for(i=0;i<LEN;i++){
-soln[n][i]=soln[n][i]-betalist[n]*plist[n][i];}
+sol[n]=sol[n]-betalist[n]*plist[n];
 }
 
+rrdot2=Tr(Adj(r)*r).real();
 
-rrtmp2=dot(rn,rn).real();
-
-alpha2=rrtmp2/rrtmp;
+alpha2=rrdot2/rrdot;
 
 for(n=0;n<DEGREE;n++){
 alphalist[n]=alpha2*(xi2[n]/xi1[n])*(betalist[n]/beta1);
 }
 
-for(i=0;i<LEN;i++){
-pn[i]=rn[i]+alpha2*pn[i];}
+p=r+alpha2*p;
 
 for(n=0;n<DEGREE;n++){
-for(i=0;i<LEN;i++){
-plist[n][i]=xi2[n]*rn[i]+alphalist[n]*plist[n][i];}
+plist[n]=xi2[n]*r+alphalist[n]*plist[n];
 }
 
-resid=sqrt(rrtmp2/(LEN));
+resid=sqrt(rrdot2/LEN);
 
 for(n=0;n<DEGREE;n++){
 xi0[n]=xi1[n];
 xi1[n]=xi2[n];
 }
+    
 
 alpha1=alpha2;
 beta0=beta1;
-count2++;
 
+count++;
 //cout << "residual is " << resid << "\n" << flush;
 }
-while((resid>CG_RESIDUAL)&&(count2<(2*LEN)));
-cout << "CPU_TIME_MCG " <<  double(clock()-begin_time)/CLOCKS_PER_SEC << endl; 
+while((resid>CG_RESIDUAL)&&(count<(10*LEN)));
 
-#endif
-    
-av_count2+=count2;
+av_count+=count;
 
 
 if(0){
 cout<<"exiting residual is " << resid << " at " 
-<< count2 << " iterations\n" <<
+<< count << " iterations\n" <<
 flush;}
 
 
-if(no_calls%10==0){
-#ifndef GPU
+
+if(no_calls%100==0){
 cout << "average number of CG iterations " <<
-(double)av_count2/(no_calls) << "\n" << flush;
-
-f_cgs  << (double)av_count2/(no_calls) << "\n" << flush;
-
+(double)av_count/(no_calls) << "\n" << flush;
 no_calls=0;
-
-av_count2=0;
-#endif
-}
-
-
-
-// extract vector
-
-for(n=0;n<DEGREE;n++){
-for(i=0;i<LEN;i++){
-pn[i]=soln[n][i];
-}
-sparse_mult(m,col,row,1,pn,tn);
-sol[n]=extract_vector(pn);
-psol[n]=extract_vector(tn);
+av_count=0;
 }
 
 // check solutions
 
+
 for(n=0;n<DEGREE;n++){
-for(i=0;i<LEN;i++){
-pn[i]=soln[n][i];}
 
-sparse_mult(m,col,row,1,pn,tn);
-sparse_mult(m,col,row,-1,tn,sn);
-for(i=0;i<LEN;i++){
-sn[i]=sn[i]+MASS*MASS*pn[i];}
+t=Fermion_op(U,sol[n]);
+psol[n]=t;
+s=Adj_Fermion_op(U,t);
 
-for(i=0;i<LEN;i++){
-sn[i]=sn[i]+shift[n]*pn[i];}
+s=s+(MASS*MASS+shift[n])*sol[n];
 
-double t=0.0;
-for(i=0;i<LEN;i++){
-t+=((bn[i]-sn[i])*conjug(bn[i]-sn[i])).real();}
+double tt;
+tt=Tr(Adj(s-b)*(s-b)).real();
 
-if(sqrt(t)/LEN>0.0000001){cout << "poor soln\n" << sqrt(t)/LEN << endl;}
+if(sqrt(tt)/LEN>0.0000001){cout << "poor soln\n" << sqrt(tt)/LEN << endl;}
 
 }
-
 
 
 return;

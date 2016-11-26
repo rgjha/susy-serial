@@ -1,5 +1,4 @@
 #include "utilities.h"
-#include "matrix.h"
 
 
 #ifndef CG_RESIDUAL_H

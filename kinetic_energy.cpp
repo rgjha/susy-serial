@@ -14,7 +14,7 @@ dum=dum+Tr(Adj(p_U.get(x,mu))*p_U.get(x,mu));
 }  
  
  
-dum=dum+Cjg(p_F)*p_F;
+dum=dum+Tr(Adj(p_F)*p_F);
    
 return(dum.real());
 	
