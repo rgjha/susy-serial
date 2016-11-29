@@ -286,16 +286,21 @@ return(1.0);
 }
 
 Umatrix twist(const Lattice_Vector &x, const Lattice_Vector &v){
-    int coord,i;
+    int coord,sum,i;
     Umatrix dum=Umatrix(1);
     if(!TWIST) return dum;
  
+    dum=Umatrix(1);
+    sum=0;
     for(i=0;i<(D-1);i++){
-    coord=x.get(i)+v.get(i);
-    if ((coord >= side[i]) || (coord <0)) {
-    dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
-}
+        coord=x.get(i)+v.get(i);
+        if ((coord >= side[i]) || (coord <0)) {
+            dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+            sum+=coord;}
     }
+    if(sum<0) return (dum);
+    if(sum>0) return (Adj(dum));
+
     return(dum);
 }
 
@@ -307,11 +312,15 @@ Umatrix twist(const Lattice_Vector &x, const Lattice_Vector &v1 ,const Lattice_V
     for(i=0;i<(D-1);i++){
     coord=x.get(i)+v1.get(i)+v2.get(i);
     if ((coord >= side[i]) || (coord <0)) {
-    dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
-}
+    	dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
+    	sum+=coord;} 
     }
+    if(sum<0) return (dum);
+    if(sum>0) return (Adj(dum));
+
     return(dum);
 }
+
 
 Umatrix twist(const Lattice_Vector &x, const Lattice_Vector &v1 ,const Lattice_Vector &v2, const Lattice_Vector &v3){
     int coord,i;
@@ -322,8 +331,11 @@ Umatrix twist(const Lattice_Vector &x, const Lattice_Vector &v1 ,const Lattice_V
     coord=x.get(i)+v1.get(i)+v2.get(i)+v3.get(i);
     if ((coord >= side[i]) || (coord <0)) {
     dum=dum*Lambda[i]*Complex(0.0,sqrt(2.0));
-}
+    sum+=coord;} 
     }
+    if(sum<0) return (dum);
+    if(sum>0) return (Adj(dum));
+
     return(dum);
 }
 
