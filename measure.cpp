@@ -24,10 +24,6 @@ Complex M[LEN][LEN];
 	if(f_data.bad()){ 
 	cout << "failed to open data file\n" << flush ;}
 
-//        f_av.open("eigenvalues",ios::app);
-//        if(f_av.bad()){
-//        cout << "failed to open eigenvalues file\n" << flush;}
-
         f_scalars.open("scalars",ios::app);
         if(f_scalars.bad()){
         cout << "failed to open scalars file\n" << flush;}
@@ -40,24 +36,9 @@ Complex M[LEN][LEN];
         if(f_loop.bad()){
         cerr << "failed to open loops file" << "\n";exit(1);}
        
- //       f_loop2.open("loops2",ios::app);
- //       if(f_loop2.bad()){
-//        cerr << "failed to open loops2 file" << "\n";exit(1);} 
-
-//        f_kon1.open("kon1",ios::app);
-//        if(f_kon1.bad()){cerr << "failed to open kon1 file" << "\n";exit(1);}
-
-        
-//        f_kon2.open("kon2",ios::app);
-//        if(f_kon2.bad()){cerr << "failed to open kon2 file" << "\n";exit(1);}
-
 	first_time=0;
 	}
 
-//        block_lattice(U,U2);
-        
-        //unit(U,U2);
-	  
 	// check Bianchi
 	if(NUMLINK==5){
 	B=Bianchi(U);
@@ -68,9 +49,6 @@ Complex M[LEN][LEN];
     
   
         loop(U,wilson);  
- //       loop(U2,wilson2);
-//	f_kon1 << konishi(U) << endl;
-  //      f_kon2 << konishi(U2)/16.0<< endl;
 
         for(r=1;r<=(LX/2);r++){
         for(m=1;m<=(T/2);m++){
@@ -79,25 +57,18 @@ Complex M[LEN][LEN];
         f_loop  << "\n" << flush;
 
 
-/*for(r=1;r<=(LX/2);r++){
-        for(m=1;m<=(T/2);m++){
-         f_loop2 << r << "\t" << m <<  "\t" << wilson2[r][m]/((D-1)*SITES) << "\t" << flush;}
-        }
-        f_loop2  << "\n" << flush; 
-*/
         obs(U,F,act_s,mass,d,act_F,eigenvals);
 
         
 #ifdef FULLMATRIX
-        if((num%(GAP)==0)&&(FERMIONS==1)){
+        if((num%(10*GAP)==0)&&(FERMIONS==1)){
 	full_fermion_op(U,M);
-       // eigenvalues(M);
+        eigenvalues(M);
 	(void)Pfaffian(M);
 }
 #endif
 
 	f_data << act_s << "\t" << act_F << "\n" << flush;
- //       f_det << d << endl;
     
         scalars(U,t1,t2);
 	

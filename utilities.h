@@ -15,7 +15,7 @@ using namespace std;
 const int FERMIONS = 1;
 const int T = 2;
 const int NCOLOR = 2;
-const int NUMGEN = (NCOLOR*NCOLOR-1);
+const int NUMGEN = (NCOLOR*NCOLOR);
 
 #define Q16 
 
@@ -43,7 +43,7 @@ const double GAUGETOL = 0.00000000000001;
 const int DEGREE = 10;
 const double PBC = 1; // set to 1 for periodic b.c.
 const int SMALLEIG=0;
-const int TWIST = 1;
+const int TWIST = 0;
 
 
 // Omelyan
@@ -51,7 +51,7 @@ const double INT_LAMBDA = 0.193;
 const double INT_LAMBDA_CONT = 0.386;
 const double INT_LAMBDA_MID = 0.614;
 
-//#define FULLMATRIX
+#define FULLMATRIX
 
 
 extern double ampdeg,amp[DEGREE],shift[DEGREE];

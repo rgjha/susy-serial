@@ -4,6 +4,7 @@
 #include "line.h"
 #include "unit.h"
 #include "scalars.h"
+#include "matrix.h"
 
 void measure(const Gauge_Field &u,
 const Twist_Fermion &F, int & num);

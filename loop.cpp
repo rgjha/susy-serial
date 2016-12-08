@@ -17,31 +17,40 @@ site=0;
 while(loop_over_lattice(x,site)){
 
 for(mu=0;mu<(D-1);mu++)
-for(nu=D-1;nu<D;nu++){
+for(nu=mu+1;nu<(D-1);nu++){
 
 e_mu=Lattice_Vector(mu);
 e_nu=Lattice_Vector(nu);
 
 y=x;
-prod=Umatrix(1);
-for(r=1;r<=R;r++){
-prod=prod*(U.get(y,mu));
+prod=U.get(x,mu);
+for(r=1;r<R;r++){
+prod=prod*U.get(y,e_mu,mu);
 y=y+e_mu;
 }
-for(t=1;t<=M;t++){
-prod=prod*(U.get(y,nu));
+
+y=y+e_mu;
+prod=prod*U.get(y,e_nu,nu);
+for(t=1;t<M;t++){
+prod=prod*U.get(y,e_nu,nu);
 y=y+e_nu;
 }
-y=y-e_mu;
-for(r=1;r<=R;r++){
-prod=prod*Adj(U.get(y,mu));
-y=y-e_mu;
+
+y=x;
+prod2=U.get(x,nu);
+for(r=1;r<R;r++){
+prod2=prod2*U.get(y,e_nu,nu);
+y=y+e_nu;
 }
-y=y+e_mu-e_nu;
-for(t=1;t<=M;t++){
-prod=prod*Adj(U.get(y,nu));
-y=y-e_nu;
+
+y=y+e_nu;
+prod2=U.get(y,e_mu,mu);
+for(t=1;t<M;t++){
+prod2=prod2*U.get(y,e_mu,mu);
+y=y+e_mu;
 }
+
+prod=prod*Adj(prod2);
 
 wilson[R][M]=wilson[R][M]+(1.0/NCOLOR)*Tr(prod).norm();
 }

@@ -49,9 +49,9 @@ xi2[n]=beta0;
 r=b;
 p=b;
 
-check_trace(p);
+//check_trace(p);
 
-double MASS=0.0;
+double MASS=0.1;
 
 do{
 

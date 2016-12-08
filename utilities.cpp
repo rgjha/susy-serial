@@ -191,10 +191,18 @@ Complex Tr(const Umatrix &o){
 Umatrix gaussU(void){
 	int i;
 	Umatrix tmp=Umatrix();
-	for(i=0;i<NUMGEN;i++){
+	for(i=0;i<(NCOLOR*NCOLOR-1);i++){
 	tmp=tmp+1.0/sqrt(2.0)*Complex(gasdev(),gasdev())*Lambda[i];}
 	return(tmp);
 	}
+
+Umatrix gaussUtr(void){
+   int i;
+   Umatrix tmp=Umatrix();
+   for(i=0;i<NCOLOR*NCOLOR;i++){
+    tmp=tmp+1.0/sqrt(2.0)*(Complex(gasdev(),gasdev())*Lambda[i]);}
+    return(tmp);
+    }
 
  Umatrix traceless(const Umatrix &U){
  Umatrix dum;
@@ -858,7 +866,7 @@ return;
 Site_Field::Site_Field(int c){
 if(c==1){
 for(int i=0;i<SITES;i++){
-points[i]=gaussU();
+points[i]=gaussUtr();
 }
 return;}
 
@@ -1074,7 +1082,7 @@ Link_Field::Link_Field(int c){
 if(c==1){
 for(int i=0;i<SITES;i++){
 for(int j=0;j<NUMLINK;j++){
-flink[i][j]=gaussU();}}
+flink[i][j]=gaussUtr();}}
 return;
 }
 if(c==0){
@@ -1303,7 +1311,7 @@ for(int i=0;i<SITES;i++){
 for(int mu=0;mu<NUMLINK;mu++){
 square[i][mu][mu]=Umatrix();
 for(int nu=mu+1;nu<NUMLINK;nu++){
-square[i][mu][nu]=gaussU();
+square[i][mu][nu]=gaussUtr();
 square[i][nu][mu]=-1.0*square[i][mu][nu];
 }
 }
@@ -1686,7 +1694,6 @@ while(loop_over_lattice(x,sites)){
 for(mu=0;mu<NUMLINK;mu++){
 for(nu=mu+1;nu<NUMLINK;nu++){
 
-
 e_mu=Lattice_Vector(mu);
 e_nu=Lattice_Vector(nu);
 
@@ -1698,8 +1705,8 @@ tmp=tmp-
     U.get(x,nu)*L.get(x,e_nu,mu)+
     L.get(x,mu)*U.get(x,e_mu,nu);
 
-dum.set(x,mu,nu, traceless(tmp));
-dum.set(x,nu,mu,-1.0*traceless(tmp));
+dum.set(x,mu,nu, (tmp));
+dum.set(x,nu,mu,-1.0*(tmp));
 }}
 }
 
@@ -1727,7 +1734,7 @@ U.get(x,e_nu,mu)*P.get(x,mu,nu)-
 P.get(x,-e_mu,mu,nu)*U.get(x,-e_mu,mu);
 }
 
-dum.set(x,nu,traceless(tmp));
+dum.set(x,nu,(tmp));
 }}
 return(dum);
 }
@@ -1749,7 +1756,7 @@ Link_Field Dbplus(const Gauge_Field &U, const Site_Field &S){
     tmp=S.get(x,e_mu)*Udag.get(x,mu)-
         Udag.get(x,mu)*S.get(x);
             
-        dum.set(x,mu,traceless(tmp));
+        dum.set(x,mu,(tmp));
         }
     }
     return(dum);
@@ -1773,7 +1780,7 @@ Site_Field Dbminus(const Gauge_Field &U, const Link_Field &L){
         L.get(x,mu)*Udag.get(x,mu)-
         Udag.get(x,-e_mu,mu)*L.get(x,-e_mu,mu);
         }
-        dum.set(x,traceless(tmp));
+        dum.set(x,(tmp));
     }
     return(dum);
 }
@@ -1807,8 +1814,8 @@ Plaq_Field Dbminus(const Gauge_Field &U, const Plaq_Field &p){
     Udag.get(x,-e_c,c)*p.get(x,-e_a,-e_b,-e_c,a,b)
     );
     }}}
-        dum.set(x,d,e,traceless(tmp));
-        dum.set(x,e,d,-1.0*traceless(tmp));
+        dum.set(x,d,e,(tmp));
+        dum.set(x,e,d,-1.0*(tmp));
     }}}
     
     return(dum);
@@ -1846,8 +1853,8 @@ Plaq_Field Dbplus(const Gauge_Field &U, const Plaq_Field &p){
     Udag.get(x,-e_c,c)*p.get(x,e_a,e_b,d,e));
                                 
     }}}
-        dum.set(x,a,b,traceless(tmp));
-        dum.set(x,b,a,-1.0*traceless(tmp));
+        dum.set(x,a,b,(tmp));
+        dum.set(x,b,a,-1.0*(tmp));
     }}}
     
     return(dum);
