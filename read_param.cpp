@@ -24,8 +24,6 @@ unsigned int random_seed()
 
 }
 
-
-
 void read_param(void){
 double LAMBDA,BETA,GAMMA;
 ifstream f_in("parameters");
@@ -36,7 +34,7 @@ f_in>>SWEEPS>>THERM>>GAP>>BETA>>GAMMA>>C1>>C2>>DT>>READIN >>SWEEPNO ;
 
 // BETA is Rt (BETA in units of root lambda)
 // GAMMA  is MASS in units of root lambda
-// assume spatial size very large for this scaling
+
 LAMBDA=1.0;
 G=0.0;
 
@@ -94,14 +92,12 @@ cout << "Time step in leapfrog eqs " << DT << "\n";
 cout << "Trajectory length " << TRAJECTORY_LENGTH << "\n";
 cout << "Minimax approx degree " << DEGREE << "\n";
 cout << "Reading initial config: (1 for yes, 0 for no) " << READIN << "\n";
-//cout << "Old sweep number: " << OLDSWEEPNO << "\n";
 
 if (PBC==1.0) {cout << "periodic temporal bc for fermions" << "\n";}
 else{cout << "antiperiodic temporal bc for fermions" << "\n";}
 
 
 srand(random_seed());
-//srand(0);
 setup();
 
 return;
