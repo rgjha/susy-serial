@@ -9,150 +9,150 @@ double Complex::norm(void){return(sqrt(re*re+im*im));}
 void Complex::print(void) const {cout << "("<< re << ", " << im << ")";}
 
 ostream& operator<<(ostream& out,Complex c){
-	out<<c.real()<<"\t"<<c.imag();
-	return out;}
+  out<<c.real()<<"\t"<<c.imag();
+  return out;}
 istream& operator>>(istream& in,Complex & c){
-	double x,y;
-	in>>x>>y;
-	c=Complex(x,y);
-	return in;}
-	
+  double x,y;
+  in>>x>>y;
+  c=Complex(x,y);
+  return in;}
+
 
 Complex operator /(const Complex &o1, const Complex &o2){
-	Complex dum;
-	double norm;
-	norm=o2.real()*o2.real()+o2.imag()*o2.imag();
-	dum=Complex((o1.real()*o2.real()+o1.imag()*o2.imag())/norm,
-		(o1.imag()*o2.real()-o1.real()*o2.imag())/norm);
-	return(dum);}
+  Complex dum;
+  double norm;
+  norm=o2.real()*o2.real()+o2.imag()*o2.imag();
+  dum=Complex((o1.real()*o2.real()+o1.imag()*o2.imag())/norm,
+    (o1.imag()*o2.real()-o1.real()*o2.imag())/norm);
+  return(dum);}
 Complex pow(const Complex &o1, const int o2){
-	Complex c(1,0);
-	for (int i=0;i<o2;i++) c=c*o1;
-	return c;}
-  	 
-  
+  Complex c(1,0);
+  for (int i=0;i<o2;i++) c=c*o1;
+  return c;}
+
+
 
 // unitary matrix type Umatrix
 Umatrix::Umatrix(void){
-	for(int i=0;i<NCOLOR;i++){
-		for(int j=0;j<NCOLOR;j++) {mat[i][j]=Complex();}}
-	}
-	
+  for(int i=0;i<NCOLOR;i++){
+    for(int j=0;j<NCOLOR;j++) {mat[i][j]=Complex();}}
+  }
+
 Umatrix::Umatrix(int k){
          if(k==1){
          for(int i=0;i<NCOLOR;i++){
-	        for(int j=0;j<NCOLOR;j++) {mat[i][j]=Complex();}
-		}
-	 for(int n=0;n<NCOLOR;n++){
-	 mat[n][n]=Complex(1.0,0.0);}
-	 }
-	 else {cout << "wrong Umatrix constructor\n" << flush; }
-	 
+          for(int j=0;j<NCOLOR;j++) {mat[i][j]=Complex();}
+    }
+   for(int n=0;n<NCOLOR;n++){
+   mat[n][n]=Complex(1.0,0.0);}
+   }
+   else {cout << "wrong Umatrix constructor\n" << flush; }
+
 }
 
 Umatrix::Umatrix(Complex m[NCOLOR][NCOLOR]){
-	for(int i=0;i<NCOLOR;i++)
-		for(int j=0;j<NCOLOR;j++) mat[i][j]=m[i][j];}
-		
+  for(int i=0;i<NCOLOR;i++)
+    for(int j=0;j<NCOLOR;j++) mat[i][j]=m[i][j];}
+
 
 Complex Umatrix::get(int i, int j) const {return(mat[i][j]);}
 void Umatrix::set(int i, int j, const Complex o){mat[i][j]=o;}
 void Umatrix::print(void){
-	for(int i=0;i<NCOLOR;i++){
-		for(int j=0;j<NCOLOR;j++){mat[i][j].print();cout << "\t";}
-		cout << "\n";}
-		}
+  for(int i=0;i<NCOLOR;i++){
+    for(int j=0;j<NCOLOR;j++){mat[i][j].print();cout << "\t";}
+    cout << "\n";}
+    }
 Umatrix Adj(const Umatrix &u){
         Umatrix res;
         for(int i=0;i<NCOLOR;i++)
-	for(int j=0;j<NCOLOR;j++){
-	res.set(i,j,conjug(u.get(j,i)));}
-	return(res);}		
+  for(int j=0;j<NCOLOR;j++){
+  res.set(i,j,conjug(u.get(j,i)));}
+  return(res);}
 
 
 Umatrix Trans(const Umatrix &u){
         Umatrix res;
         for(int i=0;i<NCOLOR;i++)
-	for(int j=0;j<NCOLOR;j++){
-	res.set(i,j,u.get(j,i));}
-	return(res);}
-	
-			
+  for(int j=0;j<NCOLOR;j++){
+  res.set(i,j,u.get(j,i));}
+  return(res);}
+
+
 ostream& operator<<(ostream& out,Umatrix s){
 for(int i=0;i<NCOLOR;i++)
 for(int j=0;j<NCOLOR;j++){
-	out<<s.get(i,j)<<'\t';}
-	return out;}		
+  out<<s.get(i,j)<<'\t';}
+  return out;}
 istream& operator>>(istream& in, Umatrix & s){
-	Complex v[NCOLOR][NCOLOR];
-	for(int i=0;i<NCOLOR;i++)
-	for(int j=0;j<NCOLOR;j++){
-	in>>v[i][j];}
-	s=Umatrix(v);
-	return in;
-	 }	
-		
+  Complex v[NCOLOR][NCOLOR];
+  for(int i=0;i<NCOLOR;i++)
+  for(int j=0;j<NCOLOR;j++){
+  in>>v[i][j];}
+  s=Umatrix(v);
+  return in;
+   }
+
 
 Umatrix operator *(const Umatrix &o1, const Umatrix &o2){
          Umatrix r;
-	 Complex dum;
-	 for(int i=0;i<NCOLOR;i++)
-	 for(int j=0;j<NCOLOR;j++){
-	 dum=Complex();
-	 for(int k=0;k<NCOLOR;k++){
-	 dum=dum+o1.get(i,k)*o2.get(k,j);}
-	 r.set(i,j,dum);}
-	 return(r);}	 
-	 
+   Complex dum;
+   for(int i=0;i<NCOLOR;i++)
+   for(int j=0;j<NCOLOR;j++){
+   dum=Complex();
+   for(int k=0;k<NCOLOR;k++){
+   dum=dum+o1.get(i,k)*o2.get(k,j);}
+   r.set(i,j,dum);}
+   return(r);}
+
         Umatrix operator *(const Umatrix &o1, const Complex &o2){
         Umatrix dum;
-	for(int i=0;i<NCOLOR;i++)
-	for(int j=0;j<NCOLOR;j++){
-	dum.set(i,j,o1.get(i,j)*o2);}
-	return(dum);}
+  for(int i=0;i<NCOLOR;i++)
+  for(int j=0;j<NCOLOR;j++){
+  dum.set(i,j,o1.get(i,j)*o2);}
+  return(dum);}
         Umatrix operator *(const Complex &o2, const Umatrix &o1){
-	Umatrix dum;
-	for(int i=0;i<NCOLOR;i++)
-	for(int j=0;j<NCOLOR;j++){
-	dum.set(i,j,o1.get(i,j)*o2);}
-	return(dum);}
-	Umatrix operator *(const Umatrix &o1, const double o2){
+  Umatrix dum;
+  for(int i=0;i<NCOLOR;i++)
+  for(int j=0;j<NCOLOR;j++){
+  dum.set(i,j,o1.get(i,j)*o2);}
+  return(dum);}
+  Umatrix operator *(const Umatrix &o1, const double o2){
         Umatrix dum;
-	for(int i=0;i<NCOLOR;i++)
-	for(int j=0;j<NCOLOR;j++){
-	dum.set(i,j,o1.get(i,j)*o2);}
-	return(dum);}
-	Umatrix operator *(const double o2, const Umatrix &o1){
+  for(int i=0;i<NCOLOR;i++)
+  for(int j=0;j<NCOLOR;j++){
+  dum.set(i,j,o1.get(i,j)*o2);}
+  return(dum);}
+  Umatrix operator *(const double o2, const Umatrix &o1){
         Umatrix dum;
-	for(int i=0;i<NCOLOR;i++)
-	for(int j=0;j<NCOLOR;j++){
-	dum.set(i,j,o1.get(i,j)*o2);}
-	return(dum);}
-	Umatrix operator +(const Umatrix &x, const Umatrix &y){
-	Umatrix dum;
-	for(int i=0;i<NCOLOR;i++)
-	for(int j=0;j<NCOLOR;j++)
-	dum.set(i,j,x.get(i,j)+y.get(i,j));
-	return(dum);
-	}
+  for(int i=0;i<NCOLOR;i++)
+  for(int j=0;j<NCOLOR;j++){
+  dum.set(i,j,o1.get(i,j)*o2);}
+  return(dum);}
+  Umatrix operator +(const Umatrix &x, const Umatrix &y){
+  Umatrix dum;
+  for(int i=0;i<NCOLOR;i++)
+  for(int j=0;j<NCOLOR;j++)
+  dum.set(i,j,x.get(i,j)+y.get(i,j));
+  return(dum);
+  }
         Umatrix operator -(const Umatrix &x, const Umatrix &y){
-	Umatrix dum;
-	for(int i=0;i<NCOLOR;i++)
-	for(int j=0;j<NCOLOR;j++)
-	dum.set(i,j,x.get(i,j)-y.get(i,j));
-	return(dum);
-	}
-	
+  Umatrix dum;
+  for(int i=0;i<NCOLOR;i++)
+  for(int j=0;j<NCOLOR;j++)
+  dum.set(i,j,x.get(i,j)-y.get(i,j));
+  return(dum);
+  }
+
 
     Umatrix exp(const Umatrix &u){
-	Umatrix c,del,prod;
-	double fac=1.0;
+  Umatrix c,del,prod;
+  double fac=1.0;
         int i=1;
         prod=Umatrix(1);
         c=Umatrix(1);
         static int sum=0,counter=0;
-	
-	do{
+
+  do{
         fac=fac*(double)i;
         prod=prod*u;
         del=prod*(1.0/fac);
@@ -163,35 +163,35 @@ Umatrix operator *(const Umatrix &o1, const Umatrix &o2){
         sum+=i;
         counter++;
         if(counter==100000){
-        cout << "mean no. of terms in exp() " 
+        cout << "mean no. of terms in exp() "
         << (double)sum/counter << "\n" << flush;
         counter=0;sum=0;}
-        
-	return(c);}
-	 
-					
-	
+
+  return(c);}
+
+
+
 Complex Tr(const Umatrix &o){
          Complex dum=Complex();
-	 for(int i=0;i<NCOLOR;i++)
-	 dum=dum+o.get(i,i);
-	 return(dum);}	 
+   for(int i=0;i<NCOLOR;i++)
+   dum=dum+o.get(i,i);
+   return(dum);}
 
 Umatrix gaussU(void){
-	int i;
-	Umatrix tmp=Umatrix();
-	for(i=0;i<NUMGEN;i++){
-	tmp=tmp+1.0/sqrt(2.0)*Complex(gasdev(),gasdev())*Lambda[i];}
-	return(tmp);
-	}
+  int i;
+  Umatrix tmp=Umatrix();
+  for(i=0;i<NUMGEN;i++){
+  tmp=tmp+1.0/sqrt(2.0)*Complex(gasdev(),gasdev())*Lambda[i];}
+  return(tmp);
+  }
 
 
 // adjoint field matrix type Afield
 Afield::Afield(void){
-	for(int i=0;i<NUMGEN;i++)
-		{afield[i]=Complex();}
-	}
-	
+  for(int i=0;i<NUMGEN;i++)
+    {afield[i]=Complex();}
+  }
+
 Afield::Afield(int c){
 if(c==1){
 for(int i=0;i<NUMGEN;i++){
@@ -202,9 +202,9 @@ return;
 }
 
 Afield::Afield(Complex m[NUMGEN]){
-	for(int i=0;i<NUMGEN;i++)
-		afield[i]=m[i];}
-				
+  for(int i=0;i<NUMGEN;i++)
+    afield[i]=m[i];}
+
 Afield gaussA(void){
 Afield dum=Afield();
 
@@ -218,71 +218,71 @@ return(dum);
 Complex Afield::get(int i) const {return(afield[i]);}
 void Afield::set(int i, const Complex o){afield[i]=o;}
 void Afield::print(void){
-	for(int i=0;i<NUMGEN;i++){
-		afield[i].print();cout << "\t";}
-		cout << "\n";
-		}
+  for(int i=0;i<NUMGEN;i++){
+    afield[i].print();cout << "\t";}
+    cout << "\n";
+    }
 
-// nb using antihermitian basis for Lambdas		
+// nb using antihermitian basis for Lambdas
 Afield Cjg(const Afield &u){
         Afield res;
         for(int i=0;i<NUMGEN;i++){
-	res.set(i,conjug(u.get(i)));}
-	return(res);}		
-		
+  res.set(i,conjug(u.get(i)));}
+  return(res);}
+
 ostream& operator<<(ostream& out,Afield s){
 for(int i=0;i<NUMGEN;i++)
 {
-	out<<s.get(i)<<'\t';}
-	return out;}
-			
+  out<<s.get(i)<<'\t';}
+  return out;}
+
 istream& operator>>(istream& in, Afield & s){
-	Complex v[NUMGEN];
-	for(int j=0;j<NUMGEN;j++){
-	in>>v[j];}
-	s=Afield(v);
-	return in;
-	}		
-	 
-	 
+  Complex v[NUMGEN];
+  for(int j=0;j<NUMGEN;j++){
+  in>>v[j];}
+  s=Afield(v);
+  return in;
+  }
+
+
         Afield operator *(const Afield &o1, const Complex &o2){
         Afield dum;
-	for(int i=0;i<NUMGEN;i++)
-	{
-	dum.set(i,o1.get(i)*o2);}
-	return(dum);}
+  for(int i=0;i<NUMGEN;i++)
+  {
+  dum.set(i,o1.get(i)*o2);}
+  return(dum);}
         Afield operator *(const Complex &o2, const Afield &o1){
-	Afield dum;
-	for(int i=0;i<NUMGEN;i++)
-	{
-	dum.set(i,o1.get(i)*o2);}
-	return(dum);}
-	Afield operator *(const Afield &o1, const double o2){
+  Afield dum;
+  for(int i=0;i<NUMGEN;i++)
+  {
+  dum.set(i,o1.get(i)*o2);}
+  return(dum);}
+  Afield operator *(const Afield &o1, const double o2){
         Afield dum;
-	for(int i=0;i<NUMGEN;i++)
-	{
-	dum.set(i,o1.get(i)*o2);}
-	return(dum);}
-	Afield operator *(const double o2, const Afield &o1){
+  for(int i=0;i<NUMGEN;i++)
+  {
+  dum.set(i,o1.get(i)*o2);}
+  return(dum);}
+  Afield operator *(const double o2, const Afield &o1){
         Afield dum;
-	for(int i=0;i<NUMGEN;i++)
-	{
-	dum.set(i,o1.get(i)*o2);}
-	return(dum);}
-	Afield operator +(const Afield &x, const Afield &y){
-	Afield dum;
-	for(int i=0;i<NUMGEN;i++){
-	dum.set(i,x.get(i)+y.get(i));}
-	return(dum);
-	}
+  for(int i=0;i<NUMGEN;i++)
+  {
+  dum.set(i,o1.get(i)*o2);}
+  return(dum);}
+  Afield operator +(const Afield &x, const Afield &y){
+  Afield dum;
+  for(int i=0;i<NUMGEN;i++){
+  dum.set(i,x.get(i)+y.get(i));}
+  return(dum);
+  }
         Afield operator -(const Afield &x, const Afield &y){
-	Afield dum;
-	for(int i=0;i<NUMGEN;i++){
-	dum.set(i,x.get(i)-y.get(i));}
-	return(dum);
-	}
-	
- 
+  Afield dum;
+  for(int i=0;i<NUMGEN;i++){
+  dum.set(i,x.get(i)-y.get(i));}
+  return(dum);
+  }
+
+
 
  Complex operator *(const Afield &A, const Afield &B){
  Complex dum=Complex();
@@ -290,8 +290,8 @@ istream& operator>>(istream& in, Afield & s){
  dum=dum+A.get(i)*B.get(i);}
  return(dum);
  }
- 
- 				
+
+
 Lattice_Vector::Lattice_Vector(void){for(int i=0;i<D;i++)coords[i]=0;}
 Lattice_Vector::Lattice_Vector(int mu){
 if(mu<D){
@@ -370,7 +370,7 @@ if(x.get(D-1)+y.get(D-1)>(T-1))return(PBC);
 return(1.0);
 }
 
-double BC(const Lattice_Vector &x, const Lattice_Vector &y, 
+double BC(const Lattice_Vector &x, const Lattice_Vector &y,
 const Lattice_Vector &z){
 
 if(x.get(D-1)+y.get(D-1)+z.get(D-1)<0) return(PBC);
@@ -379,7 +379,7 @@ if(x.get(D-1)+y.get(D-1)+z.get(D-1)>(T-1))return(PBC);
 return(1.0);
 }
 
-double BC(const Lattice_Vector &x, const Lattice_Vector &y, 
+double BC(const Lattice_Vector &x, const Lattice_Vector &y,
 const Lattice_Vector &z, const Lattice_Vector &w){
 
 if(x.get(D-1)+y.get(D-1)+z.get(D-1)+w.get(D-1)<0) return(PBC);
@@ -474,7 +474,7 @@ link[site][mu]=u;
 return;
 }
 
-	 
+
 Gauge_Field Adj(const Gauge_Field & U){
 int site;
 Gauge_Field W;
@@ -712,6 +712,22 @@ dum.set(x,j,k,s1.get(x,j,k)-s2.get(x,j,k));
 return(dum);
 }
 
+UPlaq_Field Plaq(const Gauge_Field &U){
+Lattice_Vector x,e_mu,e_nu;
+int site=0,mu,nu;
+UPlaq_Field P;
+
+while(loop_over_lattice(x,site)){
+for(mu=0;mu<NUMLINK;mu++){
+for(nu=mu+1;nu<NUMLINK;nu++){
+e_mu=Lattice_Vector(mu);
+e_nu=Lattice_Vector(nu);
+P.set(x,mu,nu,
+U.get(x,mu)*U.get(x+e_mu,nu)*Adj(U.get(x+e_nu,mu))*Adj(U.get(x,nu)));
+P.set(x,nu,mu,Adj(P.get(x,mu,nu)));
+}}}
+return(P);
+}
 
 UPlaq_Field operator *(const double o, const UPlaq_Field &s){
 int sites=0;
@@ -1062,7 +1078,7 @@ site=site+x.get(i)*Lattice_Map[i];
 return(square[site][mu][nu]);
 }
 
-void Plaq_Field::set(const Lattice_Vector &x, const int mu, const int nu, 
+void Plaq_Field::set(const Lattice_Vector &x, const int mu, const int nu,
 const Afield &u){
 int site=0,i;
 
@@ -1296,26 +1312,26 @@ return;
 ostream& operator<<(ostream& out, Adjoint_Matrix s){
 for(int i=0;i<NUMGEN;i++){
 for(int j=0;j<NUMGEN;j++){
-	out<<s.get(i,j)<<'\t';}}
-	return out;}
-			
-istream& operator>>(istream& in, Adjoint_Matrix & s){
-	Complex v[NUMGEN][NUMGEN];
-	for(int j=0;j<NUMGEN;j++){
-	for(int i=0;i<NUMGEN;i++){
-	in>>v[j][i];}}
-	s=Adjoint_Matrix(v);
-	return in;
-	}	
+  out<<s.get(i,j)<<'\t';}}
+  return out;}
 
-	
+istream& operator>>(istream& in, Adjoint_Matrix & s){
+  Complex v[NUMGEN][NUMGEN];
+  for(int j=0;j<NUMGEN;j++){
+  for(int i=0;i<NUMGEN;i++){
+  in>>v[j][i];}}
+  s=Adjoint_Matrix(v);
+  return in;
+  }
+
+
 Adjoint_Links::Adjoint_Links(void){
 for(int i=0;i<SITES;i++)
 for(int j=0;j<NUMLINK;j++){
 alinks[i][j]=Adjoint_Matrix();
 }
 return;
-} 
+}
 
 Adjoint_Matrix Adjoint_Links::get(const Lattice_Vector &x, const int mu) const{
 int site=0,i;
@@ -1460,7 +1476,7 @@ swap=0;
 for(p=0;p<4;p++){
 if(seq[p]>seq[p+1]) {tmp=seq[p];seq[p]=seq[p+1];seq[p+1]=tmp;
                      swap++;permutation*=(-1.0);}
-		    }
+        }
 }
 while(swap>0);
 return(permutation);
@@ -1655,104 +1671,98 @@ return(dum);
 
 
 Twist_Fermion betaterm(const Adjoint_Links &V, const Twist_Fermion &F){
-int a,b,sites,mu;
-Lattice_Vector x;
-Twist_Fermion dum=Twist_Fermion();
-Site_Field s=Site_Field();
-Link_Field l=Link_Field();
-Complex tmp;
-Afield tmp2;
+  int a,b,sites,mu;
+  Lattice_Vector x;
+  Twist_Fermion dum=Twist_Fermion();
+  Site_Field s=Site_Field();
+  Link_Field l=Link_Field();
+  Complex tmp;
+  Afield tmp2;
 
-// only relevant if U(N)
+  // only relevant if U(N)
 
-if(NUMGEN==(NCOLOR*NCOLOR-1)){return(dum);}
-//SIMON: beta term modification
+  if(NUMGEN==(NCOLOR*NCOLOR-1)){return(dum);}
+  //SIMON: beta term modification
 
-sites=0;
-while(loop_over_lattice(x,sites)){
-tmp2=Afield();
+  sites=0;
+  while(loop_over_lattice(x,sites)){
+    tmp2=Afield();
 
-for(mu=0;mu<NUMLINK;mu++){
+    for(mu=0;mu<NUMLINK;mu++){
 
-for(a=0;a<NUMGEN-1;a++){
-tmp=Complex();
-for(b=0;b<NUMGEN;b++){
-tmp=tmp+
-conjug(V.get(x,mu).get(a,b))*F.getL().get(x,mu).get(b);}
+      for(a=0;a<NUMGEN-1;a++){
+        tmp=Complex();
+        for(b=0;b<NUMGEN;b++){
+          tmp=tmp+
+            conjug(V.get(x,mu).get(a,b))*F.getL().get(x,mu).get(b);}
 
-tmp2.set(a,tmp);}
+        tmp2.set(a,tmp);}
 
-s.set(x,C1*0.5*tmp2);}
+      s.set(x,C1*0.5*tmp2);}
 
-dum.setS(s);
-}
+    dum.setS(s);
+  }
 
-sites=0;
-while(loop_over_lattice(x,sites)){
-for(mu=0;mu<NUMLINK;mu++){
+  sites=0;
+  while(loop_over_lattice(x,sites)){
+    for(mu=0;mu<NUMLINK;mu++){
+      tmp2=Afield();
+      for(b=0;b<NUMGEN;b++){
+        tmp=Complex();
+        for(a=0;a<NUMGEN-1;a++){
+          tmp=tmp+
+            conjug(V.get(x,mu).get(a,b))*F.getS().get(x).get(a);}
+        tmp2.set(b,tmp);
+      }
 
-tmp2=Afield();
-for(b=0;b<NUMGEN;b++){
-tmp=Complex();
-for(a=0;a<NUMGEN-1;a++){
-tmp=tmp+
-conjug(V.get(x,mu).get(a,b))*F.getS().get(x).get(a);}
-tmp2.set(b,tmp);
-}
-
-l.set(x,mu,-0.5*C1*tmp2);
-}
-}
-
-dum.setL(l);
-
-return(dum);
-
+      l.set(x,mu,-0.5*C1*tmp2);
+    }
+  }
+  dum.setL(l);
+  return dum;
 }
 
 
 Twist_Fermion Fermion_op(const Adjoint_Links &V, const Twist_Fermion &F){
-Twist_Fermion F2=Twist_Fermion(),F3;
+  Twist_Fermion F2=Twist_Fermion(),F3;
 
-F2.setC(Dplus(V,F.getL()));
-F2.setL(Dminus(V,F.getC()));
-F2.setL(F2.getL()+0.5*Dbplus(V,F.getS()));
-F2.setS(0.5*Dbminus(V,F.getL()));
+  F2.setC(Dplus(V,F.getL()));
+  F2.setL(Dminus(V,F.getC()));
+  F2.setL(F2.getL()+0.5*Dbplus(V,F.getS()));
+  F2.setS(0.5*Dbminus(V,F.getL()));
 
-F3=betaterm(V,F);
-F2.setS(F2.getS()+F3.getS());
-F2.setL(F2.getL()+F3.getL());
+  F3=betaterm(V,F);
+  F2.setS(F2.getS()+F3.getS());
+  F2.setL(F2.getL()+F3.getL());
 
-// Q-closed piece
-if(NUMLINK==5){
-F2.setC(F2.getC()+0.5*Dbminus(V,F.getC())+0.5*Dbplus(V,F.getC()));}
+  // Q-closed piece
+  if(NUMLINK==5){
+    F2.setC(F2.getC()+0.5*Dbminus(V,F.getC())+0.5*Dbplus(V,F.getC()));}
 
-
-return(F2);
-
+  return F2;
 }
 
 Twist_Fermion Adj_Fermion_op(const Adjoint_Links &V, const Twist_Fermion &F){
-Twist_Fermion F2=Twist_Fermion(),F3,F4;
+  Twist_Fermion F2=Twist_Fermion(),F3,F4;
 
-F3=Cjg(F);
+  F3=Cjg(F);
 
-F2.setC(Dplus(V,F3.getL()));
-F2.setL(Dminus(V,F3.getC()));
-F2.setL(F2.getL()+0.5*Dbplus(V,F3.getS()));
-F2.setS(0.5*Dbminus(V,F3.getL()));
+  F2.setC(Dplus(V,F3.getL()));
+  F2.setL(Dminus(V,F3.getC()));
+  F2.setL(F2.getL()+0.5*Dbplus(V,F3.getS()));
+  F2.setS(0.5*Dbminus(V,F3.getL()));
 
-F4=betaterm(V,F3);
-F2.setS(F2.getS()+F4.getS());
-F2.setL(F2.getL()+F4.getL());
+  F4=betaterm(V,F3);
+  F2.setS(F2.getS()+F4.getS());
+  F2.setL(F2.getL()+F4.getL());
 
-// Q-closed piece
-if(NUMLINK==5){
-F2.setC(F2.getC()+0.5*Dbminus(V,F3.getC())+0.5*Dbplus(V,F3.getC()));}
+  // Q-closed piece
+  if(NUMLINK==5){
+    F2.setC(F2.getC()+0.5*Dbminus(V,F3.getC())+0.5*Dbplus(V,F3.getC()));}
 
-F2=-1.0*Cjg(F2);
+  F2=-1.0*Cjg(F2);
 
-return(F2);
+  return F2;
 }
 
 
@@ -1873,23 +1883,23 @@ void ceigsrt(Complex d[], int n)
 }
 
 double gasdev(void){
-	static int iset=0;
-	static double gset;
-	double fac,rsq,v1,v2;
-	if(iset==0){
-		do{
-			v1=2.0*rand()/(double)RAND_MAX-1.0;
-			v2=2.0*rand()/(double)RAND_MAX-1.0;
-			rsq=v1*v1+v2*v2;}
-		while(rsq>=1.0 || rsq == 0.0);
-		fac=sqrt(-2.0*log(rsq)/rsq);
-		gset=v1*fac;
-		iset=1;
-		return(v2*fac);}
-	else {
-		iset=0;
-		return(gset);}}
-        
+  static int iset=0;
+  static double gset;
+  double fac,rsq,v1,v2;
+  if(iset==0){
+    do{
+      v1=2.0*rand()/(double)RAND_MAX-1.0;
+      v2=2.0*rand()/(double)RAND_MAX-1.0;
+      rsq=v1*v1+v2*v2;}
+    while(rsq>=1.0 || rsq == 0.0);
+    fac=sqrt(-2.0*log(rsq)/rsq);
+    gset=v1*fac;
+    iset=1;
+    return(v2*fac);}
+  else {
+    iset=0;
+    return(gset);}}
+
 //hardcoded for U(2) for now
 
 Complex det(const Umatrix &u){
@@ -1919,14 +1929,14 @@ Umatrix dum;
 
 void fourn(double data[],int nn[],int ndim,int isign)
 {
-	int i1,i2,i3,i2rev,i3rev,ip1,ip2,ip3,ifp1,ifp2;
-	int ibit,idim,k1,k2,n,nprev,nrem,ntot;
-	double tempi,tempr;
-	double theta,wi,wpi,wpr,wr,wtemp;
-    
-	ntot=1;
-	for (idim=1;idim<=ndim;idim++)
-		ntot *= nn[idim];
+  int i1,i2,i3,i2rev,i3rev,ip1,ip2,ip3,ifp1,ifp2;
+  int ibit,idim,k1,k2,n,nprev,nrem,ntot;
+  double tempi,tempr;
+  double theta,wi,wpi,wpr,wr,wtemp;
+
+  ntot=1;
+  for (idim=1;idim<=ndim;idim++)
+    ntot *= nn[idim];
         nprev=1;
         for (idim=ndim;idim>=1;idim--) {
             n=nn[idim];
