@@ -912,7 +912,7 @@ Complex Pfaffian(Complex M[LEN][LEN]) {
   static int firsttime = 1;
   double pivot, totalangle, angle, cosine, sine, mag;
   Complex dum, scale, f;
-  //        cout << "in Pfaffian\n" << flush;
+//  cout << "in Pfaffian\n" << flush;
   static ofstream f_pfaff;
 
   if (firsttime) {
@@ -923,7 +923,7 @@ Complex Pfaffian(Complex M[LEN][LEN]) {
   }
 
   // Loop over all rows in steps of 2
-  for (i = 0; i < LEN - 2; i += 2) {
+  for (i = 0; i < LEN - 1; i += 2) {
     // Find column whose ith component is biggest to use as pivot
     pivot = cnorm(M[i][i + 1]);
     jpiv = i + 1;
@@ -997,10 +997,11 @@ Complex Pfaffian(Complex M[LEN][LEN]) {
     f = f * M[i][i + 1];
   }
 
-  cout << "Pfaffian is " << Complex(cos(totalangle)*interchange, sin(totalangle)*interchange) << endl;
+  cout << "Pfaffian is " << Complex(cos(totalangle) * interchange,
+                                    sin(totalangle) * interchange) << endl;
 
-  f_pfaff << mag << "\t" << cos(totalangle)*interchange << "\t"
-    << sin(totalangle)*interchange << "\n" << flush;
+  f_pfaff << mag << "\t" << cos(totalangle) * interchange << "\t"
+                         << sin(totalangle) * interchange << "\n" << flush;
 
   return (f * interchange);
 }
