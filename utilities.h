@@ -20,7 +20,7 @@ const int NCOLOR = 3;
 const int NUMGEN = (NCOLOR*NCOLOR);
 //const int NUMGEN = (NCOLOR*NCOLOR)-1;  // Forcing SU(N) theory
 
-#define GPU
+//#define GPU
 #define Q16
 
 // Q=16 parameters
@@ -31,7 +31,7 @@ const int LX = 1;
 const int LY = 1;
 const int LZ = 32;
 const int SITES = (LX*LY*LZ*T);
-const unsigned int LEN = (16*NUMGEN*SITES);       // This is the size of fermion matrix // 
+const unsigned int LEN = (16*NUMGEN*SITES);       // This is the size of fermion matrix //
 const int supercharges =16;
 #else
 // Q=4 parameters
@@ -47,7 +47,7 @@ const int supercharges = 4;
 
 //const int NONZEROES = LEN/SITES/2;
 const unsigned int NONZEROES = (NUMGEN*NUMLINK*2);
- 
+
 const double GAUGETOL = 0.00000000000001;
 const int DEGREE = 10;      // Number of terms in  Remez approximation
 const double NORM = (1.0/sqrt(4.0*D));
@@ -64,59 +64,59 @@ const double INT_LAMBDA_MID = 0.614;
 //#define FULLMATRIX
 
 
-extern double ampdeg,amp[DEGREE],shift[DEGREE];
-extern int num_in_row[LEN],SIMULATING,SWEEPNO,TOTALNONZEROES;
-extern double KAPPA,DT,ALPHA,G,BMASS,C2,MASS;
-extern int SWEEPS,GAP,THERM,READIN,SEED, TRAJECTORY_LENGTH,OLDSWEEPNO;
+extern double ampdeg, amp[DEGREE], shift[DEGREE];
+extern int num_in_row[LEN], SIMULATING, SWEEPNO, TOTALNONZEROES;
+extern double KAPPA, DT, ALPHA, G, BMASS, C1, C2, MASS;
+extern int SWEEPS, GAP, THERM, READIN, SEED, TRAJECTORY_LENGTH, OLDSWEEPNO;
 extern double SMALLCUT, LARGECUT;
 extern double TIME;
 extern double perm[NUMLINK][NUMLINK][NUMLINK][NUMLINK][NUMLINK];
 extern int Lattice_Map[D];
-extern int side[D], BLOCK_MEASURE,BLOCKING;
+extern int side[D], BLOCK_MEASURE, BLOCKING;
 
 class Complex{
-	private:
-		double re,im;
-	public:
-		Complex();
-		Complex(double, double);
-		double real(void) const;
-		double imag(void) const;
-		double norm(void);
-		void print(void) const;
-		friend ostream& operator<<(ostream&,Complex);
-		friend istream& operator>>(istream&,Complex &);};
+  private:
+    double re, im;
+  public:
+    Complex();
+    Complex(double, double);
+    double real(void) const;
+    double imag(void) const;
+    double norm(void);
+    void print(void) const;
+    friend ostream& operator<<(ostream&, Complex);
+    friend istream& operator>>(istream&, Complex &);};
 
 inline Complex conjug(const Complex &o1){return(Complex(o1.real(),-o1.imag()));}
 inline Complex operator +(const Complex &o1, const Complex &o2){
-	return(Complex(o1.real()+o2.real(),o1.imag()+o2.imag()));}
+  return(Complex(o1.real()+o2.real(), o1.imag()+o2.imag()));}
 inline Complex operator -(const Complex &o1, const Complex &o2){
-	return(Complex(o1.real()-o2.real(),o1.imag()-o2.imag()));}
+  return(Complex(o1.real()-o2.real(), o1.imag()-o2.imag()));}
 inline Complex operator *(const Complex &o1, const Complex &o2){
-	return(Complex(o1.real()*o2.real()-o1.imag()*o2.imag(),
-		o1.real()*o2.imag()+o1.imag()*o2.real()));}
+  return(Complex(o1.real()*o2.real()-o1.imag()*o2.imag(),
+    o1.real()*o2.imag()+o1.imag()*o2.real()));}
 inline Complex operator *(const Complex &o1, const double o2){
-	return(Complex(o1.real()*o2,o1.imag()*o2));}
+  return(Complex(o1.real()*o2, o1.imag()*o2));}
 inline Complex operator *(const double o1, const Complex &o2){
-	return(Complex(o2.real()*o1,o2.imag()*o1));}
+  return(Complex(o2.real()*o1, o2.imag()*o1));}
 
-	
+
 Complex operator /(const Complex &, const Complex &);
 Complex pow(const Complex &, const int);
 
 class Umatrix{
-	private:
-		Complex mat[NCOLOR][NCOLOR];
-	public:
-		Umatrix();
-		Umatrix(int);
-		Umatrix(Complex [NCOLOR][NCOLOR]);
-		Complex get(int,int) const;
-		void set(int,int,const Complex);
-		void print(void);
-		friend ostream& operator<<(ostream &, Umatrix);
-		friend istream& operator>>(istream &, Umatrix &);};
-		
+  private:
+    Complex mat[NCOLOR][NCOLOR];
+  public:
+    Umatrix();
+    Umatrix(int);
+    Umatrix(Complex [NCOLOR][NCOLOR]);
+    Complex get(int, int) const;
+    void set(int, int, const Complex);
+    void print(void);
+    friend ostream& operator<<(ostream &, Umatrix);
+    friend istream& operator>>(istream &, Umatrix &);};
+
 Umatrix operator +(const Umatrix &o1, const Umatrix &o2);
 Umatrix operator -(const Umatrix &o1, const Umatrix &o2);
 Umatrix operator *(const Umatrix &, const Umatrix &);
@@ -132,14 +132,14 @@ Umatrix Trans(const Umatrix &);
 
 class Lattice_Vector{
 private:
-	int coords[D];
+  int coords[D];
 public:
-	Lattice_Vector(void);
-	Lattice_Vector(int);
-	void set(int, int);
-	int get(int) const;
-	void print(void) const;
-	};
+  Lattice_Vector(void);
+  Lattice_Vector(int);
+  void set(int, int);
+  int get(int) const;
+  void print(void) const;
+  };
 
 Lattice_Vector operator +(const Lattice_Vector &x, const Lattice_Vector &y);
 Lattice_Vector operator -(const Lattice_Vector &x, const Lattice_Vector &y);
@@ -157,31 +157,31 @@ int length(const Lattice_Vector &x);
 
 class Gauge_Field{
 private:
-	Umatrix link[SITES][NUMLINK];
-	
+  Umatrix link[SITES][NUMLINK];
+
 public:
         Gauge_Field(void);
-	Gauge_Field(int);
-	Umatrix get(const Lattice_Vector &, const int) const;
-	void set(const Lattice_Vector &, const int, const Umatrix &);
-	};
-	
+  Gauge_Field(int);
+  Umatrix get(const Lattice_Vector &, const int) const;
+  void set(const Lattice_Vector &, const int, const Umatrix &);
+  };
+
 Gauge_Field Adj(const Gauge_Field &);
 Gauge_Field Transpose(const Gauge_Field &);
 
 class Afield{
-	private:
-		Complex afield[NUMGEN];
-	public:
-		Afield(void);
-		Afield(int);
-		Afield(Complex [NUMGEN]);
-		Complex get(int) const;
-		void set(int,const Complex);
-		void print(void);
-		friend ostream& operator<<(ostream &, Afield);
-		friend istream& operator>>(istream &, Afield &);};
-		
+  private:
+    Complex afield[NUMGEN];
+  public:
+    Afield(void);
+    Afield(int);
+    Afield(Complex [NUMGEN]);
+    Complex get(int) const;
+    void set(int, const Complex);
+    void print(void);
+    friend ostream& operator<<(ostream &, Afield);
+    friend istream& operator>>(istream &, Afield &);};
+
 Afield operator +(const Afield &o1, const Afield &o2);
 Afield operator -(const Afield &o1, const Afield &o2);
 Afield operator *(const Afield &, const Complex &);
@@ -194,12 +194,12 @@ Afield gaussA(void);
 
 class Scalar_Plaquette{
 private:
-	Complex data[SITES][NUMLINK][NUMLINK];
+  Complex data[SITES][NUMLINK][NUMLINK];
 public:
-	Scalar_Plaquette(void);
-   	Complex get(const Lattice_Vector &, const int, const int) const;
-	void set(const Lattice_Vector &, const int, const int, const Complex &);
-	};
+  Scalar_Plaquette(void);
+    Complex get(const Lattice_Vector &, const int, const int) const;
+  void set(const Lattice_Vector &, const int, const int, const Complex &);
+  };
 
 
 Scalar_Plaquette operator +(const Scalar_Plaquette &, const Scalar_Plaquette &);
@@ -211,16 +211,16 @@ Scalar_Plaquette mydiff2(const Scalar_Plaquette &, const Scalar_Plaquette &);
 
 class USite_Field{
 private:
-	Umatrix points[SITES];
+  Umatrix points[SITES];
 public:
-	USite_Field(void);
-	USite_Field(int);
-   	Umatrix get(const Lattice_Vector &) const;
-	void set(const Lattice_Vector &, const Umatrix &);
-	void print(void);
-	};
+  USite_Field(void);
+  USite_Field(int);
+    Umatrix get(const Lattice_Vector &) const;
+  void set(const Lattice_Vector &, const Umatrix &);
+  void print(void);
+  };
 
-USite_Field Adj(const USite_Field &);	
+USite_Field Adj(const USite_Field &);
 
 USite_Field operator +(const USite_Field &, const USite_Field &);
 USite_Field operator -(const USite_Field &, const USite_Field &);
@@ -230,14 +230,14 @@ Umatrix operator *(const USite_Field &, const USite_Field &);
 
 class UPlaq_Field{
 private:
-	Umatrix square[SITES][NUMLINK][NUMLINK];
+  Umatrix square[SITES][NUMLINK][NUMLINK];
 public:
-	UPlaq_Field(void);
-	UPlaq_Field(int);
-	Umatrix get(const Lattice_Vector &, const int, const int) const;
-	void set(const Lattice_Vector &, const int, const int,  const Umatrix &);
-	void print(void);
-	};
+  UPlaq_Field(void);
+  UPlaq_Field(int);
+  Umatrix get(const Lattice_Vector &, const int, const int) const;
+  void set(const Lattice_Vector &, const int, const int,  const Umatrix &);
+  void print(void);
+  };
 
 
 UPlaq_Field Adj(const UPlaq_Field &);
@@ -251,16 +251,16 @@ UPlaq_Field Plaq(const Gauge_Field &);
 
 class Site_Field{
 private:
-	Afield points[SITES];
+  Afield points[SITES];
 public:
-	Site_Field(void);
-	Site_Field(int);
-	Afield get(const Lattice_Vector &) const;
-	void set(const Lattice_Vector &, const Afield &);
-	void print(void);
-	};
+  Site_Field(void);
+  Site_Field(int);
+  Afield get(const Lattice_Vector &) const;
+  void set(const Lattice_Vector &, const Afield &);
+  void print(void);
+  };
 
-Site_Field Cjg(const Site_Field &);	
+Site_Field Cjg(const Site_Field &);
 
 Site_Field operator +(const Site_Field &, const Site_Field &);
 Site_Field operator -(const Site_Field &, const Site_Field &);
@@ -271,14 +271,14 @@ Complex operator *(const Site_Field &, const Site_Field &);
 
 class Link_Field{
 private:
-	Afield links[SITES][NUMLINK];
+  Afield links[SITES][NUMLINK];
 public:
-	Link_Field(void);
-	Link_Field(int);
-	Afield get(const Lattice_Vector &, const int) const;
-	void set(const Lattice_Vector &, const int, const Afield &);
-	void print(void);
-	};
+  Link_Field(void);
+  Link_Field(int);
+  Afield get(const Lattice_Vector &, const int) const;
+  void set(const Lattice_Vector &, const int, const Afield &);
+  void print(void);
+  };
 
 
 Link_Field Cjg(const Link_Field &);
@@ -292,14 +292,14 @@ Complex operator *(const Link_Field &, const Link_Field &);
 
 class Plaq_Field{
 private:
-	Afield square[SITES][NUMLINK][NUMLINK];
+  Afield square[SITES][NUMLINK][NUMLINK];
 public:
-	Plaq_Field(void);
-	Plaq_Field(int);
-	Afield get(const Lattice_Vector &, const int, const int) const;
-	void set(const Lattice_Vector &, const int, const int,  const Afield &);
-	void print(void);
-	};
+  Plaq_Field(void);
+  Plaq_Field(int);
+  Afield get(const Lattice_Vector &, const int, const int) const;
+  void set(const Lattice_Vector &, const int, const int,  const Afield &);
+  void print(void);
+  };
 
 
 Plaq_Field Cjg(const Plaq_Field &);
@@ -322,12 +322,11 @@ public:
        friend ostream& operator<<(ostream &, Adjoint_Matrix);
        friend istream& operator>>(istream &, Adjoint_Matrix &);
        };
-       
 
 class Adjoint_Links{
 private:
        Adjoint_Matrix alinks[SITES][NUMLINK];
-       
+
 public:
        Adjoint_Links(void);
        Adjoint_Matrix get(const Lattice_Vector &, const int) const;
@@ -346,21 +345,21 @@ Plaq_Field Dbplus(const Adjoint_Links &, const Plaq_Field &);
 
 class Twist_Fermion{
 private:
-	Site_Field S;
-	Link_Field L;
-	Plaq_Field C;
-	
+  Site_Field S;
+  Link_Field L;
+  Plaq_Field C;
+
 public:
-	Twist_Fermion(void);
-	Twist_Fermion(int);
-	const Site_Field& getS(void) const;
-	const Link_Field& getL(void) const;
-	const Plaq_Field& getC(void) const;
-	void setS(const Site_Field &);
-	void setL(const Link_Field &);
-	void setC(const Plaq_Field &);
-	void print(void);
-	};
+  Twist_Fermion(void);
+  Twist_Fermion(int);
+  const Site_Field& getS(void) const;
+  const Link_Field& getL(void) const;
+  const Plaq_Field& getC(void) const;
+  void setS(const Site_Field &);
+  void setL(const Link_Field &);
+  void setC(const Plaq_Field &);
+  void print(void);
+  };
 
 
 Twist_Fermion Cjg(const Twist_Fermion &);
@@ -371,7 +370,7 @@ Twist_Fermion operator *(const double, const Twist_Fermion &);
 Twist_Fermion operator *(const Complex &, const Twist_Fermion &);
 Complex operator *(const Twist_Fermion &, const Twist_Fermion &);
 
-Twist_Fermion Fermion_op(const Adjoint_Links &, const Gauge_Field &,const Twist_Fermion &);
+Twist_Fermion Fermion_op(const Adjoint_Links &, const Gauge_Field &, const Twist_Fermion &);
 Twist_Fermion Adj_Fermion_op(const Adjoint_Links &, const Gauge_Field &,
 const Twist_Fermion &);
 UPlaq_Field Field_Strength(const Gauge_Field &U);
@@ -380,7 +379,7 @@ UPlaq_Field Bianchi(const Gauge_Field &U);
 void eigsrt(double d[], int n);
 void ceigsrt(Complex d[], int n);
 void epsilon(void);
-	
+
 extern Umatrix Lambda[NUMGEN];
 
 double gasdev(void);
