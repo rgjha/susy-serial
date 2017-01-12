@@ -33,7 +33,7 @@ void read_param() {
   // BETA is Rt (BETA in units of root lambda)
   // GAMMA is MASS in units of root lambda
   LAMBDA = 1.0;
-  G = 0.0;
+  G = 0.0;    // !!!
   if (D == 4) {
     KAPPA = 0.5 * NCOLOR / LAMBDA;
 

@@ -46,7 +46,7 @@ const int supercharges = 4;
 #endif
 
 //const int NONZEROES = LEN/SITES/2;
-const unsigned int NONZEROES = (NUMGEN*NUMLINK*2);
+const unsigned int NONZEROES = (NUMGEN*NUMLINK*8);
 
 const double GAUGETOL = 0.00000000000001;
 const int DEGREE = 10;      // Number of terms in  Remez approximation
