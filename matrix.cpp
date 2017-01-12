@@ -210,11 +210,8 @@ void build_sparse_matrix(const Adjoint_Links &V, const Gauge_Field &U,
     }
   }
 
-
   // SIMON: susy det term modification
-
   if (GO) {
-
     P = Plaq(U);
     sites = 0;
     while(loop_over_lattice(x, sites)) {
@@ -286,7 +283,6 @@ void build_sparse_matrix(const Adjoint_Links &V, const Gauge_Field &U,
 
 
   // psi_mu Dminus chi
-
   sites = 0;
   while(loop_over_lattice(x, sites)) {
     for (nu = 0;nu<NUMLINK;nu++) {
@@ -330,8 +326,6 @@ void build_sparse_matrix(const Adjoint_Links &V, const Gauge_Field &U,
   }
 
   // chi Dplus psi_mu
-
-
   sites = 0;
   while(loop_over_lattice(x, sites)) {
     for (mu = 0;mu<NUMLINK;mu++) {
@@ -374,7 +368,6 @@ void build_sparse_matrix(const Adjoint_Links &V, const Gauge_Field &U,
   }
 
   // Q-closed pieces
-
   if (NUMLINK == 5) {
     sites = 0;
     while(loop_over_lattice(x, sites)) {
@@ -512,13 +505,10 @@ void build_sparse_matrix(const Adjoint_Links &V, const Gauge_Field &U,
     first_time = 0;}
 
   return;
-
 }
 
 // simple bubble sort for each row
-
-void mysort(Complex d[], int key[], int n)
-{
+void mysort(Complex d[], int key[], int n) {
   int i, newn;
   Complex c;
   int p;
@@ -640,10 +630,8 @@ void full_fermion_op(const Gauge_Field &U, Complex M[LEN][LEN]) {
 
     }
   }
+
   // psi_mu dbarT eta
-
-
-
   sites = 0;
   while(loop_over_lattice(x, sites)) {
     for (a = 0;a<NUMGEN;a++) {
@@ -658,10 +646,7 @@ void full_fermion_op(const Gauge_Field &U, Complex M[LEN][LEN]) {
           M[i][j2]= M[i][j2]-Tr(Lambda[a]*Udag.get(x, mu)*Lambda[b]);
         }}}}
 
-
   // chi_{munu} dmu psi_nu
-
-
   sites = 0;
   while(loop_over_lattice(x, sites)) {
 
@@ -688,9 +673,8 @@ void full_fermion_op(const Gauge_Field &U, Complex M[LEN][LEN]) {
             M[i][j2]= M[i][j2]+Tr(Lambda[b]*U.get(x+e_mu, nu)*Lambda[a]);
 
           }}}}}
+
   // psi_nu dmu chi_{munu}
-
-
   sites = 0;
   while(loop_over_lattice(x, sites)) {
 
@@ -721,9 +705,7 @@ void full_fermion_op(const Gauge_Field &U, Complex M[LEN][LEN]) {
       }
     }}
 
-
   // Q-closed term
-
   if (NUMLINK == 5) {
     sites = 0;
     while(loop_over_lattice(x, sites)) {
@@ -800,9 +782,7 @@ void full_fermion_op(const Gauge_Field &U, Complex M[LEN][LEN]) {
 
 
   // SIMON: susy det term modification
-
   if (NUMGEN ==(NCOLOR*NCOLOR)) {
-
     P = Plaq(U);
     sites = 0;
     while(loop_over_lattice(x, sites)) {
@@ -847,7 +827,6 @@ void full_fermion_op(const Gauge_Field &U, Complex M[LEN][LEN]) {
           M[j1][j2] << "\t" << M[j2][j1] << "\n" << flush;}
     }
   }
-
 
   return;
 }

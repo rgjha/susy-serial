@@ -7,8 +7,9 @@ It is very easy to perform the installation and execution of `SUSY_LATTICE`.  Be
 1. Download and unpack the code.
 2. Change the directory to `SUSY_LATTICE`.
 3. Edit utilities.h to set the number of supercharges by (un)defining Q16, and lattice lengths LX, LY, LZ and T.  Note: setting e.g. LX=1 allows study of corresponding dimensionally reduced model.  Number of colors is given by NCOLOR.  The compilation parameter FULLMATRIX allows one to compute the Pfaffian and fermion eigenvalues using full matrix code (for small lattices).
-4. Compile the code: `g++ -O *.cpp -o SUSY_LATTICE -llapack -lblas`
+4. Compile the code: `g++ -O *.cpp -o SUSY\_LATTICE -llapack -lblas`
 Setting the parameter SCALAREIG=0 in utiliities.h allows compilation without the LAPACK and BLAS libraries at the expense of having no measurements of the (scalar) eigenvalues.
+Setting `ulimit -s unlimited` may be required when running with `-DFULLMATRIX`
 5. Modify the input parameters located in file `parameters`
 6. Type `./SUSY_LATTICE &> log &` to run the code.
 

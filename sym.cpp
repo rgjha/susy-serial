@@ -3,6 +3,7 @@
 
 // This calls : update_o.cpp, measure.cpp, write_out.cpp //
 
+// Global variables
 int SWEEPS, GAP, THERM, SEED, READIN, OLDSWEEPNO;
 double KAPPA, DT, TIME, G;
 
@@ -21,14 +22,14 @@ int main(int argc, char *argv[]) {
   Twist_Fermion F;
 
 #ifdef GPU
-  int gpuid=atoi(argv[1]);
+  int gpuid = atoi(argv[1]);
   cudaSetDevice(gpuid);
   cout << "using GPU " << gpuid << endl;
 #endif
 
   read_param();            // READ PARAMETERS //
 
-  if(READIN)
+  if (READIN)
     read_in(U, F);
   else {
     U = Gauge_Field(0);        // IF READIN = 0  i.e not reading configs //
@@ -36,37 +37,37 @@ int main(int argc, char *argv[]) {
   }
 
   cout << "Warming up" << "\n" << flush;
-  DT=DT/10;
+  DT = DT/10;
   cout << "DT is " << DT << "\n" << flush;
-  for(sweep=1;sweep<=THERM/4;sweep++) {
-    clock_t time= clock();
+  for (sweep = 1;sweep<= THERM/4;sweep++) {
+    clock_t time = clock();
     update(U, F);
     cout << "sweep time is " << float(clock()-time)/CLOCKS_PER_SEC << endl;
     write_out(U, F, 0);
   }
-  DT=DT*10;
+  DT = DT*10;
   cout << "DT is " << DT << "\n" << flush;
-  for(sweep=1;sweep<=(3*THERM)/4;sweep++) {
-    clock_t time=clock();
+  for (sweep = 1;sweep<=(3*THERM)/4;sweep++) {
+    clock_t time = clock();
     update(U, F);
     cout << "sweep time is " << float(clock()-time)/CLOCKS_PER_SEC << endl;
     write_out(U, F, 0);
   }
 
   cout << "Commencing measurement sweeps" << "\n" << flush;
-
-  for(sweep=SWEEPNO+1;sweep<=SWEEPS;sweep++) {
-    clock_t time=clock();
+  for (sweep = SWEEPNO + 1; sweep <= SWEEPS; sweep++) {
+    clock_t time = clock();
     update(U, F);
     cout << "sweep time is " << float(clock()-time)/CLOCKS_PER_SEC << endl;
 
     //  measure config
     cout << "sweep no. " << sweep << "\n" << flush;
 
-    if(sweep%GAP==0) {
+    if (sweep % GAP == 0) {
       measure(U, F, sweep);
-      //        write_out(U, F, sweep);
-      write_out(U, F, 0);}
+//      write_out(U, F, sweep);
+      write_out(U, F, 0);
+    }
   }
-  return(0);
+  return 0;
 }
