@@ -15,8 +15,8 @@ using namespace std;
 #define FMASS 0.0
 
 const int FERMIONS = 1;
-const int T = 8;
-const int NCOLOR = 3;
+const int T = 2;
+const int NCOLOR = 2;
 const int NUMGEN = (NCOLOR*NCOLOR);
 //const int NUMGEN = (NCOLOR*NCOLOR)-1;  // Forcing SU(N) theory
 
@@ -27,11 +27,11 @@ const int NUMGEN = (NCOLOR*NCOLOR);
 #ifdef Q16
 const int D = 4;
 const int NUMLINK = 5;
-const int LX = 1;
-const int LY = 1;
-const int LZ = 32;
+const int LX = 2;
+const int LY = 2;
+const int LZ = 2;
 const int SITES = (LX*LY*LZ*T);
-const unsigned int LEN = (16*NUMGEN*SITES);       // This is the size of fermion matrix //
+const unsigned int LEN = (16*NUMGEN*SITES);       // This is the size of fermion matrix
 const int supercharges =16;
 #else
 // Q=4 parameters
@@ -62,7 +62,6 @@ const double INT_LAMBDA_CONT = 0.386;
 const double INT_LAMBDA_MID = 0.614;
 
 //#define FULLMATRIX
-
 
 extern double ampdeg, amp[DEGREE], shift[DEGREE];
 extern int num_in_row[LEN], SIMULATING, SWEEPNO, TOTALNONZEROES;
@@ -160,7 +159,7 @@ private:
   Umatrix link[SITES][NUMLINK];
 
 public:
-        Gauge_Field(void);
+  Gauge_Field(void);
   Gauge_Field(int);
   Umatrix get(const Lattice_Vector &, const int) const;
   void set(const Lattice_Vector &, const int, const Umatrix &);
