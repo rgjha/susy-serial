@@ -1,7 +1,7 @@
 #include "measure.h"
 
 void measure(const Gauge_Field &U, const Twist_Fermion &F,int &num) {
-  static int first_time=1;
+  static int first_time = 1;
   static ofstream f_data,f_av,f_scalars;
   static ofstream f_line,f_kon1,f_kon2, f_line_z;
   static ofstream f_loop,f_loop2,f_det;
@@ -56,14 +56,14 @@ void measure(const Gauge_Field &U, const Twist_Fermion &F,int &num) {
     f_kon2.open("kon2",ios::app);
     if(f_kon2.bad()){cerr << "failed to open kon2 file" << "\n";exit(1);}
 
-    first_time=0;
+    first_time = 0;
   }
 
   unit(U,U2);     // Polar-decomposition employed for holographic tests //
 
   // check Bianchi
-  if(NUMLINK==5) {
-    B=Bianchi(U);
+  if(NUMLINK == 5) {
+    B = Bianchi(U);
     cout << "Bianchi is " << Tr(B*Adj(B)).real() << flush << "\n";
   }
 
@@ -75,15 +75,15 @@ void measure(const Gauge_Field &U, const Twist_Fermion &F,int &num) {
   f_kon1 << konishi(U) << endl;
   f_kon2 << konishi(U2)/16.0<< endl;
 
-  for(r=1;r<=(LX/2);r++){
-    for(m=1;m<=(T/2);m++){
+  for(r = 1;r<=(LX/2);r++){
+    for(m = 1;m<=(T/2);m++){
       f_loop << r << "\t" << m <<  "\t" << wilson[r][m]/((D-1)*SITES) << "\t" << flush;}
   }
   f_loop  << "\n" << flush;
 
 
-  for(r=1;r<=(LX/2);r++){
-    for(m=1;m<=(T/2);m++){
+  for(r = 1;r<=(LX/2);r++){
+    for(m = 1;m<=(T/2);m++){
       f_loop2 << r << "\t" << m <<  "\t" << wilson2[r][m]/((D-1)*SITES) << "\t" << flush;}
   }
   f_loop2  << "\n" << flush;
@@ -106,11 +106,11 @@ void measure(const Gauge_Field &U, const Twist_Fermion &F,int &num) {
 
   f_scalars << t1 << "\t" << t2 <<  "\n" << flush;
 
-  if(SMALLEIG==1){
-    sites=0;
+  if(SMALLEIG == 1){
+    sites = 0;
     while(loop_over_lattice(x,sites)){
-      for(j=0;j<NUMLINK;j++){
-        for(k=0;k<NCOLOR;k++){
+      for(j = 0;j<NUMLINK;j++){
+        for(k = 0;k<NCOLOR;k++){
           f_av << eigenvals[sites-1][j][k] << "\t" ;}
         f_av << "\n";}}
     f_av << flush;}
